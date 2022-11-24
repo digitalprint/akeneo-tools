@@ -32,8 +32,12 @@ EOT
     {
         $migration = new Migration();
         $migrationList = [
-            "attributeGroups" => "Attributes groups",
+//            "attributeGroups" => "Attributes groups",
 //            "attributes" => "Attributes",
+//            "channels" => "Channels",
+//            "categories" => "Categories",
+//            "associationTypes" => "Association-Types",
+            "families" => "Families",
         ];
 
         $standardOutput = $output->section();

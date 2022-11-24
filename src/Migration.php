@@ -48,6 +48,44 @@ class Migration
     }
 
     /**
+     * @param array $payload
+     * @return int
+     */
+    private function countPayload(array $payload) : int
+    {
+        $i = 0;
+        foreach($payload as $page){
+            $i += count($page);
+        }
+        return $i;
+    }
+
+    /**
+     * @return void
+     */
+    private function dumpFirstAndDie() : void
+    {
+        dump($this->payload[0][0] ?? 'empty Array');
+        die();
+    }
+
+    /**
+     * @param array $page
+     * @param array $newValues
+     * @return array
+     */
+    private function overwriteValues(array $page, array $newValues = []) : array
+    {
+        $newPage = [];
+
+        foreach ($page as $item) {
+            $newPage[] =  array_merge($item, $newValues);
+        }
+
+        return $newPage;
+    }
+
+    /**
      * @return int
      */
     public function readAttributeGroups() : int
@@ -56,10 +94,10 @@ class Migration
         $this->payload = [];
 
         do {
-            array_push($this->payload, ...$page->getItems());
+            $this->payload[] = $page->getItems();
         } while ($page = $page->getNextPage());
 
-        return count($this->payload);
+        return $this->countPayload($this->payload);
     }
 
     /**
@@ -67,18 +105,12 @@ class Migration
      */
     public function writeAttributeGroups() : void
     {
-        $upsertList = [];
-
-        foreach ($this->payload as $item) {
-            $upsertList[] = [
-                "code" => $item['code'],
-                "sort_order" => $item['sort_order'],
-                "labels" => $item['labels'],
-                "attributes" => []
-            ];
+        foreach ($this->payload as $page) {
+            $newPage = $this->overwriteValues($page, [
+                'attributes' => []
+            ]);
+            $this->stagingClient->getAttributeGroupApi()->upsertList($newPage);
         }
-
-        $this->stagingClient->getAttributeGroupApi()->upsertList($upsertList);
     }
 
     /**
@@ -90,10 +122,10 @@ class Migration
         $this->payload = [];
 
         do {
-            array_push($this->payload, ...$page->getItems());
+            $this->payload[] = $page->getItems();
         } while ($page = $page->getNextPage());
 
-        return count($this->payload);
+        return $this->countPayload($this->payload);
     }
 
     /**
@@ -101,6 +133,111 @@ class Migration
      */
     public function writeAttributes() : void
     {
-        //$this->stagingClient->getAttributeApi()->create();
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getAttributeApi()->upsertList($page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readChannels() : int
+    {
+        $page = $this->currentClient->getChannelApi()->listPerPage($this->queryLimit, true);
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeChannels() : void
+    {
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getChannelApi()->upsertList($page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readCategories() : int
+    {
+        $page = $this->currentClient->getCategoryApi()->listPerPage($this->queryLimit, true);
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeCategories() : void
+    {
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getCategoryApi()->upsertList($page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readAssociationTypes() : int
+    {
+        $page = $this->currentClient->getAssociationTypeApi()->listPerPage($this->queryLimit, true);
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeAssociationTypes() : void
+    {
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getAssociationTypeApi()->upsertList($page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readFamilies() : int
+    {
+        $page = $this->currentClient->getFamilyApi()->listPerPage($this->queryLimit, true);
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeFamilies() : void
+    {
+        //$this->dumpFirstAndDie();
+
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getFamilyApi()->upsertList([$page[0]]);
+            die();
+        }
     }
 }
