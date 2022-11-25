@@ -134,7 +134,10 @@ class Migration
     public function writeAttributes() : void
     {
         foreach ($this->payload as $page) {
-            $this->stagingClient->getAttributeApi()->upsertList($page);
+            $newPage = $this->overwriteValues($page, [
+                'validation_rule' => null
+            ]);
+            $this->stagingClient->getAttributeApi()->upsertList($newPage);
         }
     }
 
@@ -233,11 +236,38 @@ class Migration
      */
     public function writeFamilies() : void
     {
-        //$this->dumpFirstAndDie();
-
         foreach ($this->payload as $page) {
-            $this->stagingClient->getFamilyApi()->upsertList([$page[0]]);
-            die();
+            $this->stagingClient->getFamilyApi()->upsertList($page);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function readProducts() : int
+    {
+        $page = $this->currentClient->getProductApi()->listPerPage($this->queryLimit, true);
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+//            break;
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeProducts() : void
+    {
+//        $this->dumpFirstAndDie();
+
+//        foreach ($this->payload as $page) {
+//            $this->stagingClient->getProductApi()->upsertList($page);
+//        }
+    }
+
+
 }

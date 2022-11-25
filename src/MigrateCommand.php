@@ -30,6 +30,11 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+
+        set_time_limit(60 * 60);
+        ini_set('memory_limit', '1024M');
+
+
         $migration = new Migration();
         $migrationList = [
 //            "attributeGroups" => "Attributes groups",
@@ -37,7 +42,8 @@ EOT
 //            "channels" => "Channels",
 //            "categories" => "Categories",
 //            "associationTypes" => "Association-Types",
-            "families" => "Families",
+//            "families" => "Families",
+            "products" => "Products",
         ];
 
         $standardOutput = $output->section();
