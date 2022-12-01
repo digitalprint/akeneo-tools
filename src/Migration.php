@@ -47,6 +47,10 @@ class Migration
         );
     }
 
+    private function setFamilyCodes($payload) {
+        return $payload;
+    }
+
     /**
      * @param array $payload
      * @return int
@@ -120,6 +124,7 @@ class Migration
     {
         $page = $this->currentClient->getAttributeApi()->listPerPage($this->queryLimit, true);
         $this->payload = [];
+
 
         do {
             $this->payload[] = $page->getItems();
@@ -244,14 +249,78 @@ class Migration
     /**
      * @return int
      */
-    public function readProducts() : int
+    public function readFamilyVariants() : int
     {
-        $page = $this->currentClient->getProductApi()->listPerPage($this->queryLimit, true);
+        $familyCodes = [];
+
+        $this->readFamilies();
+        foreach ($this->payload as $page) {
+            foreach ($page as $item) {
+                $familyCodes[] = $item['code'];
+            }
+        }
+
+        $this->payload = [];
+
+        foreach ($familyCodes as $familyCode) {
+            $page = $this->currentClient->getFamilyVariantApi()->listPerPage($familyCode, $this->queryLimit);
+            $items = $page->getItems();
+
+            if (count($items) > 0) {
+                $this->payload[$familyCode] = $items;
+            }
+        }
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeFamilyVariants() : void
+    {
+        foreach ($this->payload as $code => $page) {
+            $this->stagingClient->getFamilyVariantApi()->upsertList($code, $page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readProductModels() : int
+    {
+        $page = $this->currentClient->getProductModelApi()->listPerPage($this->queryLimit, true);
         $this->payload = [];
 
         do {
             $this->payload[] = $page->getItems();
-//            break;
+        } while ($page = $page->getNextPage());
+
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeProductModels() : void
+    {
+        foreach ($this->payload as $page) {
+            $this->stagingClient->getProductModelApi()->upsertList($page);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function readProducts() : int
+    {
+        $page = $this->currentClient->getProductApi()->listPerPage($this->queryLimit, true);
+
+        $this->payload = [];
+
+        do {
+            $this->payload[] = $page->getItems();
+            echo ".";
         } while ($page = $page->getNextPage());
 
         return $this->countPayload($this->payload);
@@ -262,11 +331,15 @@ class Migration
      */
     public function writeProducts() : void
     {
-//        $this->dumpFirstAndDie();
+        foreach ($this->payload as $page) {
+            foreach ($page as $key => $item) {
+                $tmp = $this->stagingClient->getProductApi()->get($item['identifier']);
+            }
 
-//        foreach ($this->payload as $page) {
-//            $this->stagingClient->getProductApi()->upsertList($page);
-//        }
+
+            $this->stagingClient->getProductApi()->upsertList($page);
+            echo ".";
+        }
     }
 
 

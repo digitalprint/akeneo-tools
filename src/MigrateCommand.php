@@ -41,8 +41,10 @@ EOT
 //            "attributes" => "Attributes",
 //            "channels" => "Channels",
 //            "categories" => "Categories",
-//            "associationTypes" => "Association-Types",
+//            "associationTypes" => "Association types",
 //            "families" => "Families",
+//            "familyVariants" => "Families variants",
+//            "productModels" => "Product models",
             "products" => "Products",
         ];
 
