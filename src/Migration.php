@@ -4,6 +4,7 @@ namespace App;
 
 use \Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use \Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Migration
@@ -27,6 +28,11 @@ class Migration
      * @var array
      */
     private array $payload = [];
+
+    /**
+     * @var bool
+     */
+    private bool $noFileImport = false;
 
     public function __construct()
     {
@@ -114,8 +120,23 @@ class Migration
                 'attributes' => []
             ]);
             $this->stagingClient->getAttributeGroupApi()->upsertList($newPage);
+
+            // Attribute options
+            foreach ($page as $item) {
+                foreach ($item['attributes'] as $attribute) {
+                    $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
+
+                    if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
+                        $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
+                        foreach ($options as $option) {
+                            $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
+                        }
+                    }
+                }
+            }
         }
     }
+
 
     /**
      * @return int
@@ -124,7 +145,6 @@ class Migration
     {
         $page = $this->currentClient->getAttributeApi()->listPerPage($this->queryLimit, true);
         $this->payload = [];
-
 
         do {
             $this->payload[] = $page->getItems();
@@ -305,7 +325,16 @@ class Migration
     public function writeProductModels() : void
     {
         foreach ($this->payload as $page) {
+            if ($this->noFileImport) {
+                foreach ($page as $key => $item) {
+                    unset(
+                        $page[$key]['values']['printfile'],
+                    );
+                }
+            }
+
             $this->stagingClient->getProductModelApi()->upsertList($page);
+            echo ".";
         }
     }
 
@@ -320,7 +349,6 @@ class Migration
 
         do {
             $this->payload[] = $page->getItems();
-            echo ".";
         } while ($page = $page->getNextPage());
 
         return $this->countPayload($this->payload);
@@ -332,14 +360,52 @@ class Migration
     public function writeProducts() : void
     {
         foreach ($this->payload as $page) {
-            foreach ($page as $key => $item) {
-                $tmp = $this->stagingClient->getProductApi()->get($item['identifier']);
+            if ($this->noFileImport) {
+                foreach ($page as $key => $item) {
+                    unset(
+                        $page[$key]['values']['image_01'],
+                        $page[$key]['values']['image_02'],
+                        $page[$key]['values']['image_03'],
+                        $page[$key]['values']['image_04'],
+                        $page[$key]['values']['image_05'],
+                        $page[$key]['values']['image_06'],
+                        $page[$key]['values']['image_07'],
+                        $page[$key]['values']['image_08'],
+                        $page[$key]['values']['image_main'],
+                        $page[$key]['values']['product_image'],
+                        $page[$key]['values']['printfile'],
+                    );
+                }
             }
-
 
             $this->stagingClient->getProductApi()->upsertList($page);
             echo ".";
         }
+    }
+
+
+    /**
+     * @return int
+     */
+    public function readTest() : int
+    {
+
+        $product = $this->currentClient->getProductApi()->get("74876fa2-7f9f-41bb-9a8a-117580c8a860");
+
+//        $product['values']['image_01'][0]['data'] = "c/3/c/5/c3c5a31237ed39f2bbe1526a378ec805a94c4798_sergey_shmidt_koy6FlCCy5s_unsplash.jpeg";
+
+        //dump($product['values']['image_01']);
+
+
+        try {
+            $test = $this->stagingClient->getProductApi()->upsert("74876fa2-7f9f-41bb-9a8a-117580c8a860", $product);
+        } catch (UnprocessableEntityHttpException $e) {
+            dd($e->getMessage());
+        }
+
+
+        dd($test);
+        return 1;
     }
 
 
