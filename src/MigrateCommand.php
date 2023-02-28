@@ -36,12 +36,12 @@ EOT
         $migration = new Migration();
         $migrationList = [
             "channels" => "Channels",
-            "families" => "Families",
-            "attributes" => "Attributes",
-            "attributeGroups" => "Attribute groups",
             "categories" => "Categories",
-            "associationTypes" => "Association types",
+            "attributeGroups" => "Attribute groups",
+            "attributes" => "Attributes",
+            "families" => "Families",
             "familyVariants" => "Families variants",
+            "associationTypes" => "Association types",
             "productModels" => "Product models",
             "products" => "Products",
         ];

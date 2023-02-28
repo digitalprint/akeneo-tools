@@ -32,7 +32,7 @@ class Migration
     /**
      * @var bool
      */
-    private bool $noFileImport = false;
+    private bool $fileImport = true;
 
     public function __construct()
     {
@@ -122,18 +122,20 @@ class Migration
             $this->stagingClient->getAttributeGroupApi()->upsertList($newPage);
 
             // Attribute options
-            foreach ($page as $item) {
-                foreach ($item['attributes'] as $attribute) {
-                    $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
-
-                    if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
-                        $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
-                        foreach ($options as $option) {
-                            $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
-                        }
-                    }
-                }
-            }
+//            foreach ($page as $item) {
+//                foreach ($item['attributes'] as $attribute) {
+//                    $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
+//
+//
+////                    if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
+////                        $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
+////                        foreach ($options as $option) {
+////                            dump($option);
+////                            $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
+////                        }
+////                    }
+//                }
+//            }
         }
     }
 
@@ -325,7 +327,7 @@ class Migration
     public function writeProductModels() : void
     {
         foreach ($this->payload as $page) {
-            if ($this->noFileImport) {
+            if (!$this->fileImport) {
                 foreach ($page as $key => $item) {
                     unset(
                         $page[$key]['values']['printfile'],
@@ -360,7 +362,7 @@ class Migration
     public function writeProducts() : void
     {
         foreach ($this->payload as $page) {
-            if ($this->noFileImport) {
+            if (!$this->fileImport) {
                 foreach ($page as $key => $item) {
                     unset(
                         $page[$key]['values']['image_01'],
@@ -378,7 +380,7 @@ class Migration
                 }
             }
 
-            $this->stagingClient->getProductApi()->upsertList($page);
+            $tmp = $this->stagingClient->getProductApi()->upsertList($page);
             echo ".";
         }
     }
@@ -390,15 +392,20 @@ class Migration
     public function readTest() : int
     {
 
-        $product = $this->currentClient->getProductApi()->get("74876fa2-7f9f-41bb-9a8a-117580c8a860");
+        $productModel = $this->currentClient->getProductModelApi()->get("2BD8C142-A05A-42A2-A578-47FEB1340578");
+        //$product = $this->currentClient->getProductApi()->get("2BD8C142-A05A-42A2-A578-47FEB1340578");
+
 
 //        $product['values']['image_01'][0]['data'] = "c/3/c/5/c3c5a31237ed39f2bbe1526a378ec805a94c4798_sergey_shmidt_koy6FlCCy5s_unsplash.jpeg";
 
         //dump($product['values']['image_01']);
 
+        unset($productModel['code']);
+
 
         try {
-            $test = $this->stagingClient->getProductApi()->upsert("74876fa2-7f9f-41bb-9a8a-117580c8a860", $product);
+//            $test = $this->stagingClient->getProductApi()->upsert("74876fa2-7f9f-41bb-9a8a-117580c8a860", $product);
+            $test = $this->stagingClient->getProductModelApi()->upsert("2BD8C142-A05A-42A2-A578-47FEB1340578", $productModel);
         } catch (UnprocessableEntityHttpException $e) {
             dd($e->getMessage());
         }
