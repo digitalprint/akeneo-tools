@@ -30,6 +30,11 @@ class Migration
     private array $payload = [];
 
     /**
+     * @var array
+     */
+    private array $attributes = [];
+
+    /**
      * @var bool
      */
     private bool $fileImport = true;
@@ -115,30 +120,33 @@ class Migration
      */
     public function writeAttributeGroups() : void
     {
+        $attributes = [];
+
         foreach ($this->payload as $page) {
             $newPage = $this->overwriteValues($page, [
                 'attributes' => []
             ]);
             $this->stagingClient->getAttributeGroupApi()->upsertList($newPage);
 
-            // Attribute options
-//            foreach ($page as $item) {
-//                foreach ($item['attributes'] as $attribute) {
-//                    $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
+            foreach ($page as $item) {
+                $tmp = array_merge($attributes, $item['attributes']);
+                $attributes = $tmp;
+            }
+        }
+
+//        foreach ($attributes as $attribute) {
+//            $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
 //
-//
-////                    if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
-////                        $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
-////                        foreach ($options as $option) {
-////                            dump($option);
-////                            $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
-////                        }
-////                    }
+//            if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
+//                $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
+//                foreach ($options as $option) {
+//                    dump($option);
+//                    $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
 //                }
 //            }
-        }
-    }
+//        }
 
+    }
 
     /**
      * @return int
@@ -167,6 +175,39 @@ class Migration
             $this->stagingClient->getAttributeApi()->upsertList($newPage);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function readAttributeOptions() : int
+    {
+        $this->payload = [];
+        $attributePage = $this->stagingClient->getAttributeApi()->listPerPage($this->queryLimit, true);
+
+        do {
+            foreach ($attributePage->getItems() as $attribute) {
+                if (in_array($attribute['type'], ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
+                    $page = $this->currentClient->getAttributeOptionApi()->listPerPage($attribute['code'], $this->queryLimit, true);
+                    do {
+                        $this->payload[] = $page->getItems();
+                    } while ($page = $page->getNextPage());
+                }
+            }
+        } while ($attributePage = $attributePage->getNextPage());
+        return $this->countPayload($this->payload);
+    }
+
+    /**
+     * @return void
+     */
+    public function writeAttributeOptions() : void
+    {
+        foreach ($this->payload as $page) {
+            $attribute = $page[0]['attribute'];
+            $this->stagingClient->getAttributeOptionApi()->upsertList($attribute, $page);
+        }
+    }
+
 
     /**
      * @return int
@@ -336,7 +377,6 @@ class Migration
             }
 
             $this->stagingClient->getProductModelApi()->upsertList($page);
-            echo ".";
         }
     }
 
@@ -379,9 +419,7 @@ class Migration
                     );
                 }
             }
-
             $tmp = $this->stagingClient->getProductApi()->upsertList($page);
-            echo ".";
         }
     }
 

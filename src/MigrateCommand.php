@@ -39,6 +39,7 @@ EOT
             "categories" => "Categories",
             "attributeGroups" => "Attribute groups",
             "attributes" => "Attributes",
+            "attributeOptions" => "Attribute options",
             "families" => "Families",
             "familyVariants" => "Families variants",
             "associationTypes" => "Association types",
