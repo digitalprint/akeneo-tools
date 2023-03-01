@@ -4,8 +4,6 @@ namespace App;
 
 use \Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use \Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
-use Akeneo\Pim\ApiClient\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class Migration
 {
@@ -133,19 +131,6 @@ class Migration
                 $attributes = $tmp;
             }
         }
-
-//        foreach ($attributes as $attribute) {
-//            $type = $this->currentClient->getAttributeApi()->get($attribute)['type'];
-//
-//            if (in_array($type, ['pim_catalog_simpleselect', 'pim_catalog_multiselect'])) {
-//                $options = $this->currentClient->getAttributeOptionApi()->all($attribute, 100);
-//                foreach ($options as $option) {
-//                    dump($option);
-//                    $this->stagingClient->getAttributeOptionApi()->upsert($attribute, $option['code'], $option);
-//                }
-//            }
-//        }
-
     }
 
     /**
@@ -419,7 +404,7 @@ class Migration
                     );
                 }
             }
-            $tmp = $this->stagingClient->getProductApi()->upsertList($page);
+            $this->stagingClient->getProductApi()->upsertList($page);
         }
     }
 }
