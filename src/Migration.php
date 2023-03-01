@@ -422,36 +422,4 @@ class Migration
             $tmp = $this->stagingClient->getProductApi()->upsertList($page);
         }
     }
-
-
-    /**
-     * @return int
-     */
-    public function readTest() : int
-    {
-
-        $productModel = $this->currentClient->getProductModelApi()->get("2BD8C142-A05A-42A2-A578-47FEB1340578");
-        //$product = $this->currentClient->getProductApi()->get("2BD8C142-A05A-42A2-A578-47FEB1340578");
-
-
-//        $product['values']['image_01'][0]['data'] = "c/3/c/5/c3c5a31237ed39f2bbe1526a378ec805a94c4798_sergey_shmidt_koy6FlCCy5s_unsplash.jpeg";
-
-        //dump($product['values']['image_01']);
-
-        unset($productModel['code']);
-
-
-        try {
-//            $test = $this->stagingClient->getProductApi()->upsert("74876fa2-7f9f-41bb-9a8a-117580c8a860", $product);
-            $test = $this->stagingClient->getProductModelApi()->upsert("2BD8C142-A05A-42A2-A578-47FEB1340578", $productModel);
-        } catch (UnprocessableEntityHttpException $e) {
-            dd($e->getMessage());
-        }
-
-
-        dd($test);
-        return 1;
-    }
-
-
 }
