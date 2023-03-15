@@ -1,20 +1,21 @@
 <?php
 
-namespace App;
+namespace App\Command;
 
+use App\Pim\Migration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateCommand extends Command {
+class PimMigrateCommand extends Command {
     /**
      * @see Command
      */
     protected function configure(): void
     {
         $this
-            ->setName('migrate:run')
+            ->setName('pim:migrate:run')
             ->setDescription('Führt die Migration durch.')
             ->setHelp(
                 <<<EOT

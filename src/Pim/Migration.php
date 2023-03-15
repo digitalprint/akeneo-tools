@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Pim;
 
-use \Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
-use \Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class Migration
 {
