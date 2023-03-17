@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "akeneo/api-php-client": "^11.0",
         "http-interop/http-factory-guzzle": "^1.0",
+        "illuminate/collections": "*",
         "php-http/guzzle6-adapter": "^2.0",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
@@ -21,7 +22,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "php-http/discovery": true
         },
         "optimize-autoloader": true,
         "preferred-install": {
