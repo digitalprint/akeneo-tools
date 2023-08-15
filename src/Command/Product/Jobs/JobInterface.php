@@ -4,5 +4,5 @@ namespace App\Command\Product\Jobs;
 
 interface JobInterface
 {
-    public function run(): void;
+    public function execute(bool $force = false): void;
 }

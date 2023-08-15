@@ -12,6 +12,7 @@
         "illuminate/collections": "*",
         "laravel/helpers": "^1.6",
         "php-http/guzzle6-adapter": "^2.0",
+        "ramsey/uuid": "^4.7",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",

@@ -8,14 +8,16 @@ use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
 use App\Command\Product\Jobs\JobInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class PimUpsertCommand extends Command {
-
+#[AsCommand(name: 'product:pim:upsert')]
+class PimUpsertCommand extends Command
+{
     private array $availableJobs = [
         FotoHinterAcrylglasJob::class,
     ];
@@ -59,8 +61,9 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
@@ -74,11 +77,11 @@ EOT
         $output->writeln('You have just selected: ' . $jobName);
 
         /** @var JobInterface $job */
-        $job = new $jobName($output);
+        $job = new $jobName($output, $this->pimClient);
 
         $output->writeln('<info>starting job...</info>');
 
-        $job->run();
+        $job->execute($input->getOption('force'));
 
         $output->writeln('<info>... job end.</info>');
 
