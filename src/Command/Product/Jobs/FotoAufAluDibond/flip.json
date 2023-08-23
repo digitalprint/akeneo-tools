@@ -1,0 +1,1630 @@
+{
+  "weiss": [
+    {
+      "flipNum": "800537",
+      "color": "weiss",
+      "widthCm": 10,
+      "heightCm": 7.5,
+      "widthMm": 100,
+      "heightMm": 75
+    },
+    {
+      "flipNum": "902883",
+      "color": "weiss",
+      "widthCm": 100,
+      "heightCm": 100,
+      "widthMm": 1000,
+      "heightMm": 1000
+    },
+    {
+      "flipNum": "748906",
+      "color": "weiss",
+      "widthCm": 100,
+      "heightCm": 30,
+      "widthMm": 1000,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "802702",
+      "color": "weiss",
+      "widthCm": 100,
+      "heightCm": 40,
+      "widthMm": 1000,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "966760",
+      "color": "weiss",
+      "widthCm": 100,
+      "heightCm": 50,
+      "widthMm": 1000,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "801730",
+      "color": "weiss",
+      "widthCm": 100,
+      "heightCm": 70,
+      "widthMm": 1000,
+      "heightMm": 700
+    },
+    {
+      "flipNum": "230405",
+      "color": "weiss",
+      "widthCm": 10.5,
+      "heightCm": 7,
+      "widthMm": 105,
+      "heightMm": 70
+    },
+    {
+      "flipNum": "478143",
+      "color": "weiss",
+      "widthCm": 12,
+      "heightCm": 12,
+      "widthMm": 120,
+      "heightMm": 120
+    },
+    {
+      "flipNum": "248430",
+      "color": "weiss",
+      "widthCm": 12,
+      "heightCm": 8,
+      "widthMm": 120,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "780178",
+      "color": "weiss",
+      "widthCm": 12,
+      "heightCm": 9,
+      "widthMm": 120,
+      "heightMm": 90
+    },
+    {
+      "flipNum": "282448",
+      "color": "weiss",
+      "widthCm": 120,
+      "heightCm": 30,
+      "widthMm": 1200,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "291984",
+      "color": "weiss",
+      "widthCm": 120,
+      "heightCm": 40,
+      "widthMm": 1200,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "926325",
+      "color": "weiss",
+      "widthCm": 120,
+      "heightCm": 50,
+      "widthMm": 1200,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "208731",
+      "color": "weiss",
+      "widthCm": 13,
+      "heightCm": 2.8,
+      "widthMm": 130,
+      "heightMm": 28
+    },
+    {
+      "flipNum": "510501",
+      "color": "weiss",
+      "widthCm": 13,
+      "heightCm": 5,
+      "widthMm": 130,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "858194",
+      "color": "weiss",
+      "widthCm": 14,
+      "heightCm": 10,
+      "widthMm": 140,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "985562",
+      "color": "weiss",
+      "widthCm": 14,
+      "heightCm": 10.5,
+      "widthMm": 140,
+      "heightMm": 105
+    },
+    {
+      "flipNum": "501917",
+      "color": "weiss",
+      "widthCm": 14,
+      "heightCm": 14,
+      "widthMm": 140,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "448981",
+      "color": "weiss",
+      "widthCm": 14,
+      "heightCm": 5,
+      "widthMm": 140,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "827072",
+      "color": "weiss",
+      "widthCm": 14.8,
+      "heightCm": 10.5,
+      "widthMm": 148,
+      "heightMm": 105
+    },
+    {
+      "flipNum": "518555",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 10,
+      "widthMm": 150,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "420887",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 15,
+      "widthMm": 150,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "192482",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 3.7,
+      "widthMm": 150,
+      "heightMm": 37
+    },
+    {
+      "flipNum": "985236",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 3.7,
+      "widthMm": 150,
+      "heightMm": 37
+    },
+    {
+      "flipNum": "239806",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 3.8,
+      "widthMm": 150,
+      "heightMm": 38
+    },
+    {
+      "flipNum": "933156",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 5,
+      "widthMm": 150,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "192309",
+      "color": "weiss",
+      "widthCm": 15,
+      "heightCm": 8.3,
+      "widthMm": 150,
+      "heightMm": 83
+    },
+    {
+      "flipNum": "385799",
+      "color": "weiss",
+      "widthCm": 17,
+      "heightCm": 6,
+      "widthMm": 170,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "892662",
+      "color": "weiss",
+      "widthCm": 18,
+      "heightCm": 13.5,
+      "widthMm": 180,
+      "heightMm": 135
+    },
+    {
+      "flipNum": "895410",
+      "color": "weiss",
+      "widthCm": 18,
+      "heightCm": 6,
+      "widthMm": 180,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "335621",
+      "color": "weiss",
+      "widthCm": 18.4,
+      "heightCm": 3.9,
+      "widthMm": 184,
+      "heightMm": 39
+    },
+    {
+      "flipNum": "310837",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 12,
+      "widthMm": 200,
+      "heightMm": 120
+    },
+    {
+      "flipNum": "815177",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 13.3,
+      "widthMm": 200,
+      "heightMm": 133
+    },
+    {
+      "flipNum": "111840",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 14,
+      "widthMm": 200,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "872303",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 15,
+      "widthMm": 200,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "474067",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 20,
+      "widthMm": 200,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "380764",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 30,
+      "widthMm": 200,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "896720",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 6,
+      "widthMm": 200,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "330666",
+      "color": "weiss",
+      "widthCm": 20,
+      "heightCm": 8,
+      "widthMm": 200,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "933406",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 11.5,
+      "widthMm": 210,
+      "heightMm": 115
+    },
+    {
+      "flipNum": "447775",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 14,
+      "widthMm": 210,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "923886",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 21,
+      "widthMm": 210,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "681020",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 5.3,
+      "widthMm": 210,
+      "heightMm": 53
+    },
+    {
+      "flipNum": "518146",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 7,
+      "widthMm": 210,
+      "heightMm": 70
+    },
+    {
+      "flipNum": "937458",
+      "color": "weiss",
+      "widthCm": 22,
+      "heightCm": 8,
+      "widthMm": 220,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "739771",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 10,
+      "widthMm": 250,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "647560",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 16.6,
+      "widthMm": 250,
+      "heightMm": 166
+    },
+    {
+      "flipNum": "397487",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 19,
+      "widthMm": 250,
+      "heightMm": 190
+    },
+    {
+      "flipNum": "364772",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 25,
+      "widthMm": 250,
+      "heightMm": 250
+    },
+    {
+      "flipNum": "999828",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 40,
+      "widthMm": 250,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "261540",
+      "color": "weiss",
+      "widthCm": 25,
+      "heightCm": 8,
+      "widthMm": 250,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "188259",
+      "color": "weiss",
+      "widthCm": 26,
+      "heightCm": 5.5,
+      "widthMm": 260,
+      "heightMm": 55
+    },
+    {
+      "flipNum": "871050",
+      "color": "weiss",
+      "widthCm": 28,
+      "heightCm": 42,
+      "widthMm": 280,
+      "heightMm": 420
+    },
+    {
+      "flipNum": "881713",
+      "color": "weiss",
+      "widthCm": 28,
+      "heightCm": 6.5,
+      "widthMm": 280,
+      "heightMm": 65
+    },
+    {
+      "flipNum": "295672",
+      "color": "weiss",
+      "widthCm": 3,
+      "heightCm": 2,
+      "widthMm": 30,
+      "heightMm": 20
+    },
+    {
+      "flipNum": "107120",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 10,
+      "widthMm": 300,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "597238",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 12,
+      "widthMm": 300,
+      "heightMm": 120
+    },
+    {
+      "flipNum": "489918",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 15,
+      "widthMm": 300,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "571977",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 16.6,
+      "widthMm": 300,
+      "heightMm": 166
+    },
+    {
+      "flipNum": "222820",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 20,
+      "widthMm": 300,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "585688",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 30,
+      "widthMm": 300,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "755344",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 7.5,
+      "widthMm": 300,
+      "heightMm": 75
+    },
+    {
+      "flipNum": "909962",
+      "color": "weiss",
+      "widthCm": 30,
+      "heightCm": 7.5,
+      "widthMm": 300,
+      "heightMm": 75
+    },
+    {
+      "flipNum": "230711",
+      "color": "weiss",
+      "widthCm": 35,
+      "heightCm": 35,
+      "widthMm": 350,
+      "heightMm": 350
+    },
+    {
+      "flipNum": "415668",
+      "color": "weiss",
+      "widthCm": 36.4,
+      "heightCm": 7.7,
+      "widthMm": 364,
+      "heightMm": 77
+    },
+    {
+      "flipNum": "638843",
+      "color": "weiss",
+      "widthCm": 40,
+      "heightCm": 30,
+      "widthMm": 400,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "311726",
+      "color": "weiss",
+      "widthCm": 40,
+      "heightCm": 40,
+      "widthMm": 400,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "391945",
+      "color": "weiss",
+      "widthCm": 40,
+      "heightCm": 64,
+      "widthMm": 400,
+      "heightMm": 640
+    },
+    {
+      "flipNum": "150207",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 10.5,
+      "widthMm": 420,
+      "heightMm": 105
+    },
+    {
+      "flipNum": "961613",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 10.5,
+      "widthMm": 420,
+      "heightMm": 405
+    },
+    {
+      "flipNum": "554615",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 14,
+      "widthMm": 420,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "237372",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 23.1,
+      "widthMm": 420,
+      "heightMm": 231
+    },
+    {
+      "flipNum": "547501",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 28,
+      "widthMm": 420,
+      "heightMm": 280
+    },
+    {
+      "flipNum": "868595",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 42,
+      "widthMm": 420,
+      "heightMm": 420
+    },
+    {
+      "flipNum": "495112",
+      "color": "weiss",
+      "widthCm": 4.5,
+      "heightCm": 3,
+      "widthMm": 45,
+      "heightMm": 30
+    },
+    {
+      "flipNum": "594119",
+      "color": "weiss",
+      "widthCm": 45,
+      "heightCm": 11.2,
+      "widthMm": 450,
+      "heightMm": 112
+    },
+    {
+      "flipNum": "927882",
+      "color": "weiss",
+      "widthCm": 45,
+      "heightCm": 11.2,
+      "widthMm": 450,
+      "heightMm": 112
+    },
+    {
+      "flipNum": "287407",
+      "color": "weiss",
+      "widthCm": 45,
+      "heightCm": 30,
+      "widthMm": 450,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "113477",
+      "color": "weiss",
+      "widthCm": 50,
+      "heightCm": 35,
+      "widthMm": 500,
+      "heightMm": 350
+    },
+    {
+      "flipNum": "846419",
+      "color": "weiss",
+      "widthCm": 50,
+      "heightCm": 50,
+      "widthMm": 500,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "446873",
+      "color": "weiss",
+      "widthCm": 52,
+      "heightCm": 11,
+      "widthMm": 520,
+      "heightMm": 110
+    },
+    {
+      "flipNum": "351031",
+      "color": "weiss",
+      "widthCm": 52,
+      "heightCm": 11.5,
+      "widthMm": 520,
+      "heightMm": 115
+    },
+    {
+      "flipNum": "409276",
+      "color": "weiss",
+      "widthCm": 55,
+      "heightCm": 13.5,
+      "widthMm": 550,
+      "heightMm": 135
+    },
+    {
+      "flipNum": "800094",
+      "color": "weiss",
+      "widthCm": 6,
+      "heightCm": 4.5,
+      "widthMm": 60,
+      "heightMm": 45
+    },
+    {
+      "flipNum": "236462",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 15,
+      "widthMm": 600,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "431398",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 15,
+      "widthMm": 600,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "484066",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 20,
+      "widthMm": 600,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "877024",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 30,
+      "widthMm": 600,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "911193",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 33,
+      "widthMm": 600,
+      "heightMm": 330
+    },
+    {
+      "flipNum": "343220",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 40,
+      "widthMm": 600,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "157467",
+      "color": "weiss",
+      "widthCm": 60,
+      "heightCm": 60,
+      "widthMm": 600,
+      "heightMm": 600
+    },
+    {
+      "flipNum": "877452",
+      "color": "weiss",
+      "widthCm": 70,
+      "heightCm": 20,
+      "widthMm": 700,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "178245",
+      "color": "weiss",
+      "widthCm": 70,
+      "heightCm": 30,
+      "widthMm": 700,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "772013",
+      "color": "weiss",
+      "widthCm": 70,
+      "heightCm": 50,
+      "widthMm": 700,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "603289",
+      "color": "weiss",
+      "widthCm": 70,
+      "heightCm": 70,
+      "widthMm": 700,
+      "heightMm": 700
+    },
+    {
+      "flipNum": "173171",
+      "color": "weiss",
+      "widthCm": 72,
+      "heightCm": 15.4,
+      "widthMm": 720,
+      "heightMm": 154
+    },
+    {
+      "flipNum": "719636",
+      "color": "weiss",
+      "widthCm": 7.5,
+      "heightCm": 5,
+      "widthMm": 75,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "701250",
+      "color": "weiss",
+      "widthCm": 8,
+      "heightCm": 6,
+      "widthMm": 80,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "391292",
+      "color": "weiss",
+      "widthCm": 80,
+      "heightCm": 20,
+      "widthMm": 800,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "921350",
+      "color": "weiss",
+      "widthCm": 80,
+      "heightCm": 30,
+      "widthMm": 800,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "525217",
+      "color": "weiss",
+      "widthCm": 80,
+      "heightCm": 40,
+      "widthMm": 800,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "980653",
+      "color": "weiss",
+      "widthCm": 84,
+      "heightCm": 21,
+      "widthMm": 840,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "893084",
+      "color": "weiss",
+      "widthCm": 84,
+      "heightCm": 28,
+      "widthMm": 840,
+      "heightMm": 280
+    },
+    {
+      "flipNum": "702841",
+      "color": "weiss",
+      "widthCm": 84,
+      "heightCm": 46.2,
+      "widthMm": 840,
+      "heightMm": 462
+    },
+    {
+      "flipNum": "892557",
+      "color": "weiss",
+      "widthCm": 84,
+      "heightCm": 56,
+      "widthMm": 840,
+      "heightMm": 560
+    },
+    {
+      "flipNum": "212997",
+      "color": "weiss",
+      "widthCm": 84,
+      "heightCm": 84,
+      "widthMm": 840,
+      "heightMm": 840
+    },
+    {
+      "flipNum": "311392",
+      "color": "weiss",
+      "widthCm": 90,
+      "heightCm": 22.5,
+      "widthMm": 900,
+      "heightMm": 225
+    },
+    {
+      "flipNum": "817273",
+      "color": "weiss",
+      "widthCm": 90,
+      "heightCm": 22.5,
+      "widthMm": 900,
+      "heightMm": 225
+    },
+    {
+      "flipNum": "145962",
+      "color": "weiss",
+      "widthCm": 90,
+      "heightCm": 30,
+      "widthMm": 900,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "730657",
+      "color": "weiss",
+      "widthCm": 90,
+      "heightCm": 60,
+      "widthMm": 900,
+      "heightMm": 600
+    },
+    {
+      "flipNum": "724601",
+      "color": "weiss",
+      "widthCm": 118.8,
+      "heightCm": 84.1,
+      "widthMm": 1188,
+      "heightMm": 841
+    },
+    {
+      "flipNum": "489500",
+      "color": "weiss",
+      "widthCm": 84.1,
+      "heightCm": 59.4,
+      "widthMm": 841,
+      "heightMm": 594
+    },
+    {
+      "flipNum": "610012",
+      "color": "weiss",
+      "widthCm": 59.4,
+      "heightCm": 42,
+      "widthMm": 594,
+      "heightMm": 420
+    },
+    {
+      "flipNum": "257370",
+      "color": "weiss",
+      "widthCm": 42,
+      "heightCm": 29.7,
+      "widthMm": 420,
+      "heightMm": 297
+    },
+    {
+      "flipNum": "854804",
+      "color": "weiss",
+      "widthCm": 29.7,
+      "heightCm": 21,
+      "widthMm": 297,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "575760",
+      "color": "weiss",
+      "widthCm": 21,
+      "heightCm": 14.8,
+      "widthMm": 210,
+      "heightMm": 148
+    }
+  ],
+  "silber": [
+    {
+      "flipNum": "171440",
+      "color": "silber",
+      "widthCm": 10,
+      "heightCm": 7.5,
+      "widthMm": 100,
+      "heightMm": 75
+    },
+    {
+      "flipNum": "198558",
+      "color": "silber",
+      "widthCm": 100,
+      "heightCm": 100,
+      "widthMm": 1000,
+      "heightMm": 1000
+    },
+    {
+      "flipNum": "952691",
+      "color": "silber",
+      "widthCm": 100,
+      "heightCm": 30,
+      "widthMm": 1000,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "856768",
+      "color": "silber",
+      "widthCm": 100,
+      "heightCm": 50,
+      "widthMm": 1000,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "841484",
+      "color": "silber",
+      "widthCm": 100,
+      "heightCm": 70,
+      "widthMm": 1000,
+      "heightMm": 700
+    },
+    {
+      "flipNum": "332698",
+      "color": "silber",
+      "widthCm": 10.5,
+      "heightCm": 7,
+      "widthMm": 105,
+      "heightMm": 70
+    },
+    {
+      "flipNum": "398098",
+      "color": "silber",
+      "widthCm": 12,
+      "heightCm": 12,
+      "widthMm": 120,
+      "heightMm": 120
+    },
+    {
+      "flipNum": "366767",
+      "color": "silber",
+      "widthCm": 12,
+      "heightCm": 8,
+      "widthMm": 120,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "587948",
+      "color": "silber",
+      "widthCm": 12,
+      "heightCm": 9,
+      "widthMm": 120,
+      "heightMm": 90
+    },
+    {
+      "flipNum": "494533",
+      "color": "silber",
+      "widthCm": 120,
+      "heightCm": 30,
+      "widthMm": 1200,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "629322",
+      "color": "silber",
+      "widthCm": 120,
+      "heightCm": 50,
+      "widthMm": 1200,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "251231",
+      "color": "silber",
+      "widthCm": 13,
+      "heightCm": 2.8,
+      "widthMm": 130,
+      "heightMm": 28
+    },
+    {
+      "flipNum": "695945",
+      "color": "silber",
+      "widthCm": 14,
+      "heightCm": 10,
+      "widthMm": 140,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "544388",
+      "color": "silber",
+      "widthCm": 14.8,
+      "heightCm": 10.5,
+      "widthMm": 148,
+      "heightMm": 105
+    },
+    {
+      "flipNum": "745156",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 10,
+      "widthMm": 150,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "242630",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 15,
+      "widthMm": 150,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "400846",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 3.7,
+      "widthMm": 150,
+      "heightMm": 37
+    },
+    {
+      "flipNum": "885148",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 3.8,
+      "widthMm": 150,
+      "heightMm": 38
+    },
+    {
+      "flipNum": "506007",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 5,
+      "widthMm": 150,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "397912",
+      "color": "silber",
+      "widthCm": 15,
+      "heightCm": 8.3,
+      "widthMm": 150,
+      "heightMm": 83
+    },
+    {
+      "flipNum": "662905",
+      "color": "silber",
+      "widthCm": 18,
+      "heightCm": 13.5,
+      "widthMm": 180,
+      "heightMm": 135
+    },
+    {
+      "flipNum": "855358",
+      "color": "silber",
+      "widthCm": 18.4,
+      "heightCm": 3.9,
+      "widthMm": 184,
+      "heightMm": 39
+    },
+    {
+      "flipNum": "967122",
+      "color": "silber",
+      "widthCm": 20,
+      "heightCm": 12,
+      "widthMm": 200,
+      "heightMm": 120
+    },
+    {
+      "flipNum": "842088",
+      "color": "silber",
+      "widthCm": 20,
+      "heightCm": 14,
+      "widthMm": 200,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "890923",
+      "color": "silber",
+      "widthCm": 20,
+      "heightCm": 15,
+      "widthMm": 200,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "112747",
+      "color": "silber",
+      "widthCm": 20,
+      "heightCm": 6,
+      "widthMm": 200,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "214098",
+      "color": "silber",
+      "widthCm": 20,
+      "heightCm": 8,
+      "widthMm": 200,
+      "heightMm": 80
+    },
+    {
+      "flipNum": "229142",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 11.5,
+      "widthMm": 210,
+      "heightMm": 115
+    },
+    {
+      "flipNum": "850656",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 14,
+      "widthMm": 210,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "299184",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 21,
+      "widthMm": 210,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "969141",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 5.3,
+      "widthMm": 210,
+      "heightMm": 53
+    },
+    {
+      "flipNum": "767588",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 7,
+      "widthMm": 210,
+      "heightMm": 70
+    },
+    {
+      "flipNum": "932259",
+      "color": "silber",
+      "widthCm": 2.5,
+      "heightCm": 2.5,
+      "widthMm": 250,
+      "heightMm": 250
+    },
+    {
+      "flipNum": "306533",
+      "color": "silber",
+      "widthCm": 26,
+      "heightCm": 5.5,
+      "widthMm": 260,
+      "heightMm": 55
+    },
+    {
+      "flipNum": "640055",
+      "color": "silber",
+      "widthCm": 3,
+      "heightCm": 2,
+      "widthMm": 30,
+      "heightMm": 20
+    },
+    {
+      "flipNum": "931366",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 10,
+      "widthMm": 300,
+      "heightMm": 100
+    },
+    {
+      "flipNum": "166580",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 15,
+      "widthMm": 300,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "679392",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 16.6,
+      "widthMm": 300,
+      "heightMm": 166
+    },
+    {
+      "flipNum": "252832",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 20,
+      "widthMm": 300,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "697898",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 30,
+      "widthMm": 300,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "943406",
+      "color": "silber",
+      "widthCm": 30,
+      "heightCm": 7.5,
+      "widthMm": 300,
+      "heightMm": 75
+    },
+    {
+      "flipNum": "260789",
+      "color": "silber",
+      "widthCm": 35,
+      "heightCm": 35,
+      "widthMm": 350,
+      "heightMm": 350
+    },
+    {
+      "flipNum": "147235",
+      "color": "silber",
+      "widthCm": 36.4,
+      "heightCm": 7.7,
+      "widthMm": 364,
+      "heightMm": 77
+    },
+    {
+      "flipNum": "761061",
+      "color": "silber",
+      "widthCm": 40,
+      "heightCm": 30,
+      "widthMm": 400,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "946489",
+      "color": "silber",
+      "widthCm": 40,
+      "heightCm": 40,
+      "widthMm": 400,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "126703",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 10.5,
+      "widthMm": 420,
+      "heightMm": 105
+    },
+    {
+      "flipNum": "522800",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 14,
+      "widthMm": 420,
+      "heightMm": 140
+    },
+    {
+      "flipNum": "791199",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 23.1,
+      "widthMm": 420,
+      "heightMm": 231
+    },
+    {
+      "flipNum": "288849",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 28,
+      "widthMm": 420,
+      "heightMm": 280
+    },
+    {
+      "flipNum": "451009",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 42,
+      "widthMm": 420,
+      "heightMm": 420
+    },
+    {
+      "flipNum": "368476",
+      "color": "silber",
+      "widthCm": 4.5,
+      "heightCm": 3,
+      "widthMm": 45,
+      "heightMm": 30
+    },
+    {
+      "flipNum": "551599",
+      "color": "silber",
+      "widthCm": 45,
+      "heightCm": 11.2,
+      "widthMm": 450,
+      "heightMm": 112
+    },
+    {
+      "flipNum": "721871",
+      "color": "silber",
+      "widthCm": 50,
+      "heightCm": 35,
+      "widthMm": 500,
+      "heightMm": 350
+    },
+    {
+      "flipNum": "634356",
+      "color": "silber",
+      "widthCm": 50,
+      "heightCm": 50,
+      "widthMm": 500,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "919712",
+      "color": "silber",
+      "widthCm": 52,
+      "heightCm": 11,
+      "widthMm": 520,
+      "heightMm": 110
+    },
+    {
+      "flipNum": "389378",
+      "color": "silber",
+      "widthCm": 6,
+      "heightCm": 4,
+      "widthMm": 600,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "471863",
+      "color": "silber",
+      "widthCm": 6,
+      "heightCm": 4.5,
+      "widthMm": 60,
+      "heightMm": 45
+    },
+    {
+      "flipNum": "256184",
+      "color": "silber",
+      "widthCm": 60,
+      "heightCm": 15,
+      "widthMm": 600,
+      "heightMm": 150
+    },
+    {
+      "flipNum": "374583",
+      "color": "silber",
+      "widthCm": 60,
+      "heightCm": 20,
+      "widthMm": 600,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "284924",
+      "color": "silber",
+      "widthCm": 60,
+      "heightCm": 30,
+      "widthMm": 600,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "599650",
+      "color": "silber",
+      "widthCm": 60,
+      "heightCm": 33,
+      "widthMm": 600,
+      "heightMm": 330
+    },
+    {
+      "flipNum": "277635",
+      "color": "silber",
+      "widthCm": 60,
+      "heightCm": 60,
+      "widthMm": 600,
+      "heightMm": 600
+    },
+    {
+      "flipNum": "521494",
+      "color": "silber",
+      "widthCm": 70,
+      "heightCm": 20,
+      "widthMm": 700,
+      "heightMm": 200
+    },
+    {
+      "flipNum": "119459",
+      "color": "silber",
+      "widthCm": 70,
+      "heightCm": 30,
+      "widthMm": 700,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "428694",
+      "color": "silber",
+      "widthCm": 70,
+      "heightCm": 50,
+      "widthMm": 700,
+      "heightMm": 500
+    },
+    {
+      "flipNum": "571908",
+      "color": "silber",
+      "widthCm": 70,
+      "heightCm": 70,
+      "widthMm": 700,
+      "heightMm": 700
+    },
+    {
+      "flipNum": "615430",
+      "color": "silber",
+      "widthCm": 72,
+      "heightCm": 15.4,
+      "widthMm": 720,
+      "heightMm": 154
+    },
+    {
+      "flipNum": "617466",
+      "color": "silber",
+      "widthCm": 7.5,
+      "heightCm": 5,
+      "widthMm": 75,
+      "heightMm": 50
+    },
+    {
+      "flipNum": "719655",
+      "color": "silber",
+      "widthCm": 8,
+      "heightCm": 6,
+      "widthMm": 80,
+      "heightMm": 60
+    },
+    {
+      "flipNum": "528597",
+      "color": "silber",
+      "widthCm": 80,
+      "heightCm": 30,
+      "widthMm": 800,
+      "heightMm": 300
+    },
+    {
+      "flipNum": "431628",
+      "color": "silber",
+      "widthCm": 80,
+      "heightCm": 40,
+      "widthMm": 800,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "161539",
+      "color": "silber",
+      "widthCm": 84,
+      "heightCm": 21,
+      "widthMm": 840,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "673580",
+      "color": "silber",
+      "widthCm": 84,
+      "heightCm": 28,
+      "widthMm": 840,
+      "heightMm": 280
+    },
+    {
+      "flipNum": "488463",
+      "color": "silber",
+      "widthCm": 84,
+      "heightCm": 46.2,
+      "widthMm": 840,
+      "heightMm": 462
+    },
+    {
+      "flipNum": "210985",
+      "color": "silber",
+      "widthCm": 84,
+      "heightCm": 56,
+      "widthMm": 840,
+      "heightMm": 560
+    },
+    {
+      "flipNum": "426542",
+      "color": "silber",
+      "widthCm": 84,
+      "heightCm": 84,
+      "widthMm": 840,
+      "heightMm": 840
+    },
+    {
+      "flipNum": "398331",
+      "color": "silber",
+      "widthCm": 90,
+      "heightCm": 22.5,
+      "widthMm": 900,
+      "heightMm": 225
+    },
+    {
+      "flipNum": "633572",
+      "color": "silber",
+      "widthCm": 90,
+      "heightCm": 60,
+      "widthMm": 900,
+      "heightMm": 600
+    },
+    {
+      "flipNum": "717352",
+      "color": "silber",
+      "widthCm": 118.8,
+      "heightCm": 84.1,
+      "widthMm": 1188,
+      "heightMm": 841
+    },
+    {
+      "flipNum": "529687",
+      "color": "silber",
+      "widthCm": 84.1,
+      "heightCm": 59.4,
+      "widthMm": 841,
+      "heightMm": 594
+    },
+    {
+      "flipNum": "821563",
+      "color": "silber",
+      "widthCm": 59.4,
+      "heightCm": 42,
+      "widthMm": 594,
+      "heightMm": 420
+    },
+    {
+      "flipNum": "258812",
+      "color": "silber",
+      "widthCm": 42,
+      "heightCm": 29.7,
+      "widthMm": 420,
+      "heightMm": 297
+    },
+    {
+      "flipNum": "955512",
+      "color": "silber",
+      "widthCm": 29.7,
+      "heightCm": 21,
+      "widthMm": 297,
+      "heightMm": 210
+    },
+    {
+      "flipNum": "424610",
+      "color": "silber",
+      "widthCm": 21,
+      "heightCm": 14.8,
+      "widthMm": 210,
+      "heightMm": 148
+    },
+    {
+      "flipNum": "574004",
+      "color": "silber",
+      "widthCm": 100,
+      "heightCm": 40,
+      "widthMm": 1000,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "191847",
+      "color": "silber",
+      "widthCm": 120,
+      "heightCm": 40,
+      "widthMm": 1200,
+      "heightMm": 400
+    },
+    {
+      "flipNum": "147470",
+      "color": "silber",
+      "widthCm": 90,
+      "heightCm": 30,
+      "widthMm": 900,
+      "heightMm": 300
+    }
+  ]
+}

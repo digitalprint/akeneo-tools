@@ -6,6 +6,7 @@ namespace App\Command\Product\Jobs;
 
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\Pim\ApiClient\Search\SearchBuilder;
+use Exception;
 use Illuminate\Support\Arr;
 use JsonException;
 use Ramsey\Uuid\Uuid;
@@ -20,8 +21,6 @@ class AbstractJob implements JobInterface
 
     protected const DEFAULT_SCOPE = 'printplanet';
 
-    protected array $resultInfo;
-
     /**
      * @var Output
      */
@@ -30,6 +29,8 @@ class AbstractJob implements JobInterface
     protected AkeneoPimClientInterface $pimClient;
 
     protected array $possibleAttributes = [];
+
+    protected array $flipSkus = [];
 
     public function __construct(Output $output, AkeneoPimClientInterface $pimClient)
     {
@@ -67,10 +68,10 @@ class AbstractJob implements JobInterface
     {
         $searchBuilder = new SearchBuilder();
         $searchBuilder
-            ->addFilter('parent', 'IN', [$parentUuid]);
+            ->addFilter('parent', '=', $parentUuid);
         $searchFilters = $searchBuilder->getFilters();
 
-        $cursor = $this->pimClient->getProductApi()->all(50, ['search' => $searchFilters, 'scope' => 'printplanet']);
+        $cursor = $this->pimClient->getProductApi()->all(100, ['search' => $searchFilters, 'scope' => 'printplanet']);
 
         return iterator_to_array($cursor);
     }
@@ -136,7 +137,7 @@ class AbstractJob implements JobInterface
         return $product;
     }
 
-    protected function buildSignsGraduatedPriceValue(
+    protected function buildMuralsGraduatedPriceValue(
         string $step1Price,
         string $step5Price,
         string $step10Price,
@@ -146,7 +147,7 @@ class AbstractJob implements JobInterface
         return '{"type":"price","steps":[{"quantity_start":1,"quantity_end":4,"price":' . $step1Price . '},{"quantity_start":5,"quantity_end":9,"price":' . $step5Price . '},{"quantity_start":10,"quantity_end":"*","price":' . $step10Price . '}],"adjustments":[{"amount":' . $drillHolePrice . ',"type":"drill_hole"},{"amount":' . $coatingPrice . ',"type":"coating"}]}';
     }
 
-    protected function buildSignsFormFieldMappingValue(
+    protected function buildMuralsFormFieldMappingValue(
         array $size,
         string $printessMaterialValue,
         string $designOrientation
@@ -204,5 +205,60 @@ class AbstractJob implements JobInterface
         $price -= $discount * $price;
 
         return (ceil($price - 0.05) - 0.1) . '';
+    }
+
+    protected function runUpsert(array $products, array $resultInfo, bool $force): void
+    {
+        $this->output->writeln('Products to be updated: ' . count($resultInfo));
+        foreach ($resultInfo as $uuid => $product) {
+            $this->output->writeln($product['material'] . ' :: ' . $product['size'] . '    [' . $uuid . '] - [' . $product['supplierSku'] . ']');
+        }
+
+        if (true === $force) {
+            $this->output->writeln('Start updating/write products to PIM.');
+
+            foreach (array_chunk($products, 100) as $productsChunk) {
+                try {
+                    $responseLines = $this->pimClient->getProductApi()->upsertList($productsChunk);
+
+                    $this->output->writeln('Written products: ' . iterator_count($responseLines));
+
+                    foreach ($responseLines as $line) {
+                        $this->output->writeln('[' . $line['status_code'] . '] ' . $line['identifier']);
+
+                        if (422 === $line['status_code']) {
+                            $this->output->writeln('<error>' . json_encode($line['errors'], JSON_THROW_ON_ERROR) . '</error>');
+                        }
+                    }
+                } catch (Exception $ex) {
+                    $this->output->writeln('<error>' . $ex->getMessage() . '</error>');
+                }
+            }
+        }
+    }
+
+    protected function guessFlipSkuByMaterialAndSize(string $materialId, array $size): ?string
+    {
+        if (! isset($this->flipSkus[$materialId])) {
+            throw new RuntimeException('The flip array key [' . $materialId . '] could not be found in flip.json. Maybe you dont load the flip.json file in the constructor.');
+        }
+
+        $flipNum = array_filter($this->flipSkus[$materialId], static function ($item) use ($size) {
+            if ($item['widthMm'] === $size['width'] && $item['heightMm'] === $size['height']) {
+                return $item;
+            }
+
+            if ($item['heightMm'] === $size['width'] && $item['widthMm'] === $size['height']) {
+                return $item;
+            }
+
+            return null;
+        });
+
+        if (empty($flipNum)) {
+            return null;
+        }
+
+        return $flipNum[array_key_first($flipNum)]['flipNum'];
     }
 }

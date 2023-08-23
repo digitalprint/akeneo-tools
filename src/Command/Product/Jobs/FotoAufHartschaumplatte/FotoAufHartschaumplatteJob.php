@@ -1,8 +1,8 @@
 <?php
 
-/** @noinspection PhpUnusedPrivateMethodInspection */
+/** @noinspection DuplicatedCode */
 
-namespace App\Command\Product\Jobs\FotoHinterAcrylglas;
+namespace App\Command\Product\Jobs\FotoAufHartschaumplatte;
 
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use App\Command\Product\Jobs\AbstractJob;
@@ -10,38 +10,38 @@ use JetBrains\PhpStorm\NoReturn;
 use JsonException;
 use Symfony\Component\Console\Output\Output;
 
-class FotoHinterAcrylglasJob extends AbstractJob
+class FotoAufHartschaumplatteJob extends AbstractJob
 {
     protected array $materials = [
-        'a167c53e-bc58-4de8-bb90-9d16a945ce6b' => [
+        '9da09a93-eef4-4ada-8286-e144b4443c64' => [
             'label' => '3mm',
-            'printess_value' => 'acrylglas3',
+            'printess_value' => 'kunststoff3',
             'price' => [
                 'handlingPerPiece' => 5.0,
                 'packagingPerSqrm' => 20.0,
-                'printingPerSqrm' => 81.87,
+                'printingPerSqrm' => 39.47,
                 'margin' => 0.7,
                 'bulkSurcharge' => 20.0,
             ],
         ],
-        'bdff860c-815b-40df-a102-cd185f1ccaf5' => [
+        '437aed0f-a9af-4c73-85e9-0375cc73f121' => [
             'label' => '5mm',
-            'printess_value' => 'acrylglas5',
+            'printess_value' => 'kunststoff5',
             'price' => [
                 'handlingPerPiece' => 5.0,
                 'packagingPerSqrm' => 20.0,
-                'printingPerSqrm' => 104.80,
+                'printingPerSqrm' => 46.69,
                 'margin' => 0.7,
                 'bulkSurcharge' => 20.0,
             ],
         ],
-        '17c02a26-b6dd-45d3-85b1-76f2c1d8d20f' => [
-            'label' => '8mm',
-            'printess_value' => 'acrylglas8',
+        '92d5c219-2426-4130-9a1e-3733a8cc9a4c' => [
+            'label' => '10mm',
+            'printess_value' => 'kunststoff10',
             'price' => [
                 'handlingPerPiece' => 5.0,
                 'packagingPerSqrm' => 20.0,
-                'printingPerSqrm' => 137.74,
+                'printingPerSqrm' => 63.08,
                 'margin' => 0.7,
                 'bulkSurcharge' => 20.0,
             ],
@@ -49,7 +49,6 @@ class FotoHinterAcrylglasJob extends AbstractJob
     ];
 
     protected string $productFamily = 'murals';
-
 
     /**
      * @throws JsonException
@@ -114,7 +113,7 @@ class FotoHinterAcrylglasJob extends AbstractJob
                 $product = $this->setAttributeValueInProduct($product, 'printarea_width', $this->numberFormatPrintAreaValue($size['width']));
                 $product = $this->setAttributeValueInProduct($product, 'printarea_height', $this->numberFormatPrintAreaValue($size['height']));
                 $product = $this->setAttributeValueInProduct($product, 'printarea_section_variable', '3');
-                $product = $this->setAttributeValueInProduct($product, 'dpi', 300);
+                $product = $this->setAttributeValueInProduct($product, 'dpi', 200);
                 $product = $this->setAttributeValueInProduct($product, 'cpp_start_design_id', $this->buildMuralsFormFieldMappingValue($size, $material['printess_value'], $this->getDesignOrientationBySize($size)), self::DEFAULT_SCOPE);
 
                 $products[] = $product;
@@ -130,8 +129,6 @@ class FotoHinterAcrylglasJob extends AbstractJob
         $this->runUpsert($products, $resultInfo, $force);
     }
 
-
-
     /**
      * @throws JsonException
      */
@@ -139,7 +136,7 @@ class FotoHinterAcrylglasJob extends AbstractJob
     private function convertFlipNums(): void
     {
         if (($handle = fopen(__DIR__ . '/flip.csv', 'rb')) !== false) {
-            $result = ['3mm' => [], '5mm' => [], '8mm' => []];
+            $result = ['3mm' => [], '5mm' => [], '10mm' => []];
             while (($data = fgetcsv($handle, null, ';')) !== false) {
                 $chunks = explode('|', $data[1]);
                 $chinks = explode('x', $chunks[1]);
@@ -168,6 +165,6 @@ class FotoHinterAcrylglasJob extends AbstractJob
             file_put_contents(__DIR__ . '/flip.json', json_encode($result, JSON_THROW_ON_ERROR));
         }
 
-        exit;
+        exit('json written');
     }
 }

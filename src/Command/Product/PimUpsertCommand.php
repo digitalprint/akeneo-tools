@@ -6,7 +6,11 @@ namespace App\Command\Product;
 
 use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use App\Command\Product\Jobs\FotoAufHartschaumplatte\FotoAufHartschaumplatteJob;
+use App\Command\Product\Jobs\FotoAufHolz\FotoAufHolzJob;
 use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
+use App\Command\Product\Jobs\FotoAufAluDibond\FotoAufAluDibondJob;
+use App\Command\Product\Jobs\FotoPoster\FotoPosterJob;
 use App\Command\Product\Jobs\JobInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,6 +24,10 @@ class PimUpsertCommand extends Command
 {
     private array $availableJobs = [
         FotoHinterAcrylglasJob::class,
+        FotoAufHartschaumplatteJob::class,
+        FotoAufAluDibondJob::class,
+        FotoPosterJob::class,
+        FotoAufHolzJob::class,
     ];
 
     protected AkeneoPimClientInterface $pimClient;
