@@ -116,6 +116,7 @@ class FotoHinterAcrylglasJob extends AbstractJob
                 $product = $this->setAttributeValueInProduct($product, 'printarea_section_variable', '3');
                 $product = $this->setAttributeValueInProduct($product, 'dpi', 300);
                 $product = $this->setAttributeValueInProduct($product, 'cpp_start_design_id', $this->buildMuralsFormFieldMappingValue($size, $material['printess_value'], $this->getDesignOrientationBySize($size)), self::DEFAULT_SCOPE);
+                $product = $this->setAttributeValueInProduct($product, 'orientation', $this->getDesignOrientationBySize($size, true), self::DEFAULT_SCOPE);
 
                 $products[] = $product;
 

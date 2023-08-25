@@ -165,7 +165,7 @@ class AbstractJob implements JobInterface
     /**
      * @throws JsonException
      */
-    protected function getDesignOrientationBySize(array $size): string
+    protected function getDesignOrientationBySize(array $size, $asPimValue = false): string
     {
         $factor = $size['width'] / $size['height'];
 
@@ -174,10 +174,18 @@ class AbstractJob implements JobInterface
         }
 
         if ($factor > 1) {
+            if (true === $asPimValue) {
+                return 'landscape';
+            }
+
             return 'din_l';
         }
 
         if ($factor < 1) {
+            if (true === $asPimValue) {
+                return 'portrait';
+            }
+
             return 'din_p';
         }
 
