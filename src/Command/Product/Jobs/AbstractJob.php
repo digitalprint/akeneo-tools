@@ -173,6 +173,10 @@ class AbstractJob implements JobInterface
             return 'square';
         }
 
+        if ($factor >= 2 || $factor <= 0.5) {
+            return 'panorama';
+        }
+
         if ($factor > 1) {
             if (true === $asPimValue) {
                 return 'landscape';
