@@ -1,0 +1,325 @@
+{
+  "murals_din_formats": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "56x84"
+    }
+  ],
+  "orientation": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "portrait"
+    }
+  ],
+  "signs_material": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "alu_dibond_white"
+    }
+  ],
+  "base_price": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": [
+        {
+          "amount": "95.50",
+          "currency": "EUR"
+        }
+      ]
+    }
+  ],
+  "image_01": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "e/6/0/8/e60865874ad62bf66fd0b64a13f93d1c08e39381_Ortsschilder_Gross_2.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/e/6/0/8/e60865874ad62bf66fd0b64a13f93d1c08e39381_Ortsschilder_Gross_2.jpg/download"
+        }
+      }
+    }
+  ],
+  "image_02": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "8/e/2/e/8e2eff7e2bebca3ee7588943d00e13b2c3281254_Ortsschilder_Gross_3.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/8/e/2/e/8e2eff7e2bebca3ee7588943d00e13b2c3281254_Ortsschilder_Gross_3.jpg/download"
+        }
+      }
+    }
+  ],
+  "image_03": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "4/6/a/2/46a23f725d8ae83397dee907040c99bbfa6f605f_Ortsschilder_Gross_4.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/4/6/a/2/46a23f725d8ae83397dee907040c99bbfa6f605f_Ortsschilder_Gross_4.jpg/download"
+        }
+      }
+    }
+  ],
+  "image_04": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "a/7/8/c/a78ca4900e0e41cf5dd6bd5c2f360ec3b14a9e66_Ortsschilder_Gross_5.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/a/7/8/c/a78ca4900e0e41cf5dd6bd5c2f360ec3b14a9e66_Ortsschilder_Gross_5.jpg/download"
+        }
+      }
+    }
+  ],
+  "image_05": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "0/6/b/c/06bcd1a3b4702cccda5dda33d322bef484dbdb5a_Ortsschilder_Gross_6.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/0/6/b/c/06bcd1a3b4702cccda5dda33d322bef484dbdb5a_Ortsschilder_Gross_6.jpg/download"
+        }
+      }
+    }
+  ],
+  "image_main": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "6/d/a/f/6daf553fb50a55ef6457b5b3de3f1aa210d13fa7_Ortsschilder_Gross_1.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/6/d/a/f/6daf553fb50a55ef6457b5b3de3f1aa210d13fa7_Ortsschilder_Gross_1.jpg/download"
+        }
+      }
+    }
+  ],
+  "product_image": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "9/a/3/0/9a30ab462ec133cb0d5a6c8dedaa015ebcde8f26_Ortsschilder_Gross_1.jpg",
+      "_links": {
+        "download": {
+          "href": "https://pim.ppapi.de/api/rest/v1/media-files/9/a/3/0/9a30ab462ec133cb0d5a6c8dedaa015ebcde8f26_Ortsschilder_Gross_1.jpg/download"
+        }
+      }
+    }
+  ],
+  "dpi": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 300
+    }
+  ],
+  "stock_quantity": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 5000
+    }
+  ],
+  "production_time_days": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "1.0000"
+    }
+  ],
+  "name": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "Ortsschilder"
+    },
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "Ortsschilder"
+    }
+  ],
+  "seo_slug": [
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "ortsschild"
+    }
+  ],
+  "meta_title": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "Ortsschilder mit eigenem Wunschtext selbst gestalten"
+    },
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "Ortsschilder mit eigenem Wunschtext selbst gestalten"
+    }
+  ],
+  "supplier_sku": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "892557"
+    }
+  ],
+  "supplier_name": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "flip"
+    }
+  ],
+  "cpp_product_id": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "citysign"
+    }
+  ],
+  "supplier_group": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "Printess_Schilder"
+    }
+  ],
+  "printess_start_design": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "{\"templateName\":\"ls_citysign_07\",\"documentName\":\"din_p\",\"spreadIndex\":0}"
+    }
+  ],
+  "printess_group_snippets": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "[{\"id\":\"master_gs_basic_signs\"}]"
+    }
+  ],
+  "printess_layout_snippet": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "[{\"id\":\"master_colors_basic\"},{\"id\":\"master_fonts_basic\"}]"
+    }
+  ],
+  "design_picker_attributes": [
+    {
+      "locale": "de_DE",
+      "scope": null,
+      "data": "{\"presets\":[\"ortsschilder-hoch\"]}"
+    }
+  ],
+  "printarea_section_variable": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "3"
+    }
+  ],
+  "active": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": true
+    }
+  ],
+  "is_in_stock": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": true
+    }
+  ],
+  "description": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "<p>Selbst gestaltete Ortsschilder mit Ihrem Wunschtext können verwendet werden, um eine Straße, einen Weg oder den Eingang zu einem Grundstück zu kennzeichnen. Unsere Ortsschilder sind in verschiedenen Größen und Materialien erhältlich, wie Acrylglas, Kunststoff und mehr. Wir bieten eine brillant glänzende Druckqualität. Zudem sind unsere Schilder kratzfest, UV- und wetterbeständig.<br></p>"
+    },
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "<p>Individuell gestaltete Ortsschilder mit Wunschtext können zur Kennzeichnung einer Straße, eines Weges oder einer Grundstückseinfahrt verwendet werden. Unsere Ortsschilder sind in verschiedenen Größen und Materialien wie Acrylglas, Kunststoff, Alu-Dibond und mehr erhältlich. Die Druckqualität ist brillant und glänzend. Außerdem sind unsere Schilder kratzfest, UV- und witterungsbeständig.</p>"
+    }
+  ],
+  "graduated_price": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "{\"type\":\"price\",\"steps\":[{\"quantity_start\":1,\"quantity_end\":4,\"price\":95.5},{\"quantity_start\":5,\"quantity_end\":9,\"price\":90.0},{\"quantity_start\":10,\"quantity_end\":\"*\",\"price\":85.0}],\"adjustments\":[{\"amount\":3.0,\"type\":\"drill_hole\"},{\"amount\":3.5,\"type\":\"coating\"}]}"
+    }
+  ],
+  "meta_description": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "Bei PrintPlanet können Sie Ihr personalisiertes Ortsschild selbst gestalten und mit eigenem Wunschtext bedrucken."
+    },
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "Bei PhotoFancy kannst Du ein personalisiertes Ortsschild selbst gestalten und mit eigenem Wunschtext bedrucken."
+    }
+  ],
+  "short_description": [
+    {
+      "locale": "de_DE",
+      "scope": "printplanet",
+      "data": "<ul type=\"disc\">\n <li style=\"line-height: normal;\">Ortsschilder\n     mit Wunschtext<o:p></o:p></li><li style=\"line-height: normal;\">Individuell\n     online selbst gestalten<o:p></o:p></li><li style=\"line-height: normal;\">Brillante\n     Druckqualität<o:p></o:p></li><li style=\"line-height: normal;\">Designvorlagen\n     im Original-Look<o:p></o:p></li><li style=\"line-height: normal;\">Für\n     den Innen- &amp; Außenbereich</li><li style=\"line-height: normal;\">Kratzfest,\n     UV- und wetterbeständig</li><li style=\"line-height: normal;\">Große Materialauswahl<o:p></o:p></li>\n \n \n \n </ul>"
+    },
+    {
+      "locale": "de_DE",
+      "scope": "photofancy_mag",
+      "data": "<p>Individualität pur: Gestalte dein einzigartiges Ortsschild in brillanter Druckqualität.</p>\n<ul class=\"checkmark\">\n<li>Ortsschilder mit Wunschtext</li>\n<li>Individuell online selbst gestalten</li>\n<li>Brillante Druckqualität</li>\n<li>Designvorlagen im Original-Look</li>\n<li>Für den Innen- &amp; Außenbereich</li>\n<li>Kratzfest, UV- und witterungsbeständig</li>\n<li>Große Materialauswahl</li>\n</ul>"
+    }
+  ],
+  "supplier_parameter": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "{\"is_coated\":\"{{getSupplierParam('isCoated', productConfiguration) }}\",\"has_drill_holes\":\"{{ getSupplierParam('hasDrillHoles', productConfiguration) }}\"}"
+    }
+  ],
+  "cpp_start_design_id": [
+    {
+      "locale": null,
+      "scope": "printplanet",
+      "data": "[{\"printess_ff_name\": \"DOCUMENT_SIZE\", \"pim_attr_name\": \"signs_size\", \"value\": \"56x84\"},{\"printess_ff_name\": \"material\", \"pim_attr_name\": \"signs_material\", \"value\": \"alu-dibond-weiss\"}]"
+    }
+  ],
+  "printarea_width": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": {
+        "amount": "560.0000",
+        "unit": "MILLIMETER"
+      }
+    }
+  ],
+  "printarea_height": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": {
+        "amount": "840.0000",
+        "unit": "MILLIMETER"
+      }
+    }
+  ]
+}

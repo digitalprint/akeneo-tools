@@ -1,0 +1,74 @@
+{
+  "10_5x14_8":
+  {
+    "width": 105,
+    "height": 148,
+    "supplier_sku": null
+  },
+  "14_8x10_5":
+  {
+    "width": 148,
+    "height": 105,
+    "supplier_sku": null
+  },
+  "14_8x21":
+  {
+    "width": 148,
+    "height": 210,
+    "supplier_sku": null
+  },
+  "21x14_8":
+  {
+    "width": 210,
+    "height": 148,
+    "supplier_sku": null
+  },
+  "21x29_7":
+  {
+    "width": 210,
+    "height": 297,
+    "supplier_sku": null
+  },
+  "29_7x21":
+  {
+    "width": 297,
+    "height": 210,
+    "supplier_sku": null
+  },
+  "29_7x42":
+  {
+    "width": 297,
+    "height": 420,
+    "supplier_sku": null
+  },
+  "42x29_7":
+  {
+    "width": 420,
+    "height": 297,
+    "supplier_sku": null
+  },
+  "42x59_4":
+  {
+    "width": 420,
+    "height": 594,
+    "supplier_sku": null
+  },
+  "59_4x42":
+  {
+    "width": 594,
+    "height": 420,
+    "supplier_sku": null
+  },
+  "59_4x84_1":
+  {
+    "width": 594,
+    "height": 841,
+    "supplier_sku": null
+  },
+  "84_1x59_4":
+  {
+    "width": 841,
+    "height": 594,
+    "supplier_sku": null
+  }
+}
