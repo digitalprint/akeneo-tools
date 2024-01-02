@@ -203,7 +203,7 @@ class AbstractJob implements JobInterface
             $bulkSurcharge = $priceAttributes['bulkSurcharge'];
         }
 
-        $price = ($size['width'] / 1000 * $size['height'] / 1000 * ($priceAttributes['packagingPerSqrm'] + $priceAttributes['printingPerSqrm']) + $priceAttributes['handlingPerPiece'] + $bulkSurcharge) / $priceAttributes['margin'] * self::SHOP_TAX;
+        $result = ($size['width'] / 1000 * $size['height'] / 1000 * ($priceAttributes['packagingPerSqrm'] + $priceAttributes['printingPerSqrm']) + $priceAttributes['handlingPerPiece'] + $bulkSurcharge) / $priceAttributes['margin'] * self::SHOP_TAX;
 
         $discount = 0;
         if (5 === $step) {
@@ -214,9 +214,9 @@ class AbstractJob implements JobInterface
             $discount = 0.10;
         }
 
-        $price -= $discount * $price;
+        $result -= $discount * $result;
 
-        return (ceil($price - 0.05) - 0.1) . '';
+        return (ceil($result - 0.05) - 0.1) . '';
     }
 
     protected function runUpsert(array $products, array $resultInfo, bool $force): void
