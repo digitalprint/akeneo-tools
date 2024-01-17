@@ -13,12 +13,12 @@
         "laravel/helpers": "^1.6",
         "php-http/guzzle6-adapter": "^2.0",
         "ramsey/uuid": "^4.7",
-        "symfony/console": "6.3.*",
-        "symfony/dotenv": "6.3.*",
+        "symfony/console": "6.4.*",
+        "symfony/dotenv": "6.4.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/yaml": "6.3.*"
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/runtime": "6.4.*",
+        "symfony/yaml": "6.4.*"
     },
     "config": {
         "allow-plugins": {
@@ -70,10 +70,10 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.3.*"
+            "require": "6.4.*"
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "6.3.*"
+        "symfony/var-dumper": "6.4.*"
     }
 }
