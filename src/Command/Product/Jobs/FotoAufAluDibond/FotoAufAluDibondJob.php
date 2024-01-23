@@ -93,18 +93,18 @@ class FotoAufAluDibondJob extends AbstractJob
                     $supplierSku = 'XXYYZZ';
                 }
 
-                $product = $this->setAttributeValueInProduct($product, 'supplier_sku', $supplierSku);
-                $product = $this->setAttributeValueInProduct($product, 'is_in_stock', true, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
-                $product = $this->setAttributeValueInProduct($product, 'stock_quantity', 5000);
-                $product = $this->setAttributeValueInProduct($product, 'active', true, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
+//                $product = $this->setAttributeValueInProduct($product, 'supplier_sku', $supplierSku);
+//                $product = $this->setAttributeValueInProduct($product, 'is_in_stock', true, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
+//                $product = $this->setAttributeValueInProduct($product, 'stock_quantity', 5000);
+//                $product = $this->setAttributeValueInProduct($product, 'active', true, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
                 $product = $this->setAttributeValueInProduct($product, 'base_price', $this->getProductPrice($material['price'], $size), self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
                 $product = $this->setAttributeValueInProduct($product, 'graduated_price', $this->buildMuralsGraduatedPriceValue($this->getProductPrice($material['price'], $size), $this->getProductPrice($material['price'], $size, 5), $this->getProductPrice($material['price'], $size, 10), '3.0', '3.5'), self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
-                $product = $this->setAttributeValueInProduct($product, 'printarea_width', $this->numberFormatPrintAreaValue($size['width']));
-                $product = $this->setAttributeValueInProduct($product, 'printarea_height', $this->numberFormatPrintAreaValue($size['height']));
-                $product = $this->setAttributeValueInProduct($product, 'printarea_section_variable', '3');
-                $product = $this->setAttributeValueInProduct($product, 'dpi', 200);
-                $product = $this->setAttributeValueInProduct($product, 'cpp_start_design_id', $this->buildMuralsFormFieldMappingValue($size, $material['printess_value'], $this->getDesignOrientationBySize($size)), self::DEFAULT_SCOPE);
-                $product = $this->setAttributeValueInProduct($product, 'orientation', $this->getDesignOrientationBySize($size, true), self::DEFAULT_SCOPE);
+//                $product = $this->setAttributeValueInProduct($product, 'printarea_width', $this->numberFormatPrintAreaValue($size['width']));
+//                $product = $this->setAttributeValueInProduct($product, 'printarea_height', $this->numberFormatPrintAreaValue($size['height']));
+//                $product = $this->setAttributeValueInProduct($product, 'printarea_section_variable', '3');
+//                $product = $this->setAttributeValueInProduct($product, 'dpi', 200);
+//                $product = $this->setAttributeValueInProduct($product, 'cpp_start_design_id', $this->buildMuralsFormFieldMappingValue($size, $material['printess_value'], $this->getDesignOrientationBySize($size)), self::DEFAULT_SCOPE);
+//                $product = $this->setAttributeValueInProduct($product, 'orientation', $this->getDesignOrientationBySize($size, true), self::DEFAULT_SCOPE);
 
                 $products[] = $product;
 

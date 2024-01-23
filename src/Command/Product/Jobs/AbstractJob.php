@@ -216,7 +216,10 @@ class AbstractJob implements JobInterface
 
         $result -= $discount * $result;
 
-        return (ceil($result - 0.05) - 0.1) . '';
+        $result = ((int) ($result * 10) + 1) / 10;
+
+        // return (ceil($result - 0.05) - 0.1) . '';
+        return $result . '';
     }
 
     protected function runUpsert(array $products, array $resultInfo, bool $force): void
