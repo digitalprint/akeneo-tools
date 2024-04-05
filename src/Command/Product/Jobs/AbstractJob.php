@@ -76,6 +76,18 @@ class AbstractJob implements JobInterface
         return iterator_to_array($cursor);
     }
 
+    protected function getProductByFlipSku(string $sku): ?array
+    {
+        $searchBuilder = new SearchBuilder();
+        $searchBuilder
+            ->addFilter('supplier_sku', '=', $sku);
+        $searchFilters = $searchBuilder->getFilters();
+
+        $cursor = $this->pimClient->getProductApi()->all(10, ['search' => $searchFilters, 'scope' => 'printplanet']);
+
+        return iterator_to_array($cursor)[0] ?? null;
+    }
+
     public function execute(bool $force = false): void
     {
     }

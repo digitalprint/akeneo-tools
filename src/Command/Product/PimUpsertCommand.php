@@ -10,6 +10,7 @@ use App\Command\Product\Jobs\FotoAufAluDibond\FotoAufAluDibondJob;
 use App\Command\Product\Jobs\FotoAufHartschaumplatte\FotoAufHartschaumplatteJob;
 use App\Command\Product\Jobs\FotoAufHolz\FotoAufHolzJob;
 use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
+use App\Command\Product\Jobs\ProductsOffline\ProductsOfflineJob;
 use App\Command\Product\Jobs\FotoPoster\FotoPosterJob;
 use App\Command\Product\Jobs\JobInterface;
 use App\Command\Product\Jobs\WandbildKonturschnitt\WandbildKonturschnitt;
@@ -30,6 +31,7 @@ class PimUpsertCommand extends Command
         FotoPosterJob::class,
         FotoAufHolzJob::class,
         WandbildKonturschnitt::class,
+        ProductsOfflineJob::class,
     ];
 
     protected AkeneoPimClientInterface $pimClient;
