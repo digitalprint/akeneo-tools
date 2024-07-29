@@ -10,10 +10,12 @@ use App\Command\Product\Jobs\FotoAufAluDibond\FotoAufAluDibondJob;
 use App\Command\Product\Jobs\FotoAufHartschaumplatte\FotoAufHartschaumplatteJob;
 use App\Command\Product\Jobs\FotoAufHolz\FotoAufHolzJob;
 use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
-use App\Command\Product\Jobs\ProductsOffline\ProductsOfflineJob;
 use App\Command\Product\Jobs\FotoPoster\FotoPosterJob;
 use App\Command\Product\Jobs\JobInterface;
+use App\Command\Product\Jobs\ProductsOffline\ProductsOfflineJob;
+use App\Command\Product\Jobs\SchilderLackierungsAufpreis\SchilderLackierungsAufpreisJob;
 use App\Command\Product\Jobs\WandbildKonturschnitt\WandbildKonturschnitt;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,6 +34,7 @@ class PimUpsertCommand extends Command
         FotoAufHolzJob::class,
         WandbildKonturschnitt::class,
         ProductsOfflineJob::class,
+        SchilderLackierungsAufpreisJob::class,
     ];
 
     protected AkeneoPimClientInterface $pimClient;
@@ -78,25 +81,26 @@ EOT
      *
      * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
-    {
-        $helper = $this->getHelper('question');
-        $question = new ChoiceQuestion(
-            'Please select the job you want to run.',
-            $this->availableJobs
-        );
-        $jobName = $helper->ask($input, $output, $question);
-        $output->writeln('You have just selected: ' . $jobName);
+    #[NoReturn]
+ protected function execute(InputInterface $input, OutputInterface $output): ?int
+ {
+     $helper = $this->getHelper('question');
+     $question = new ChoiceQuestion(
+         'Please select the job you want to run.',
+         $this->availableJobs
+     );
+     $jobName = $helper->ask($input, $output, $question);
+     $output->writeln('You have just selected: ' . $jobName);
 
-        /** @var JobInterface $job */
-        $job = new $jobName($output, $this->pimClient);
+     /** @var JobInterface $job */
+     $job = new $jobName($output, $this->pimClient);
 
-        $output->writeln('<info>starting job...</info>');
+     $output->writeln('<info>starting job...</info>');
 
-        $job->execute($input->getOption('force'));
+     $job->execute($input->getOption('force'));
 
-        $output->writeln('<info>... job end.</info>');
+     $output->writeln('<info>... job end.</info>');
 
-        return Command::SUCCESS;
-    }
+     return Command::SUCCESS;
+ }
 }

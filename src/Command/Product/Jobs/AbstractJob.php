@@ -238,7 +238,7 @@ class AbstractJob implements JobInterface
     {
         $this->output->writeln('Products to be updated: ' . count($resultInfo));
         foreach ($resultInfo as $uuid => $product) {
-            $this->output->writeln($product['material'] . ' :: ' . $product['size'] . '    [' . $uuid . '] - [' . $product['supplierSku'] . ']');
+            $this->output->writeln($product['name'] . ' :: ' . $product['material'] . ' :: ' . $product['size'] . '    [' . $uuid . '] - [' . $product['supplierSku'] . ']');
         }
 
         if (true === $force) {
