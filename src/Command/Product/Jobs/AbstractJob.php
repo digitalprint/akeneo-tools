@@ -19,7 +19,7 @@ class AbstractJob implements JobInterface
 
     protected const DEFAULT_LOCALE = 'de_DE';
 
-    protected const DEFAULT_SCOPE = 'printplanet';
+    protected const DEFAULT_SCOPE = 'merchrocket';
 
     /**
      * @var Output
@@ -71,7 +71,11 @@ class AbstractJob implements JobInterface
             ->addFilter('parent', '=', $parentUuid);
         $searchFilters = $searchBuilder->getFilters();
 
-        $cursor = $this->pimClient->getProductApi()->all(100, ['search' => $searchFilters, 'scope' => 'printplanet']);
+        $cursor = $this->pimClient->getProductApi()->all(100, [
+            'search' => $searchFilters,
+            'scope' => self::DEFAULT_SCOPE,
+            'locales' => 'en_US'
+        ]);
 
         return iterator_to_array($cursor);
     }
@@ -83,7 +87,7 @@ class AbstractJob implements JobInterface
             ->addFilter('supplier_sku', '=', $sku);
         $searchFilters = $searchBuilder->getFilters();
 
-        $cursor = $this->pimClient->getProductApi()->all(10, ['search' => $searchFilters, 'scope' => 'printplanet']);
+        $cursor = $this->pimClient->getProductApi()->all(10, ['search' => $searchFilters, 'scope' => self::DEFAULT_SCOPE]);
 
         return iterator_to_array($cursor)[0] ?? null;
     }
@@ -117,6 +121,7 @@ class AbstractJob implements JobInterface
         }
 
         foreach ($product['values'][$attributeName] as $index => $attribute) {
+
             $setter = 'values.' . $attributeName . '.' . $index . '.data';
 
             if ('base_price' === $attributeName) {
@@ -181,11 +186,11 @@ class AbstractJob implements JobInterface
     {
         $factor = $size['width'] / $size['height'];
 
-        if (1 === $factor) {
+        if (1.0 === (float) $factor) {
             return 'square';
         }
 
-        if ($factor >= 2 || $factor <= 0.5) {
+        if (($factor >= 2 && $asPimValue === true) || ($factor <= 0.5 && $asPimValue === true)) {
             return 'panorama';
         }
 
@@ -204,6 +209,8 @@ class AbstractJob implements JobInterface
 
             return 'din_p';
         }
+
+        $size['factor'] = $factor;
 
         throw new RuntimeException("Can't calculate designOrientation for size -> " . json_encode($size, JSON_THROW_ON_ERROR));
     }
@@ -254,7 +261,7 @@ class AbstractJob implements JobInterface
                         $this->output->writeln('[' . $line['status_code'] . '] ' . $line['identifier']);
 
                         if (422 === $line['status_code']) {
-                            $this->output->writeln('<error>' . json_encode($line['errors'], JSON_THROW_ON_ERROR) . '</error>');
+                            $this->output->writeln('<error>' . json_encode($line, JSON_THROW_ON_ERROR) . '</error>');
                         }
                     }
                 } catch (Exception $ex) {

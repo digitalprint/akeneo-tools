@@ -13,6 +13,7 @@ use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
 use App\Command\Product\Jobs\FotoPoster\FotoPosterJob;
 use App\Command\Product\Jobs\JobInterface;
 use App\Command\Product\Jobs\MigrateRatingIds\MigrateRatingIdsJob;
+use App\Command\Product\Jobs\MrFotoPoster\MrFotoPosterJob;
 use App\Command\Product\Jobs\SchilderLackierungsAufpreis\SchilderLackierungsAufpreisJob;
 use App\Command\Product\Jobs\WandbildKonturschnitt\WandbildKonturschnitt;
 use JetBrains\PhpStorm\NoReturn;
@@ -31,6 +32,7 @@ class PimUpsertCommand extends Command
         FotoAufHartschaumplatteJob::class,
         FotoAufAluDibondJob::class,
         FotoPosterJob::class,
+        MrFotoPosterJob::class,
         FotoAufHolzJob::class,
         WandbildKonturschnitt::class,
         MigrateRatingIdsJob::class,

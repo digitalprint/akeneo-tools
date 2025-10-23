@@ -1,0 +1,49 @@
+{
+  "base_price": [
+    {
+      "locale": "en_US",
+      "scope": "merchrocket",
+      "data": [
+        {
+          "amount": "10.90",
+          "currency": "EUR"
+        }
+      ]
+    }
+  ],
+  "mockup_form_fields": [
+    {
+      "locale": "en_US",
+      "scope": "merchrocket",
+      "data": "{\"templateName\":\"ls_citysign_07\",\"documentName\":\"din_p\",\"spreadIndex\":0}"
+    }
+  ],
+  "print_placements": [
+    {
+      "locale": null,
+      "scope": "merchrocket",
+      "data": "{\"templateName\":\"ls_citysign_07\",\"documentName\":\"din_p\",\"spreadIndex\":0}"
+    }
+  ],
+  "supplier_production_parameters": [
+    {
+      "locale": null,
+      "scope": "merchrocket",
+      "data": "{  \"produceType\": \"printess\",  \"context\": {    \"templateName\": \"photo_poster_poster\",    \"mergeTemplates\": [      {\"templateName\": \"ls_basic\", \"documentName\": \"din_l\"}    ],    \"formField\": {      \"mapping\": [        {          \"printess_form_field_name\"  : \"image_1\",          \"merchrocket_placement_type\": \"main\"        }      ],      \"values\": [        {          \"printess_form_field_name\" : \"DOCUMENT_SIZE\",          \"printess_form_field_value\": \"70x70\"        },        {          \"printess_form_field_name\" : \"material\",          \"printess_form_field_value\": \"poster\"        },        {          \"printess_form_field_name\" : \"designOrientation\",          \"printess_form_field_value\": \"square\"        },        {          \"printess_form_field_name\" : \"edges\",          \"printess_form_field_value\": \"angular\"        }      ]    }  }}"
+    }
+  ],
+  "active": [
+    {
+      "locale": "en_US",
+      "scope": "merchrocket",
+      "data": true
+    }
+  ],
+  "is_in_stock": [
+    {
+      "locale": "en_US",
+      "scope": "merchrocket",
+      "data": true
+    }
+  ]
+}
