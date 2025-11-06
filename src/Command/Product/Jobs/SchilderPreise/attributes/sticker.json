@@ -1,0 +1,65 @@
+{
+  "type": "graduated_formula",
+  "steps": [
+    {
+      "quantity_start": 1,
+      "quantity_end": 4,
+      "percentage": 0
+    },
+    {
+      "quantity_start": 5,
+      "quantity_end": 9,
+      "percentage": 0.05
+    },
+    {
+      "quantity_start": 10,
+      "quantity_end": "*",
+      "percentage": 0.1
+    }
+  ],
+  "formula": {
+    "attributes": [
+      {
+        "id": "packagingPerSqrm",
+        "value": 30
+      },
+      {
+        "id": "printingPerSqrm",
+        "value": 23
+      },
+      {
+        "id": "handlingPerPiece",
+        "value": 4
+      },
+      {
+        "id": "margin",
+        "value": 0.5
+      },
+      {
+        "id": "marketingDiscountThreshold",
+        "value": 0
+      },
+      {
+        "id": "bulkyGoodsSurcharge",
+        "value": 0
+      }
+    ],
+    "template": "( {{ getSupplierParam('width', productConfiguration) / 1000 }} * {{ getSupplierParam('height', productConfiguration) / 1000 }} * ({{ getAttribute('packagingPerSqrm') }} + {{ getAttribute('printingPerSqrm') }}) + {{ getAttribute('handlingPerPiece') }} + {{ getAttribute('bulkyGoodsSurcharge') }} + {{ getAttribute('marketingDiscountThreshold') }}) / {{ getAttribute('margin') }} * {{ getShopAttribute('tax') }}"
+  },
+  "examples": [
+    {
+      "hint": "Bei einer Schildgröße von 15 cm x 10 cm",
+      "productConfiguration": {
+        "quantity": 1,
+        "printess": {
+          "product.formFields": {
+            "coating": "false",
+            "holes": "false",
+            "productWidth": "15",
+            "productHeight": "10"
+          }
+        }
+      }
+    }
+  ]
+}

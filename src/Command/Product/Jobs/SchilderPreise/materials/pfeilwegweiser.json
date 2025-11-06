@@ -1,0 +1,15 @@
+{
+    "rootProduct": "7c6b741c-cca6-43de-8b3f-4110ed241ca3",
+    "types": "product",
+    "price": "fix",
+    "items": {
+        "7747e67c-fa86-4d91-af97-89fd50d3aa8d": "alu-dibond-white-3mm",
+        "9fef08da-dd37-429e-95e7-6cc0746aec32": "alu-dibond-silver-3mm",
+        "93388197-b931-4b88-b9aa-57878f2db8e1": "pvc-5mm",
+        "27874237-1b83-4a17-bef0-ce93076fea06": "pvc-10mm",
+        "377373bf-0016-4d18-899b-b80dcb02d3ff": "acryl-5mm",
+        "0a524f6f-ec36-484a-a248-671e46ea9ff1": "acryl-8mm",
+        "cfea76a9-420f-4eda-a886-f6bff224a217": "magnetic-foil",
+        "1ae0f992-ab0f-40fc-993d-0f7f5f2a281c": "sticker"
+    }
+}

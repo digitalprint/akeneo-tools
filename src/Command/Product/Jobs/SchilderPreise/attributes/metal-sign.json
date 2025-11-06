@@ -1,0 +1,172 @@
+[
+  {
+    "width": 520,
+    "height": 110,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 24.9
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 24.5
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 23.9
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3,
+          "type": "drill_hole"
+        },
+        {
+          "amount": 5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 600,
+    "height": 150,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 28.9
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 28.5
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 27.9
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3,
+          "type": "drill_hole"
+        },
+        {
+          "amount": 5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 300,
+    "height": 200,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 28.9
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 27.6
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 26.4
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3,
+          "type": "drill_hole"
+        },
+        {
+          "amount": 5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 420,
+    "height": 280,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 38.9
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 37.1
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 35.4
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3,
+          "type": "drill_hole"
+        },
+        {
+          "amount": 5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 600,
+    "height": 400,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 63.9
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 60.9
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 57.9
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3,
+          "type": "drill_hole"
+        },
+        {
+          "amount": 5,
+          "type": "coating"
+        }
+      ]
+    }
+  }
+]

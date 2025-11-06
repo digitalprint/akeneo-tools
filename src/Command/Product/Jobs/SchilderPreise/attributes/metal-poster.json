@@ -1,0 +1,92 @@
+[
+  {
+    "width": 300,
+    "height": 200,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 28.90
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 28.50
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 27.90
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3.5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 400,
+    "height": 300,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 33.90
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 33.50
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 32.90
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3.5,
+          "type": "coating"
+        }
+      ]
+    }
+  },
+  {
+    "width": 700,
+    "height": 500,
+    "graduated_price": {
+      "type": "price",
+      "steps": [
+        {
+          "quantity_start": 1,
+          "quantity_end": 4,
+          "price": 68.90
+        },
+        {
+          "quantity_start": 5,
+          "quantity_end": 9,
+          "price": 68.50
+        },
+        {
+          "quantity_start": 10,
+          "quantity_end": "*",
+          "price": 67.90
+        }
+      ],
+      "adjustments": [
+        {
+          "amount": 3.5,
+          "type": "coating"
+        }
+      ]
+    }
+  }
+]

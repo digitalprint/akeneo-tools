@@ -1,0 +1,10 @@
+{
+    "rootProduct": "e723831f-5830-44ee-8e52-16fa2eeaae39",
+    "types": "product",
+    "price": "fix",
+    "items": {
+        "7ee976cf-207a-4b24-b209-086a47a044bb": "alu-dibond-white-3mm",
+        "f1d404a7-f469-4fd7-8ff6-e79af12974ae": "pvc-5mm",
+        "d115d289-fee4-4d30-ad8a-7340c546e5aa": "acryl-5mm"
+    }
+}

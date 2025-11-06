@@ -1,0 +1,9 @@
+{
+    "rootProduct": "a9531ac0-da85-4000-884e-71c11e85e8ac",
+    "types": "product",
+    "price": "fix",
+    "items": {
+        "8476f79c-8fe4-4ea9-9a9e-efcddaf3a160": "alu-dibond-white-3mm",
+        "d11e64a2-7602-48b2-b762-dcafbcc516ec": "alu-dibond-silver-3mm"
+    }
+}

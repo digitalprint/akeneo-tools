@@ -15,6 +15,7 @@ use App\Command\Product\Jobs\JobInterface;
 use App\Command\Product\Jobs\MigrateRatingIds\MigrateRatingIdsJob;
 use App\Command\Product\Jobs\MrFotoPoster\MrFotoPosterJob;
 use App\Command\Product\Jobs\SchilderLackierungsAufpreis\SchilderLackierungsAufpreisJob;
+use App\Command\Product\Jobs\SchilderPreise\SchilderPreiseJob;
 use App\Command\Product\Jobs\WandbildKonturschnitt\WandbildKonturschnitt;
 use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -37,6 +38,7 @@ class PimUpsertCommand extends Command
         WandbildKonturschnitt::class,
         MigrateRatingIdsJob::class,
         SchilderLackierungsAufpreisJob::class,
+        SchilderPreiseJob::class,
     ];
 
     protected AkeneoPimClientInterface $pimClient;

@@ -1,0 +1,17 @@
+{
+    "rootProduct": "7ba9fb0d-931b-4216-b4a9-ec4554873226",
+    "types": "product",
+    "price": "fix",
+    "items": {
+        "d2b0d5f1-0caf-4d2d-bce5-e273e444cbbe": "alu-dibond-white-3mm",
+        "b7caee3d-42b8-44ba-ae2d-4eaf6d1872fd": "alu-dibond-silver-3mm",
+        "9d7bc42a-1e10-4847-a85e-7241c91f6a4a": "pvc-5mm",
+        "b5fec4cc-889e-4e3e-9c90-652b482f089b": "pvc-10mm",
+        "ca27a9db-d8a3-483c-ac29-b0df022fd170": "acryl-5mm",
+        "3f6b081d-2f41-4a85-a660-eb8f6f3acf81": "acryl-8mm",
+        "83343b4e-de59-4e71-abec-338f319599fe": "metal-sign",
+        "04d54487-0631-49e4-8f25-c73a193cd2f0": "magnetic-foil",
+        "e062f691-cab4-4aba-a28e-acd0372d631f": "sticker",
+        "8b09ff43-ab31-4009-a5d1-39c91318f2da": "car-sticker"
+    }
+}

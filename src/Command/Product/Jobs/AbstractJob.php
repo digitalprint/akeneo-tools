@@ -64,7 +64,7 @@ class AbstractJob implements JobInterface
         return $productVariant;
     }
 
-    protected function getChildProductsByUuid(string $parentUuid): array
+    protected function getChildProductsByUuid(string $parentUuid, string $scope = self::DEFAULT_SCOPE, string $locales = 'en_US'): array
     {
         $searchBuilder = new SearchBuilder();
         $searchBuilder
@@ -73,11 +73,27 @@ class AbstractJob implements JobInterface
 
         $cursor = $this->pimClient->getProductApi()->all(100, [
             'search' => $searchFilters,
-            'scope' => self::DEFAULT_SCOPE,
-            'locales' => 'en_US'
+            'scope' => $scope,
+            'locales' => $locales
         ]);
 
         return iterator_to_array($cursor);
+    }
+
+    protected function getProductsByUuid(string $Uuid, string $scope = self::DEFAULT_SCOPE, string $locales = 'en_US'): array
+    {
+        return $this->pimClient->getProductApi()->get($Uuid, [
+            'scope' => $scope,
+            'locales' => $locales
+        ]);
+    }
+
+    protected function getProductModelByCode(string $Uuid, string $scope = self::DEFAULT_SCOPE, string $locales = 'en_US'): array
+    {
+        return $this->pimClient->getProductModelApi()->get($Uuid, [
+            'scope' => $scope,
+            'locales' => $locales
+        ]);
     }
 
     protected function getProductByFlipSku(string $sku): ?array
@@ -241,7 +257,7 @@ class AbstractJob implements JobInterface
         return $result . '';
     }
 
-    protected function runUpsert(array $products, array $resultInfo, bool $force): void
+    protected function runUpsert(array $products, array $resultInfo, bool $force, bool $isModel = false): void
     {
         $this->output->writeln('Products to be updated: ' . count($resultInfo));
         foreach ($resultInfo as $uuid => $product) {
@@ -253,7 +269,12 @@ class AbstractJob implements JobInterface
 
             foreach (array_chunk($products, 100) as $productsChunk) {
                 try {
-                    $responseLines = $this->pimClient->getProductApi()->upsertList($productsChunk);
+
+                    if ($isModel) {
+                        $responseLines = $this->pimClient->getProductModelApi()->upsertList($productsChunk);
+                    } else {
+                        $responseLines = $this->pimClient->getProductApi()->upsertList($productsChunk);
+                    }
 
                     $this->output->writeln('Written products: ' . iterator_count($responseLines));
 
@@ -269,6 +290,11 @@ class AbstractJob implements JobInterface
                 }
             }
         }
+    }
+
+    protected function runModelUpsert(array $products, array $resultInfo, bool $force): void
+    {
+        $this->runUpsert($products, $resultInfo, $force, true);
     }
 
     protected function guessFlipSkuByMaterialAndSize(string $materialId, array $size): ?string

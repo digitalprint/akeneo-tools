@@ -1,0 +1,18 @@
+{
+    "rootProduct": "160ec23e-fdde-4874-a2dc-3f46e9908236",
+    "types": "product",
+    "price": "formula",
+    "items": {
+        "ec51074b-144c-4b26-bfc5-e998b040e172": "alu-dibond-white-3mm",
+        "f449f67f-fff2-4d75-af2f-ab1b6db6dc9e": "alu-dibond-silver-3mm",
+        "547985e5-2c36-4d1b-b40d-3be7ec2ba7b2": "pvc-5mm",
+        "630492cc-bbdc-4951-ab5a-4ede7324db6d": "pvc-10mm",
+        "1977db54-314c-4e52-b4e8-d8299ce86b33": "acryl-5mm",
+        "96f01c51-1cb5-4eb6-95e2-07a9a163f9d9": "acryl-8mm",
+        "de809edb-7f39-4abf-ba97-4a9cd8d10f99": "magnetic-foil",
+        "65bf3e9f-3fff-4961-8239-9eee3391495f": "sticker",
+        "74884fbf-e9ca-4646-98b7-f52c7405e897": "car-sticker",
+        "c15b5bc8-5215-48cc-be27-719967b3efa7": "wood-indoor-10mm",
+        "0885a5ed-af94-4242-b813-4ce161c2db92": "wood-indoor-15mm"
+    }
+}

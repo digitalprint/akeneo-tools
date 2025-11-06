@@ -1,0 +1,11 @@
+{
+    "rootProduct": "66679488-adc8-49ae-b275-c05b58421835",
+    "types": "product",
+    "price": "fix",
+    "items": {
+        "db171bd3-f8be-47ac-9177-f4add4143f55": "alu-dibond-white-3mm",
+        "b6521c04-cfa3-4d67-b5c5-e119c244b4e6": "pvc-5mm",
+        "863b19db-9858-49f3-8648-3df49c6a534a": "acryl-5mm",
+        "a8c2a0c2-e678-4d39-8a1d-20a48c2e92a3": "car-sticker"
+    }
+}
