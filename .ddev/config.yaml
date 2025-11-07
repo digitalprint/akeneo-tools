@@ -8,9 +8,11 @@ router_https_port: "443"
 xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []
-database:
-  type: mariadb
-  version: "10.4"
+#database:
+#  type: mariadb
+#  version: "10.4"
+omit_containers:
+  - db
 nfs_mount_enabled: false
 mutagen_enabled: true
 use_dns_when_possible: true
