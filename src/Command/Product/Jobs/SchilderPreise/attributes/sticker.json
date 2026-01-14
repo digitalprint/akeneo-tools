@@ -29,7 +29,7 @@
       },
       {
         "id": "handlingPerPiece",
-        "value": 4
+        "value": 7
       },
       {
         "id": "margin",
@@ -37,7 +37,7 @@
       },
       {
         "id": "marketingDiscountThreshold",
-        "value": 0
+        "value": -5
       },
       {
         "id": "bulkyGoodsSurcharge",

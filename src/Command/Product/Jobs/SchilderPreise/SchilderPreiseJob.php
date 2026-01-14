@@ -54,8 +54,8 @@ class SchilderPreiseJob extends AbstractJob
         "hausnummernschilder" => [],
         "blechschilder" => [],
         "blechposter" => [],
-//         "holzschilder" => [],
 
+//         "holzschilder" => [],
     ];
 
     /**
@@ -221,11 +221,15 @@ class SchilderPreiseJob extends AbstractJob
             "printingPerSqrm" => $this->getValueById($attributes, 'printingPerSqrm'),
             "handlingPerPiece" => $this->getValueById($attributes, 'handlingPerPiece'),
             "margin" => $this->getValueById($attributes, 'margin'),
-            // "marketingDiscountThreshold" => $this->getValueById($attributes, 'marketingDiscountThreshold'),
+            "marketingDiscountThreshold" => $this->getValueById($attributes, 'marketingDiscountThreshold'),
             "bulkyGoodsSurcharge" => $this->getValueById($attributes, 'bulkyGoodsSurcharge'),
         ];
 
-        $price = (($width  / 1000) * ($height  / 1000) * ($attr['packagingPerSqrm'] + $attr['printingPerSqrm']) + $attr['handlingPerPiece']) / $attr['margin'] * self::SHOP_TAX;
+        if (($width / 10) * ($height / 10) > 150) {
+            $attr['marketingDiscountThreshold'] = 0;
+        }
+
+        $price = (($width  / 1000) * ($height  / 1000) * ($attr['packagingPerSqrm'] + $attr['printingPerSqrm']) + $attr['handlingPerPiece'] + $attr['marketingDiscountThreshold']) / $attr['margin'] * self::SHOP_TAX;
 
         // Staffelrabatt
         $price -= ($price * $discount);
