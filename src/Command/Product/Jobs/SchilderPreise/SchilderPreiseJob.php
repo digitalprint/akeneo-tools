@@ -158,7 +158,6 @@ class SchilderPreiseJob extends AbstractJob
                             $basePrice = $this->calcFormula($width, $height, $attributes);
                         }
 
-
                         $product = $this->setAttributeValueInProduct($childProduct, 'graduated_price', json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT), self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
                         $product = $this->setAttributeValueInProduct($product, 'base_price', $basePrice, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
 
