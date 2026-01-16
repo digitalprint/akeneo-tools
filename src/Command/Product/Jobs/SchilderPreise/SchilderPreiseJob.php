@@ -108,7 +108,6 @@ class SchilderPreiseJob extends AbstractJob
                 ];
 
                 if ($material['price'] === 'fix') {
-
                     if ($material['types'] === "product") {
                         $childProducts = $this->getChildProductsByUuid($parentUuid, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
                     } else {
@@ -144,7 +143,7 @@ class SchilderPreiseJob extends AbstractJob
                             $data = [
                                 "type" => "price",
                                 "steps" => [],
-                                "adjustments" => $this->materialTypes[$type]['adjustments'],
+                                "adjustments" => $this->materialTypes[$type]['adjustments'] ?? [],
                             ];
 
                             foreach ($this->materialTypes[$type]['steps'] as $step) {
