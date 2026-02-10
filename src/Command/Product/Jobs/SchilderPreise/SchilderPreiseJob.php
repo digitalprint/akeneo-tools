@@ -19,6 +19,7 @@ class SchilderPreiseJob extends AbstractJob
     private array $materialTypes = [
         'alu-dibond-white-3mm' => [],
         'alu-dibond-silver-3mm' => [],
+        'alu-dibond-gold-3mm' => [],
         'anti-grafitti-alu-dibond-white-3mm' => [],
         'pvc-5mm' => [],
         'pvc-10mm' => [],
@@ -55,7 +56,7 @@ class SchilderPreiseJob extends AbstractJob
         "blechschilder" => [],
         "blechposter" => [],
 
-//         "holzschilder" => [],
+////         "holzschilder" => [],
     ];
 
     /**
