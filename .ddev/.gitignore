@@ -25,6 +25,8 @@
 /providers/platform.yaml
 /providers/upsun.yaml
 /sequelpro.spf
+/share-providers/cloudflared.sh
+/share-providers/ngrok.sh
 /traefik/config/akeneo-tools.yaml
 /traefik/certs/akeneo-tools.crt
 /traefik/certs/akeneo-tools.key
