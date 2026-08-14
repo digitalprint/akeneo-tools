@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preiskonfigurator</title>
+<style>
+  :root{
+    --ink:#1b2430; --muted:#5c6774; --line:#d8dee6; --bg:#f2f4f7;
+    --card:#ffffff; --accent:#0b5bd3; --accent-ink:#ffffff;
+    --sign:#233043; --sign-line:#3a4a63; --ok:#0a7a4b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  main{max-width:1120px;margin:0 auto;padding:28px 20px 60px}
+  h1{font-size:26px;margin:0 0 2px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+  .grid{display:grid;grid-template-columns:350px 1fr;gap:20px;align-items:start}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 4px}
+  select,input[type=number],input[type=text]{
+    width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;
+    font:inherit;background:#fff;color:var(--ink)}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .dims{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* Schild-Panel für Staffelpreise */
+  .sign{background:var(--sign);color:#fff;border-radius:12px;padding:22px 24px;position:relative;
+    box-shadow:0 4px 14px rgba(20,30,50,.18)}
+  .sign::before,.sign::after,
+  .sign .hole1,.sign .hole2{content:"";position:absolute;width:9px;height:9px;border-radius:50%;
+    background:var(--bg);box-shadow:inset 0 1px 2px rgba(0,0,0,.5)}
+  .sign::before{top:10px;left:10px}.sign::after{top:10px;right:10px}
+  .sign .hole1{bottom:10px;left:10px}.sign .hole2{bottom:10px;right:10px}
+  .sign h2{color:#aebccf;font-size:12px;text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px}
+  .sign .headline{font-size:15px;font-weight:600;margin:0 0 16px;color:#e8edf4}
+  table.staffel{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  table.staffel th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8fa0b8;
+    text-align:right;padding:6px 8px;border-bottom:1px solid var(--sign-line)}
+  table.staffel th:first-child{text-align:left}
+  table.staffel td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--sign-line);font-size:15px}
+  table.staffel td:first-child{text-align:left;font-weight:600}
+  table.staffel tr:last-child td{border-bottom:none}
+  table.staffel td.price{font-size:19px;font-weight:700;color:#fff}
+  table.staffel td.rabatt{color:#9fb2cc;font-size:13px}
+  table.staffel td.gesamt{color:#c3cfde;font-size:13px}
+  .sign .mwst{font-size:11px;color:#8fa0b8;margin:12px 4px 0}
+  .sign .share-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .sign .share-row button{background:#2f405c;border:1px solid #46587a;color:#dbe4f0;font-size:12.5px}
+  .sign .share-row button:hover{background:#3a4e70;border-color:#5b7099}
+
+  /* Aufschlüsselung */
+  .breakdown{margin-top:20px}
+  .breakdown table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13.5px}
+  .breakdown td{padding:5px 4px;border-bottom:1px dashed var(--line)}
+  .breakdown td:last-child{text-align:right;white-space:nowrap}
+  .breakdown tr.sum td{border-top:2px solid var(--ink);border-bottom:none;font-weight:700;padding-top:8px}
+  .breakdown tr.vk td{font-weight:700;color:var(--accent)}
+  .breakdown tr.dim td{color:var(--muted)}
+
+  /* Stammdaten */
+  details{margin-top:22px}
+  details>summary{cursor:pointer;font-weight:600;font-size:14px;padding:12px 16px;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;list-style:none;
+    display:flex;justify-content:space-between;align-items:center}
+  details>summary::after{content:"▸";color:var(--muted);transition:transform .15s}
+  details[open]>summary::after{transform:rotate(90deg)}
+  details>summary::-webkit-details-marker{display:none}
+  .details-body{background:var(--card);border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;padding:16px;margin-top:-6px}
+  details[open]>summary{border-radius:10px 10px 0 0}
+  .mat-wrap{overflow-x:auto}
+  .mat-wrap{overflow:visible}
+  table.mat{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.mat th{font-size:10px;text-transform:uppercase;letter-spacing:0;color:var(--muted);
+    text-align:left;padding:4px 2px;border-bottom:2px solid var(--line);white-space:nowrap}
+  table.mat th.colhead{cursor:grab;user-select:none}
+  table.mat th.colhead:active{cursor:grabbing}
+  table.mat th.drop-col{box-shadow:inset 3px 0 0 var(--accent)}
+  table.mat tr.hl td{background:#e9f1fd}
+  table.mat tr.hl td input{background:#f4f8ff}
+  table.mat tr.hl td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+  table.mat tr.drop-row td{border-top:2px solid var(--accent)}
+  table.mat tr.dragging{opacity:.45}
+  td.rowsel{cursor:pointer;text-align:center;width:26px}
+  .row-handle{cursor:grab;color:#b6bfc9;font-size:13px;padding:2px 3px;display:inline-block;user-select:none}
+  td.rowsel:hover .row-handle{color:var(--accent)}
+  .row-handle:active{cursor:grabbing}
+  table.mat td{padding:2px 1px;border-bottom:1px solid var(--line)}
+
+  /* Info-Tooltips */
+  .info{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;
+    border-radius:50%;background:#c2ccd8;color:#fff;font-size:10px;font-weight:700;font-style:normal;
+    cursor:help;position:relative;margin-left:4px;vertical-align:middle;text-transform:none;letter-spacing:0}
+  .info:hover{background:var(--accent)}
+  .info::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;
+    transform:translateX(-50%);background:var(--ink);color:#fff;font-size:11.5px;font-weight:400;
+    line-height:1.5;padding:8px 11px;border-radius:6px;width:230px;white-space:normal;text-align:left;
+    z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .12s}
+  .info::before{content:"";position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:var(--ink);z-index:60;opacity:0;transition:opacity .12s}
+  .info:hover::after,.info:hover::before{opacity:1}
+  .sign .info{background:#46587a}
+  .sign .info:hover{background:#5b7099}
+  .fmt-overview{margin-top:14px}
+  table.fmt{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+  table.fmt th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+    text-align:right;padding:5px 6px;border-bottom:2px solid var(--line);white-space:nowrap}
+  table.fmt th:first-child{text-align:left}
+  table.fmt td{padding:5px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.fmt td:first-child{text-align:left;font-weight:600}
+  table.fmt tr.aktuell td{background:#e9f1fd}
+  table.fmt tr:last-child td{border-bottom:none}
+
+  /* Materialinfo */
+  .infobtn{border:none;background:none;cursor:pointer;width:20px;height:20px;border-radius:50%;
+    color:#b6bfc9;font-size:12px;font-weight:700;padding:0;line-height:1}
+  .infobtn:hover{color:var(--accent);background:#e9f1fd}
+  .infobtn.has{color:#fff;background:var(--accent)}
+  tr.inforow td{background:#f7f9fc;padding:6px 8px}
+  .mat-info-ta{width:100%;font:12.5px/1.5 inherit;font-family:inherit;border:1px solid var(--line);
+    border-radius:6px;padding:7px 9px;resize:vertical;background:#fff;color:var(--ink)}
+  .matinfo{margin-top:8px;font-size:12.5px;color:var(--muted);background:var(--bg);
+    border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:8px 10px;white-space:pre-wrap}
+  table.mat input{padding:3px 4px;border-radius:4px;font-size:12px}
+  table.mat input.n{width:56px;text-align:right}
+  table.mat td.del{width:34px;text-align:center}
+  button{font:inherit;cursor:pointer;border-radius:7px;border:1px solid var(--line);
+    background:#fff;color:var(--ink);padding:8px 14px;font-weight:600;font-size:13px}
+  button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  button.ghost{border:none;background:none;color:var(--muted);padding:4px 8px;font-size:15px}
+  button.ghost:hover{color:#c0392b}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+  .set-group{padding:14px 16px;border-radius:8px}
+  .set-group + .set-group{margin-top:8px}
+  .set-group:nth-of-type(even){background:#f2f5f9}
+  .set-group .subhead{margin-top:0}
+  .set-group > label:first-child{margin-top:0}
+  .rabatt-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:560px}
+  .rabatt-grid label{margin:0 0 3px;text-align:center}
+  .rabatt-grid input{text-align:center}
+  .hint{font-size:12px;color:var(--muted);margin-top:10px}
+  .formula{font-size:12px;color:var(--muted);background:var(--bg);border-radius:6px;
+    padding:10px 12px;margin-top:14px;line-height:1.7}
+  .badge{display:inline-block;font-size:11px;font-weight:700;color:var(--ok);
+    background:#e3f4ec;border-radius:20px;padding:2px 10px;margin-left:8px;vertical-align:middle}
+  .subhead{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;
+    letter-spacing:.06em;margin:20px 0 4px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Preiskonfigurator <span class="badge">Gespeicherter Stand: 11.08.2026, 15:35</span></h1>
+  <p class="sub">Format eingeben, Material wählen – Staffelpreise für 1 / 5 / 10 / 25 / 50 / 100 Stück werden live berechnet.
+  Admin/Flip und Zusatzkosten fallen einmal pro Auftrag an und verteilen sich auf die Menge. Glatte Euro-Preise werden automatisch zu Schwellenpreisen (19,00 € → 18,90 €).</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Eingabe</h2>
+        <label for="material">Material <span class="info" data-tip="Stammdaten (Preise, Marge, Starr) im Bereich 'Materialien bearbeiten' unten – dort lässt sich auch die Reihenfolge dieses Dropdowns per ⠿ ändern.">?</span></label>
+        <select id="material"><option value="0">Hartschaum 1 mm</option><option value="1">Hartschaum 5 mm</option><option value="2">Hartschaum 10 mm</option><option value="3">Acrylglas 5 mm</option><option value="4">Acrylglas 8 mm</option><option value="5">Aluverbund weiß 3 mm</option><option value="6">Aluverbund weiß 3 mm Amazon</option><option value="7">Aluverbund weiß 3 mm + Laminat (Whiteboard)</option><option value="8">Aluverbund silber 3 mm</option><option value="9">Aluverbund gold 3 mm</option><option value="10">Stealbond silber 3 mm</option><option value="11">Aufkleber (Basic) monomer</option><option value="12">Auto-Aufkleber (Glossy)</option><option value="13">Paper Sticker</option><option value="14">Magnetfolie 850 my</option><option value="15">Bilderdruckpapier 200 g/qm</option><option value="16">Kunststoffplakat 250 my</option><option value="17">Sperrholz Multiplex Birke 9 mm</option><option value="18">Sperrholz Multiplex Birke 14 mm</option><option value="19">Anti-Graffiti Aluverbund weiß 3 mm Laminat</option></select>
+        <div id="matInfoBox" class="matinfo" style="display:none"></div>
+        <div class="dims">
+          <div>
+            <label for="breite">Breite (mm)</label>
+            <input type="number" id="breite" value="100" min="1" step="1">
+          </div>
+          <div>
+            <label for="hoehe">Höhe (mm)</label>
+            <input type="number" id="hoehe" value="150" min="1" step="1">
+          </div>
+        </div>
+
+        <div class="breakdown">
+          <h2 style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 8px">Berechnung pro Stück (Menge 1)</h2>
+          <table id="breakdown">
+    <tbody><tr class="dim"><td>Fläche</td><td class="num">0,12 m²</td></tr>
+    <tr><td>€/m² (Druck/Material 49,00&nbsp;€ + Verpackung 30,00&nbsp;€)</td><td class="num">79,00&nbsp;€</td></tr>
+    <tr><td>Fläche × €/m²</td><td class="num">9,48&nbsp;€</td></tr>
+    <tr><td>Handling 2,00&nbsp;€</td><td class="num">2,00&nbsp;€</td></tr>
+    <tr><td>Admin/Flip 2,00&nbsp;€ + Zusatzkosten 2,40&nbsp;€ (pro Auftrag)</td><td class="num">4,40&nbsp;€</td></tr>
+    <tr class="sum"><td>Zwischensumme (1 Stück)</td><td class="num">15,88&nbsp;€</td></tr>
+    <tr><td>÷ (1 − PP-Marge 40 %)</td><td class="num">26,47&nbsp;€ netto</td></tr>
+    
+    <tr><td>× MwSt (19 %)</td><td class="num">31,50&nbsp;€</td></tr>
+    <tr class="vk"><td>Endpreis (1 Stück)</td><td class="num">31,40&nbsp;€</td></tr></tbody></table>
+        </div>
+        <div class="formula" id="formulaText"><strong>Formel (Menge n):</strong> Preis = ((Fläche × (Druck/Material + Verpackung €/m²) + Handling × Faktor + Auftragskosten-Anteil) ÷ (1 − PP-Marge) + Sperrgut) × 1,19<br>
+     Auftragskosten-Anteil pro Stück = (Admin/Flip + Zusatz) × (80 % + 20 % ÷ n) – bei 1 Stück immer voll<br>
+     PP-Marge = echte Marge vom Verkaufspreis (40 % eingetragen → 40 % Marge)<br>
+     Handling: × 50 % unter 0,04 m² · × 250 % über 0,2 m²<br>
+     Sperrgut (nur starre Materialien): lange Seite &gt; 1.101 mm oder kurze Seite &gt; 501 mm → +22,00&nbsp;€ netto<br>
+     abgerundet auf 0,10&nbsp;€ · glatte Euro-Beträge → −0,10 €</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sign">
+        <span class="hole1"></span><span class="hole2"></span>
+        <h2>Staffelpreise <span class="info" data-tip="Bruttopreise pro Stück je Bestellmenge. Sie sinken durch die Staffelrabatte und weil sich die Auftragskosten (Admin/Flip + Zusatz) auf mehr Stücke verteilen. Rabatte sind in den Einstellungen anpassbar.">?</span></h2>
+        <p class="headline" id="signHeadline">Hartschaum 5 mm · 300 × 400 mm (0,12 m²)</p>
+        <table class="staffel">
+          <thead><tr><th>Menge</th><th>Rabatt</th><th>Stückpreis</th><th>Gesamt</th></tr></thead>
+          <tbody id="staffelBody"><tr><td>1 Stück</td><td class="rabatt">–</td>
+      <td class="price num">31,40&nbsp;€</td><td class="gesamt num">31,40&nbsp;€</td></tr><tr><td>5 Stück</td><td class="rabatt">–</td>
+      <td class="price num">29,90&nbsp;€</td><td class="gesamt num">149,50&nbsp;€</td></tr><tr><td>10 Stück</td><td class="rabatt">−5 %</td>
+      <td class="price num">28,40&nbsp;€</td><td class="gesamt num">284,00&nbsp;€</td></tr><tr><td>25 Stück</td><td class="rabatt">−7,5 %</td>
+      <td class="price num">27,50&nbsp;€</td><td class="gesamt num">687,50&nbsp;€</td></tr><tr><td>50 Stück</td><td class="rabatt">−10 %</td>
+      <td class="price num">26,80&nbsp;€</td><td class="gesamt num">1.340,00&nbsp;€</td></tr><tr><td>100 Stück</td><td class="rabatt">−12,5 %</td>
+      <td class="price num">25,90&nbsp;€</td><td class="gesamt num">2.590,00&nbsp;€</td></tr></tbody>
+        </table>
+        <p class="mwst" id="mwstNote">Bruttopreise inkl. 19 % MwSt · abgerundet auf 0,10&nbsp;€, glatte € → −0,10 € · 4,40&nbsp;€ Auftragskosten (80 % pro Stück, Rest auf Menge verteilt)</p>
+        <div class="share-row">
+          <button id="shareCsv">📄 CSV: dieses Material</button>
+          <button id="shareCsvAll" title="Exportiert die Preisliste aller Materialien über alle hinterlegten Formate und Staffelmengen als eine CSV-Tabelle.">📚 CSV: alle Materialien</button>
+        </div>
+      </div>
+
+      <details class="fmt-overview">
+        <summary>Preisübersicht aller Formate <span class="info" data-tip="Zeigt für das oben gewählte Material die Stückpreise aller in den Einstellungen hinterlegten Formate über alle Staffelmengen. Formate mit * enthalten den Sperrgutaufschlag. Dieselbe Tabelle steckt im CSV-Export.">?</span></summary>
+        <div class="details-body">
+          <div style="overflow-x:auto">
+            <table class="fmt" id="formatMatrix"><thead><tr><th>Format</th><th>1 Stk</th><th>5 Stk</th><th>10 Stk</th><th>25 Stk</th><th>50 Stk</th><th>100 Stk</th></tr></thead><tbody><tr class="aktuell"><td>300 × 400 mm (aktuell)</td><td class="num">31,40</td><td class="num">29,90</td><td class="num">28,40</td><td class="num">27,50</td><td class="num">26,80</td><td class="num">25,90</td></tr><tr><td>150 × 100 mm</td><td class="num">12,90</td><td class="num">11,60</td><td class="num">10,90</td><td class="num">10,50</td><td class="num">10,20</td><td class="num">9,90</td></tr><tr><td>210 × 140 mm</td><td class="num">15,30</td><td class="num">13,90</td><td class="num">12,90</td><td class="num">12,60</td><td class="num">12,20</td><td class="num">11,80</td></tr><tr><td>300 × 200 mm</td><td class="num">21,90</td><td class="num">20,60</td><td class="num">19,40</td><td class="num">18,80</td><td class="num">18,30</td><td class="num">17,80</td></tr><tr><td>420 × 280 mm</td><td class="num">31,10</td><td class="num">29,70</td><td class="num">27,90</td><td class="num">27,20</td><td class="num">26,40</td><td class="num">25,70</td></tr><tr><td>600 × 400 mm</td><td class="num">56,20</td><td class="num">54,80</td><td class="num">51,90</td><td class="num">50,40</td><td class="num">48,90</td><td class="num">47,70</td></tr><tr><td>840 × 560 mm*</td><td class="num">118,50</td><td class="num">117,10</td><td class="num">112,40</td><td class="num">109,90</td><td class="num">107,70</td><td class="num">105,40</td></tr><tr><td>DIN A7 – 74 × 105 mm</td><td class="num">11,90</td><td class="num">10,50</td><td class="num">9,80</td><td class="num">9,40</td><td class="num">9,10</td><td class="num">8,90</td></tr><tr><td>DIN A6 – 105 × 148 mm</td><td class="num">13,10</td><td class="num">11,70</td><td class="num">10,90</td><td class="num">10,60</td><td class="num">10,20</td><td class="num">9,90</td></tr><tr><td>DIN A5 – 148 × 210 mm</td><td class="num">15,50</td><td class="num">14,10</td><td class="num">13,30</td><td class="num">12,80</td><td class="num">12,40</td><td class="num">12,10</td></tr><tr><td>DIN A4 – 210 × 297 mm</td><td class="num">22,40</td><td class="num">20,90</td><td class="num">19,80</td><td class="num">19,20</td><td class="num">18,60</td><td class="num">18,10</td></tr><tr><td>DIN A3 – 297 × 420 mm</td><td class="num">32,20</td><td class="num">30,80</td><td class="num">29,10</td><td class="num">28,20</td><td class="num">27,40</td><td class="num">26,60</td></tr><tr><td>DIN A2 – 420 × 594 mm</td><td class="num">57,70</td><td class="num">56,30</td><td class="num">53,30</td><td class="num">51,80</td><td class="num">50,40</td><td class="num">48,90</td></tr><tr><td>DIN A1 – 594 × 841 mm*</td><td class="num">122,90</td><td class="num">121,60</td><td class="num">116,70</td><td class="num">114,20</td><td class="num">111,80</td><td class="num">109,40</td></tr><tr><td>Nummernschild – 520 × 110 mm</td><td class="num">21,60</td><td class="num">20,20</td><td class="num">18,90</td><td class="num">18,40</td><td class="num">17,90</td><td class="num">17,40</td></tr></tbody></table>
+          </div>
+          <p class="hint" id="formatMatrixNote">Hartschaum 5 mm · Stückpreise in Euro, brutto inkl. 19 % MwSt · * inkl. 22,00&nbsp;€ Sperrgutaufschlag (netto) · Formate in den Einstellungen anpassbar</p>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <details open="">
+    <summary>Stammdaten: Materialien bearbeiten</summary>
+    <div class="details-body">
+      <p class="hint" id="importStatus" style="display:none;margin:0 0 10px;padding:8px 12px;
+        background:#e3f4ec;border-radius:6px;color:var(--ok);font-weight:600"></p>
+      <div class="mat-wrap">
+        <table class="mat">
+          <thead id="matHead"><tr><th style="width:22px"></th><th class="colhead" draggable="true" data-col="name">Material <span class="info" data-tip="Anzeigename des Materials – erscheint so im Auswahl-Dropdown des Konfigurators." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="druckMaterial">Druck/Mat. <span class="info" data-tip="Druck + Material in €/m². Kosten für Druck und Material zusammen, pro Quadratmeter. Wird mit der Fläche multipliziert." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="verpackung">Verp. <span class="info" data-tip="Verpackung in €/m². Verpackungskosten pro Quadratmeter – wird zusammen mit Druck/Material auf die Fläche gerechnet." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="handling">Handl. <span class="info" data-tip="Handling in €/Stück. Wird je nach Fläche automatisch reduziert oder erhöht – Grenzen und Faktoren stehen in den Einstellungen." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="adminFlip">Ad/Flip <span class="info" data-tip="Admin/Flip in € pro Auftrag. Fällt einmal pro Auftrag an (nicht pro Stück) und verteilt sich auf die Bestellmenge – dadurch sinken die Staffelpreise automatisch." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="zusatz">Zusatz <span class="info" data-tip="Zusatzkosten in € pro Auftrag. Optionale Zusatzkosten, einmal pro Auftrag. Für Sonderfälle wie Konfektionierung oder Express." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="marge">Marge <span class="info" data-tip="Echte Marge vom Verkaufspreis: 60 eintragen bedeutet 60 % Marge (Kosten ÷ (1 − 0,60))." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="degression">Degr. <span class="info" data-tip="Optionaler Override der Auftragskosten-Degression für dieses Material. Leer = globaler Wert aus den Einstellungen gilt. Niedrig (z. B. 10–20) für Rollenware wie Aufkleber (ein Druckgang, echte Mengendegression), höher (z. B. 40–50) für Platten mit Aufwand pro Stück." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="starr">Starr <span class="info" data-tip="Haken = starres Material (Platte): Sperrgutzuschlag greift bei Übergröße. Ohne Haken (einrollbar, z. B. Folie) fällt nie Sperrgut an." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="optBohrloch">Bohr. <span class="info" data-tip="Bohrlöcher für dieses Material möglich. Fester Aufpreis aus den Einstellungen (Zusatzoptionen)." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="optLack">Lack <span class="info" data-tip="Lackierung für dieses Material möglich. Aufpreis pro m² aus den Einstellungen (Zusatzoptionen)." draggable="false">?</span></th><th class="colhead" draggable="true" data-col="optWeiss">Weiß <span class="info" data-tip="Weißgrundierung für dieses Material möglich. Aufpreis pro m² aus den Einstellungen (Zusatzoptionen)." draggable="false">?</span></th><th style="width:24px" title="Materialinfo"></th><th style="width:26px"></th></tr></thead>
+          <tbody id="matBody"><tr data-i="0"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Hartschaum 1 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="36.5"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="50"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="0" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="0">✕</button></td></tr><tr data-i="1"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Hartschaum 5 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="49"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="40"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="1" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="1">✕</button></td></tr><tr data-i="2"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Hartschaum 10 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="59"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="3"></td><td><input class="n" type="number" step="1" data-f="marge" value="55"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="2" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="2">✕</button></td></tr><tr data-i="3"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Acrylglas 5 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="95"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="65"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="3" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="3">✕</button></td></tr><tr data-i="4"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Acrylglas 8 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="124"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="65"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="4" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="4">✕</button></td></tr><tr data-i="5"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aluverbund weiß 3 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="61"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="50"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="5" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="5">✕</button></td></tr><tr data-i="6"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aluverbund weiß 3 mm Amazon" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="61"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="35"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="6" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="6">✕</button></td></tr><tr data-i="7"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aluverbund weiß 3 mm + Laminat (Whiteboard)" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="100"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="7" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="7">✕</button></td></tr><tr data-i="8"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aluverbund silber 3 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="89"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="65"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="8" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="8">✕</button></td></tr><tr data-i="9"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aluverbund gold 3 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="92"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="70"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="9" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="9">✕</button></td></tr><tr data-i="10"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Stealbond silber 3 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="155"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2.4"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="10" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="10">✕</button></td></tr><tr data-i="11"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Aufkleber (Basic) monomer" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="25"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="10"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="0.35"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="0"></td><td><input class="n" type="number" step="1" data-f="marge" value="45"></td><td><input class="n" type="number" step="5" data-f="degression" value="5" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="11" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="11">✕</button></td></tr><tr data-i="12"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Auto-Aufkleber (Glossy)" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="45"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="10"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="0.35"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="0"></td><td><input class="n" type="number" step="1" data-f="marge" value="50"></td><td><input class="n" type="number" step="5" data-f="degression" value="5" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="12" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="12">✕</button></td></tr><tr data-i="13"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Paper Sticker" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="30"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="10"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="0.35"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="0"></td><td><input class="n" type="number" step="1" data-f="marge" value="45"></td><td><input class="n" type="number" step="5" data-f="degression" value="5" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="13" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="13">✕</button></td></tr><tr data-i="14"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Magnetfolie 850 my" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="50"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="2"></td><td><input class="n" type="number" step="1" data-f="marge" value="50"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="14" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="14">✕</button></td></tr><tr data-i="15"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Bilderdruckpapier 200 g/qm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="20"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="0"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="15" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="15">✕</button></td></tr><tr data-i="16"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Kunststoffplakat 250 my" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="25"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="0"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="16" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="16">✕</button></td></tr><tr data-i="17"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Sperrholz Multiplex Birke 9 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="93"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="17" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="17">✕</button></td></tr><tr data-i="18"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Sperrholz Multiplex Birke 14 mm" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="125"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="65"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="18" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="18">✕</button></td></tr><tr data-i="19"><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td><td><input type="text" data-f="name" value="Anti-Graffiti Aluverbund weiß 3 mm Laminat" style="width:100%;min-width:120px"></td><td><input class="n" type="number" step="0.01" data-f="druckMaterial" value="100"></td><td><input class="n" type="number" step="0.01" data-f="verpackung" value="30"></td><td><input class="n" type="number" step="0.01" data-f="handling" value="2"></td><td><input class="n" type="number" step="0.5" data-f="adminFlip" value="2"></td><td><input class="n" type="number" step="0.5" data-f="zusatz" value="4"></td><td><input class="n" type="number" step="1" data-f="marge" value="60"></td><td><input class="n" type="number" step="5" data-f="degression" value="" placeholder="gl."></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="starr" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optBohrloch" checked="" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optLack" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center;width:30px"><input type="checkbox" data-f="optWeiss" style="width:15px;height:15px;cursor:pointer"></td><td style="text-align:center"><button class="infobtn" data-infobtn="19" title="Materialinfo hinzufügen">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="19">✕</button></td></tr></tbody>
+        </table>
+      </div>
+      <p class="hint" style="margin-top:6px">💡 Klick auf den Zeilenanfang (⠿) hebt die Zeile hervor · ⠿ ziehen verschiebt ein Material (ändert auch die Dropdown-Reihenfolge) · Spaltenkopf ziehen ändert die Spalten-Reihenfolge</p>
+      <div class="toolbar">
+        <button class="primary" id="addMat">+ Material hinzufügen</button>
+        <button id="saveHtml" title="Erzeugt eine neue HTML-Datei mit allen aktuellen Werten fest eingebaut – einfach die alte Datei damit ersetzen.">💾 In HTML-Datei speichern</button>
+        <button id="exportBtn">Konfiguration exportieren (JSON)</button>
+        <button id="importBtn">Konfiguration importieren</button>
+        <button id="csvBtn" title="Exportiert die Preisformel samt aller Parameter des gewählten Materials als CSV – zur Übergabe an die Shop-Entwicklung.">🧾 Formel-CSV für Entwickler</button>
+        <input type="file" id="importFile" accept=".json" style="display:none">
+      </div>
+      <p class="hint">„In HTML-Datei speichern" lädt eine neue Version dieser Datei herunter, in der alle aktuellen Werte fest eingebettet sind – die alte Datei einfach ersetzen. Der JSON-Export sichert die komplette Konfiguration (alle Materialien inkl. Infos, Rabatte, Einstellungen, Spaltenreihenfolge, Format) zum Wiederimportieren – z. B. um sie nach einem Update der Grunddatei zurückzuspielen. Die Formel-CSV enthält alle Parameter des gewählten Materials mit Bezeichnung und technischem Schlüssel.</p>
+    </div>
+  </details>
+
+  <details open="">
+    <summary>Einstellungen: MwSt, Rundung, Sperrgut, Handling-Staffelung &amp; Rabatte</summary>
+    <div class="details-body">
+      <div class="set-group">
+        <p class="subhead">Allgemein</p>
+        <div class="settings-grid">
+          <div>
+            <label for="mwst">MwSt-Satz (%) <span class="info" data-tip="Wird ganz am Ende auf den Nettopreis aufgeschlagen. Standard in Deutschland: 19 %.">?</span></label>
+            <input type="number" id="mwst" value="19" min="0" max="30" step="1">
+          </div>
+          <div>
+            <label for="rundung">Abrunden auf (€) <span class="info" data-tip="Jeder Endpreis wird auf diese Stufe abgerundet. Landet er dabei auf einem glatten Euro-Betrag (z. B. 19,00 €), werden zusätzlich 0,10 € abgezogen → 18,90 €.">?</span></label>
+            <select id="rundung">
+              <option value="0.10">0,10 €</option>
+              <option value="0.05">0,05 €</option>
+              <option value="0.01">0,01 € (keine Rundung)</option>
+              <option value="0.50">0,50 €</option>
+              <option value="1.00">1,00 €</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Sperrgut <span class="info" data-tip="Aufschlag für übergroße, starre Materialien (Spalte 'Starr' in den Stammdaten). Er wird nach der Marge addiert, mit MwSt beaufschlagt und vom Staffelrabatt ausgenommen.">?</span></p>
+        <div class="settings-grid">
+          <div>
+            <label for="sperrgutLang">Lange Seite &gt; (mm) <span class="info" data-tip="Sperrgut greift, sobald die längere Seite über dieser Grenze liegt – z. B. 1100 × 100 mm.">?</span></label>
+            <input type="number" id="sperrgutLang" value="1000" min="0" step="10">
+          </div>
+          <div>
+            <label for="sperrgutKurz">oder kurze Seite &gt; (mm) <span class="info" data-tip="Sperrgut greift auch, wenn die kürzere Seite über dieser Grenze liegt – z. B. 800 × 800 mm (beide Seiten über 500).">?</span></label>
+            <input type="number" id="sperrgutKurz" value="500" min="0" step="10">
+          </div>
+          <div>
+            <label for="sperrgutAufschlag">Sperrgutaufschlag (€, netto) <span class="info" data-tip="Netto-Betrag pro Stück. Wird nicht rabattiert und nicht mit der Marge beaufschlagt.">?</span></label>
+            <input type="number" id="sperrgutAufschlag" value="10" min="0" step="0.5">
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Handling-Staffelung nach Fläche <span class="info" data-tip="Passt die Handlingkosten automatisch an die Produktgröße an: kleine Formate sind schneller zu handhaben, sehr große aufwendiger.">?</span></p>
+        <div class="settings-grid">
+          <div>
+            <label for="hKleinGrenze">Reduziert bei Fläche &lt; (m²) <span class="info" data-tip="Unterhalb dieser Fläche wird das Handling mit dem Faktor 'klein' multipliziert. 0,05 m² entspricht z. B. ca. 20 × 25 cm.">?</span></label>
+            <input type="number" id="hKleinGrenze" value="0.05" min="0" step="0.01">
+          </div>
+          <div>
+            <label for="hKleinFaktor">Handling-Faktor klein (%) <span class="info" data-tip="50 % = Handling wird bei kleinen Formaten halbiert.">?</span></label>
+            <input type="number" id="hKleinFaktor" value="50" min="0" step="5">
+          </div>
+          <div>
+            <label for="hGrossGrenze">Erhöht bei Fläche &gt; (m²) <span class="info" data-tip="Oberhalb dieser Fläche wird das Handling mit dem Faktor 'groß' multipliziert. 1 m² entspricht z. B. 100 × 100 cm.">?</span></label>
+            <input type="number" id="hGrossGrenze" value="1" min="0" step="0.1">
+          </div>
+          <div>
+            <label for="hGrossFaktor">Handling-Faktor groß (%) <span class="info" data-tip="150 % = Handling wird bei großen Formaten um die Hälfte erhöht.">?</span></label>
+            <input type="number" id="hGrossFaktor" value="150" min="100" step="5">
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Auftragskosten-Degression <span class="info" data-tip="Steuert, wie stark die Staffelpreise durch die Verteilung von Admin/Flip + Zusatzkosten fallen. 0 % = volle Verteilung auf die Menge (starker Preissturz ab 5 Stück), 100 % = Auftragskosten zählen voll pro Stück (kaum Degression). Der 1-Stück-Preis bleibt immer unverändert.">?</span></p>
+        <div class="settings-grid">
+          <div>
+            <label for="degressionAnteil">Anteil der Auftragskosten, der pro Stück bleibt (%) <span class="info" data-tip="Globaler Standardwert. Einzelne Materialien können in den Stammdaten (Spalte 'Degr. %') einen eigenen Wert bekommen – leeres Feld dort = dieser globale Wert gilt.">?</span></label>
+            <input type="number" id="degressionAnteil" value="30" min="0" max="100" step="5">
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Zusatzoptionen (Aufpreise) <span class="info" data-tip="Preise für optionale Extras. Ob eine Option bei einem Material angeboten wird, steuerst du über die Häkchen 'Bohr.', 'Lack' und 'Weißgr.' in den Stammdaten. Die Aufpreise fließen nicht in die Staffelpreise ein, sondern werden separat exportiert (JSON und Entwickler-CSV) – der Shop rechnet sie beim Konfigurieren dazu.">?</span></p>
+        <div class="settings-grid">
+          <div>
+            <label for="bohrlochPreis">Bohrlöcher (€, fest) <span class="info" data-tip="Fester Aufpreis, materialunabhängig gleich. Verfügbar nur bei Materialien mit Haken 'Bohr.' in den Stammdaten.">?</span></label>
+            <input type="number" id="bohrlochPreis" value="3" min="0" step="0.5">
+          </div>
+          <div>
+            <label for="lackierungQm">Lackierung (€/m²) <span class="info" data-tip="Aufpreis pro Quadratmeter Produktfläche. Verfügbar nur bei Materialien mit Haken 'Lack'.">?</span></label>
+            <input type="number" id="lackierungQm" value="10" min="0" step="0.5">
+          </div>
+          <div>
+            <label for="weissgrundQm">Weißgrundierung (€/m²) <span class="info" data-tip="Aufpreis pro Quadratmeter Produktfläche. Verfügbar nur bei Materialien mit Haken 'Weißgr.'.">?</span></label>
+            <input type="number" id="weissgrundQm" value="10" min="0" step="0.5">
+          </div>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Staffelrabatte <span class="info" data-tip="Mengenrabatt je Staffel. Wirkt auf den Netto-Grundpreis – Sperrgut bleibt unrabattiert. Zusätzlich sinken die Stückpreise automatisch durch die verteilten Auftragskosten.">?</span></p>
+        <div class="rabatt-grid" id="rabattGrid">
+    <div><label>1 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="1" value="0"></div>
+    <div><label>5 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="5" value="0"></div>
+    <div><label>10 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="10" value="5"></div>
+    <div><label>25 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="25" value="7.5"></div>
+    <div><label>50 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="50" value="10"></div>
+    <div><label>100 Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="100" value="12.5"></div></div>
+        <p class="hint">Rabatte wirken auf den Netto-Grundpreis; Sperrgut bleibt unrabattiert. Abgerundet und schwellenkorrigiert wird zum Schluss.</p>
+      </div>
+
+      <div class="set-group">
+        <p class="subhead">Formate für die Preisliste (Teilen &amp; CSV) <span class="info" data-tip="Diese Formate werden beim Teilen per E-Mail, beim Kopieren und im Preislisten-CSV immer mit ausgegeben – als Matrix mit allen Staffelmengen. Das aktuell eingegebene Format wird automatisch ergänzt, falls es nicht in der Liste steht.">?</span></p>
+        <div id="formatList" style="display:flex;flex-direction:column;gap:6px;max-width:400px">
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="0" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="0" data-dim="b" value="150" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="0" data-dim="h" value="100" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="0" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="1" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="1" data-dim="b" value="210" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="1" data-dim="h" value="140" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="1" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="2" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="2" data-dim="b" value="300" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="2" data-dim="h" value="200" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="2" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="3" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="3" data-dim="b" value="420" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="3" data-dim="h" value="280" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="3" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="4" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="4" data-dim="b" value="600" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="4" data-dim="h" value="400" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="4" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="5" data-dim="label" value="" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="5" data-dim="b" value="840" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="5" data-dim="h" value="560" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="5" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="6" data-dim="label" value="DIN A7" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="6" data-dim="b" value="74" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="6" data-dim="h" value="105" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="6" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="7" data-dim="label" value="DIN A6" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="7" data-dim="b" value="105" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="7" data-dim="h" value="148" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="7" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="8" data-dim="label" value="DIN A5" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="8" data-dim="b" value="148" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="8" data-dim="h" value="210" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="8" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="9" data-dim="label" value="DIN A4" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="9" data-dim="b" value="210" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="9" data-dim="h" value="297" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="9" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="10" data-dim="label" value="DIN A3" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="10" data-dim="b" value="297" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="10" data-dim="h" value="420" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="10" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="11" data-dim="label" value="DIN A2" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="11" data-dim="b" value="420" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="11" data-dim="h" value="594" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="11" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="12" data-dim="label" value="DIN A1" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="12" data-dim="b" value="594" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="12" data-dim="h" value="841" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="12" title="Format entfernen">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="13" data-dim="label" value="Nummernschild" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="13" data-dim="b" value="520" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="13" data-dim="h" value="110" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="13" title="Format entfernen">✕</button>
+    </div></div>
+        <div class="toolbar" style="margin-top:10px">
+          <button id="addFormat">+ Format hinzufügen</button>
+        </div>
+      </div>
+    </div>
+  </details>
+</main>
+
+<script type="application/json" id="savedState">{"version":6,"materials":[{"name":"Hartschaum 1 mm","druckMaterial":36.5,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":50,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Hartschaum 5 mm","druckMaterial":49,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":40,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Hartschaum 10 mm","druckMaterial":59,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":3,"marge":55,"starr":true,"hl":false,"info":"","degression":null,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Acrylglas 5 mm","druckMaterial":95,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":65,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":false,"optWeiss":false},{"name":"Acrylglas 8 mm","druckMaterial":124,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":65,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":false,"optWeiss":false},{"name":"Aluverbund weiß 3 mm","druckMaterial":61,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":50,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Aluverbund weiß 3 mm Amazon","druckMaterial":61,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":35,"starr":true,"hl":false,"info":"","degression":null,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Aluverbund weiß 3 mm + Laminat (Whiteboard)","druckMaterial":100,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":60,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Aluverbund silber 3 mm","druckMaterial":89,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":65,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Aluverbund gold 3 mm","druckMaterial":92,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":70,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":true,"optWeiss":false},{"name":"Stealbond silber 3 mm","druckMaterial":155,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2.4,"marge":60,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":false,"optWeiss":false},{"name":"Aufkleber (Basic) monomer","druckMaterial":25,"verpackung":10,"handling":0.35,"adminFlip":2,"zusatz":0,"marge":45,"starr":false,"info":"","degression":5,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Auto-Aufkleber (Glossy)","druckMaterial":45,"verpackung":10,"handling":0.35,"adminFlip":2,"zusatz":0,"marge":50,"starr":false,"info":"","degression":5,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Paper Sticker","druckMaterial":30,"verpackung":10,"handling":0.35,"adminFlip":2,"zusatz":0,"marge":45,"starr":false,"info":"","degression":5,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Magnetfolie 850 my","druckMaterial":50,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":2,"marge":50,"starr":false,"info":"","degression":null,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Bilderdruckpapier 200 g/qm","druckMaterial":20,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":0,"marge":60,"starr":false,"info":"","degression":null,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Kunststoffplakat 250 my","druckMaterial":25,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":0,"marge":60,"starr":false,"info":"","degression":null,"hl":false,"optBohrloch":false,"optLack":false,"optWeiss":false},{"name":"Sperrholz Multiplex Birke 9 mm","druckMaterial":93,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":60,"starr":true,"info":"","degression":null,"optBohrloch":true,"optLack":false,"optWeiss":true},{"name":"Sperrholz Multiplex Birke 14 mm","druckMaterial":125,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":65,"starr":true,"info":"","degression":null,"optBohrloch":true,"optLack":false,"optWeiss":true},{"name":"Anti-Graffiti Aluverbund weiß 3 mm Laminat","druckMaterial":100,"verpackung":30,"handling":2,"adminFlip":2,"zusatz":4,"marge":60,"starr":true,"info":"","degression":null,"hl":false,"optBohrloch":true,"optLack":false,"optWeiss":false}],"rabatte":{"1":0,"5":0,"10":5,"25":7.5,"50":10,"100":12.5},"mwst":19,"rundung":0.1,"sperrgutLang":1101,"sperrgutKurz":501,"sperrgutAufschlag":22,"hKleinGrenze":0.04,"hKleinFaktor":50,"hGrossGrenze":0.2,"hGrossFaktor":250,"degressionAnteil":80,"bohrlochPreis":4,"lackierungQm":50,"weissgrundQm":45,"colOrder":["name","druckMaterial","verpackung","handling","adminFlip","zusatz","marge","degression","starr","optBohrloch","optLack","optWeiss"],"shareFormate":[{"b":150,"h":100,"label":""},{"b":210,"h":140,"label":""},{"b":300,"h":200,"label":""},{"b":420,"h":280,"label":""},{"b":600,"h":400,"label":""},{"b":840,"h":560,"label":""},{"b":74,"h":105,"label":"DIN A7"},{"b":105,"h":148,"label":"DIN A6"},{"b":148,"h":210,"label":"DIN A5"},{"b":210,"h":297,"label":"DIN A4"},{"b":297,"h":420,"label":"DIN A3"},{"b":420,"h":594,"label":"DIN A2"},{"b":594,"h":841,"label":"DIN A1"},{"b":520,"h":110,"label":"Nummernschild"}],"selected":1,"savedAt":"2026-08-11T13:50:53.869Z","breite":300,"hoehe":400}</script>
+<script>
+const QTYS = [1, 5, 10, 25, 50, 100];
+
+const COLS = [
+  {f:"name",          label:"Material",        type:"text",
+   tip:"Anzeigename des Materials – erscheint so im Auswahl-Dropdown des Konfigurators."},
+  {f:"druckMaterial", label:"Druck/Mat.", step:"0.01",
+   tip:"Druck + Material in €/m². Kosten für Druck und Material zusammen, pro Quadratmeter. Wird mit der Fläche multipliziert."},
+  {f:"verpackung",    label:"Verp.",      step:"0.01",
+   tip:"Verpackung in €/m². Verpackungskosten pro Quadratmeter – wird zusammen mit Druck/Material auf die Fläche gerechnet."},
+  {f:"handling",      label:"Handl.",  step:"0.01",
+   tip:"Handling in €/Stück. Wird je nach Fläche automatisch reduziert oder erhöht – Grenzen und Faktoren stehen in den Einstellungen."},
+  {f:"adminFlip",     label:"Ad/Flip",    step:"0.5",
+   tip:"Admin/Flip in € pro Auftrag. Fällt einmal pro Auftrag an (nicht pro Stück) und verteilt sich auf die Bestellmenge – dadurch sinken die Staffelpreise automatisch."},
+  {f:"zusatz",        label:"Zusatz",        step:"0.5",
+   tip:"Zusatzkosten in € pro Auftrag. Optionale Zusatzkosten, einmal pro Auftrag. Für Sonderfälle wie Konfektionierung oder Express."},
+  {f:"marge",         label:"Marge",         step:"1",
+   tip:"Echte Marge vom Verkaufspreis: 60 eintragen bedeutet 60 % Marge (Kosten ÷ (1 − 0,60))."},
+  {f:"degression",    label:"Degr.",         step:"5", ph:"gl.",
+   tip:"Optionaler Override der Auftragskosten-Degression für dieses Material. Leer = globaler Wert aus den Einstellungen gilt. Niedrig (z. B. 10–20) für Rollenware wie Aufkleber (ein Druckgang, echte Mengendegression), höher (z. B. 40–50) für Platten mit Aufwand pro Stück."},
+  {f:"starr",         label:"Starr",           type:"check",
+   tip:"Haken = starres Material (Platte): Sperrgutzuschlag greift bei Übergröße. Ohne Haken (einrollbar, z. B. Folie) fällt nie Sperrgut an."},
+  {f:"optBohrloch",   label:"Bohr.",           type:"check",
+   tip:"Bohrlöcher für dieses Material möglich. Fester Aufpreis aus den Einstellungen (Zusatzoptionen)."},
+  {f:"optLack",       label:"Lack",            type:"check",
+   tip:"Lackierung für dieses Material möglich. Aufpreis pro m² aus den Einstellungen (Zusatzoptionen)."},
+  {f:"optWeiss",      label:"Weiß",         type:"check",
+   tip:"Weißgrundierung für dieses Material möglich. Aufpreis pro m² aus den Einstellungen (Zusatzoptionen)."},
+];
+const DEFAULT_COL_ORDER = COLS.map(c => c.f);
+
+// name, Druck/Material €/m², Verpackung €/m², Handling €/Stk, Admin/Flip €/Auftrag, Zusatzkosten €/Auftrag, PP-Marge % (echte Marge vom VK), Starr
+let state = {
+  version: 6,
+  materials: [
+    ["Hartschaum 1 mm",85,0,2,5,0,50,true],
+    ["Hartschaum 5 mm",93.81,0,2,5,0,40,true],
+    ["Hartschaum 10 mm",104.52,0,2,7,0,50,true],
+    ["Acrylglas 5 mm",139.82,0,2,12,0,50,true],
+    ["Acrylglas 8 mm",168.24,0,2,12,0,50,true],
+    ["Aluverbund weiß 3 mm",105.75,0,2,7,0,40,true],
+    ["Aluverbund weiß 3 mm Amazon",105.75,0,2,5,0,35,true],
+    ["Aluverbund silber 3 mm",123.63,0,2,12,0,50,true],
+    ["Aluverbund gold 3 mm",136.23,0,2,15,0,50,true],
+    ["Stealbond silber 3 mm",199.40,0,2,17,0,50,true],
+    ["Aufkleber (Basic) monomer",53,0,0.15,2.5,0,50,false],
+    ["Auto-Aufkleber (Glossy)",69.80,0,0.25,3.5,0,50,false],
+    ["Magnetfolie 850 my",110,0,2,15,0,50,false],
+    ["Bilderdruckpapier 200 g/qm",52,0,2,7,0,50,false],
+    ["Kunststoffplakat 250 my",65,0,2,7,0,50,false],
+    ["Sperrholz Multiplex Birke 9 mm",135,0,2,10,0,50,true],
+    ["Sperrholz Multiplex Birke 14 mm",190,0,2,12,0,50,true],
+    ["Blechschild",60,0,2,4,0,50,true],
+    ["Anti-Graffiti Aluverbund weiß 3 mm Laminat",157,0,2,12,0,50,true],
+    ["Aluverbund weiß 3 mm + Laminat (Whiteboard)",155,0,2,20,0,50,true],
+  ].map(m => ({name:m[0], druckMaterial:m[1], verpackung:m[2], handling:m[3], adminFlip:m[4], zusatz:m[5], marge:m[6], starr:m[7], info:"", degression:null, optBohrloch:m[7], optLack:m[7], optWeiss:m[7]})),
+  rabatte: {1:0, 5:5, 10:8, 25:12, 50:15, 100:18},
+  mwst: 19,
+  rundung: 0.10,
+  sperrgutLang: 1000,
+  sperrgutKurz: 500,
+  sperrgutAufschlag: 10,
+  hKleinGrenze: 0.05,
+  hKleinFaktor: 50,
+  hGrossGrenze: 1,
+  hGrossFaktor: 150,
+  degressionAnteil: 30,
+  bohrlochPreis: 3,
+  lackierungQm: 10,
+  weissgrundQm: 10,
+  colOrder: [...DEFAULT_COL_ORDER],
+  shareFormate: [
+    {b:150, h:100, label:""}, {b:210, h:140, label:""}, {b:300, h:200, label:""},
+    {b:420, h:280, label:""}, {b:600, h:400, label:""}, {b:840, h:560, label:""},
+    {b:100, h:150, label:""}, {b:140, h:210, label:""}, {b:200, h:300, label:""},
+    {b:280, h:420, label:""}, {b:400, h:600, label:""}, {b:560, h:840, label:""},
+    {b:74,  h:105, label:"DIN A7"}, {b:105, h:148, label:"DIN A6"},
+    {b:148, h:210, label:"DIN A5"}, {b:210, h:297, label:"DIN A4"},
+    {b:297, h:420, label:"DIN A3"}, {b:420, h:594, label:"DIN A2"},
+    {b:594, h:841, label:"DIN A1"}
+  ],
+  selected: 5
+};
+let importInfo = null; // {file, at}
+let savedAt = null;
+const openInfos = new Set(); // Materialien mit geöffnetem Info-Editor (Objektidentität, übersteht Umsortieren)
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+// Beim Start: fest eingebetteten Stand laden (falls über "In HTML-Datei speichern" erzeugt)
+(function loadSavedState(){
+  try {
+    const raw = document.getElementById("savedState").textContent.trim();
+    const s = JSON.parse(raw);
+    if(!s || !Array.isArray(s.materials)) return;
+    s.materials.forEach(m => {
+      if(m.zusatz === undefined) m.zusatz = 0;
+      if(m.starr === undefined) m.starr = true;
+      if(m.info === undefined) m.info = "";
+          if(m.degression === undefined) m.degression = null;
+          if(m.optBohrloch === undefined) m.optBohrloch = !!m.starr;
+          if(m.optLack === undefined) m.optLack = !!m.starr;
+          if(m.optWeiss === undefined) m.optWeiss = !!m.starr;
+    });
+    savedAt = s.savedAt || null;
+    const breite = s.breite, hoehe = s.hoehe;
+    delete s.savedAt; delete s.breite; delete s.hoehe;
+    state = Object.assign(state, s, {version: 6});
+    if(breite) document.getElementById("breite").value = breite;
+    if(hoehe) document.getElementById("hoehe").value = hoehe;
+  } catch(e) { /* kein gespeicherter Stand – Standardwerte verwenden */ }
+})();
+
+// Einstellungs-Felder mit dem (ggf. geladenen) State synchronisieren
+function syncSettingsInputs(){
+  ["mwst","sperrgutLang","sperrgutKurz","sperrgutAufschlag","hKleinGrenze","hKleinFaktor","hGrossGrenze","hGrossFaktor","degressionAnteil","bohrlochPreis","lackierungQm","weissgrundQm"]
+    .forEach(k => { const el = document.getElementById(k); if(el) el.value = state[k]; });
+  document.getElementById("rundung").value = (+state.rundung).toFixed(2);
+  if(savedAt){
+    const badge = document.querySelector(".badge");
+    if(badge) badge.textContent = "Gespeicherter Stand: " + new Date(savedAt).toLocaleString("de-DE",{dateStyle:"medium",timeStyle:"short"});
+  }
+}
+
+const eur = v => v.toLocaleString("de-DE",{style:"currency",currency:"EUR"});
+const floorTo = (v, s) => Math.floor((v + 1e-9) / s) * s;
+// Schwellenpreis: glatte Euro-Beträge um 0,10 € senken (19,00 → 18,90)
+const pretty = v => (v > 0 && Math.round(v * 100) % 100 === 0) ? v - 0.1 : v;
+
+// Preis (Menge n) = ((Fläche × (Druck/Material + Verpackung) + Handling × Faktor
+//                    + (Admin/Flip + Zusatzkosten) ÷ n) ÷ (1 − PP-Marge) + Sperrgut) × (1 + MwSt)
+function calc(mat, breiteMM, hoeheMM){
+  const flaeche = (breiteMM * hoeheMM) / 1e6;
+  const qmPreis = mat.druckMaterial + mat.verpackung;
+  const hFaktor = flaeche < state.hKleinGrenze ? state.hKleinFaktor/100
+                : flaeche > state.hGrossGrenze ? state.hGrossFaktor/100 : 1;
+  const handlingEff = mat.handling * hFaktor;
+  const stueckKosten = flaeche * qmPreis + handlingEff;
+  const auftragKosten = mat.adminFlip + mat.zusatz;
+  const lang = Math.max(breiteMM, hoeheMM), kurz = Math.min(breiteMM, hoeheMM);
+  const sperrgut = (mat.starr && (lang > state.sperrgutLang || kurz > state.sperrgutKurz)) ? state.sperrgutAufschlag : 0;
+  const margenDivisor = Math.max(1 - mat.marge / 100, 0.01); // Schutz vor Marge ≥ 100 %
+  // Auftragskosten: ein einstellbarer Anteil bleibt pro Stück erhalten, der Rest verteilt sich auf die Menge
+  // (Material-Override in den Stammdaten möglich, leer = globaler Wert)
+  const dQuelle = (mat.degression !== null && mat.degression !== undefined && mat.degression !== "")
+    ? +mat.degression : state.degressionAnteil;
+  const d = Math.min(Math.max(dQuelle / 100, 0), 1);
+  const akBei = n => auftragKosten * (d + (1 - d) / n);
+  const nettoBei = n => (stueckKosten + akBei(n)) / margenDivisor;
+  return {flaeche, qmPreis, hFaktor, handlingEff, stueckKosten, auftragKosten, sperrgut, margenDivisor, d, dOverride: dQuelle !== state.degressionAnteil, akBei, nettoBei};
+}
+
+function stueckpreis(r, n){
+  const rab = (state.rabatte[n] || 0) / 100;
+  const brutto = (Math.max(r.nettoBei(n) * (1 - rab), 0) + r.sperrgut) * (1 + state.mwst / 100);
+  return pretty(floorTo(brutto, state.rundung));
+}
+
+function render(){
+  const sel = document.getElementById("material");
+  if (sel.options.length !== state.materials.length){
+    sel.innerHTML = state.materials.map((m,i)=>`<option value="${i}">${m.name}</option>`).join("");
+  } else {
+    state.materials.forEach((m,i)=>{ sel.options[i].textContent = m.name; });
+  }
+  if (state.selected >= state.materials.length) state.selected = 0;
+  sel.value = state.selected;
+
+  const b = +document.getElementById("breite").value || 0;
+  const h = +document.getElementById("hoehe").value || 0;
+  const mat = state.materials[state.selected];
+  const r = calc(mat, b, h);
+
+  document.getElementById("signHeadline").textContent =
+    `${mat.name} · ${b} × ${h} mm (${r.flaeche.toLocaleString("de-DE",{maximumFractionDigits:4})} m²)`;
+
+  const infoBox = document.getElementById("matInfoBox");
+  if(mat.info && mat.info.trim()){
+    infoBox.style.display = "block";
+    infoBox.textContent = mat.info;
+  } else {
+    infoBox.style.display = "none";
+  }
+
+  // Preisübersicht aller Formate (aufklappbar unter dem Preispanel)
+  const matrix = buildPriceMatrix();
+  const hatSp = matrix.some(x => x.sperrgut);
+  document.getElementById("formatMatrix").innerHTML =
+    `<thead><tr><th>Format</th>${QTYS.map(q=>`<th>${q} Stk</th>`).join("")}</tr></thead><tbody>` +
+    matrix.map(x => `<tr${x.label.includes("(aktuell)") ? ' class="aktuell"' : ""}><td>${x.label}${x.sperrgut ? "*" : ""}</td>` +
+      x.preise.map(p => `<td class="num">${preisDE(p)}</td>`).join("") + `</tr>`).join("") +
+    `</tbody>`;
+  document.getElementById("formatMatrixNote").textContent =
+    `${mat.name} · Stückpreise in Euro, brutto inkl. ${state.mwst.toLocaleString("de-DE")} % MwSt` +
+    (hatSp ? ` · * inkl. ${eur(state.sperrgutAufschlag)} Sperrgutaufschlag (netto)` : "") +
+    ` · Formate in den Einstellungen anpassbar`;
+
+  document.getElementById("staffelBody").innerHTML = QTYS.map(q=>{
+    const rab = (state.rabatte[q]||0)/100;
+    const stueck = stueckpreis(r, q);
+    return `<tr><td>${q} Stück</td><td class="rabatt">${rab?`−${(rab*100).toLocaleString("de-DE")} %`:"–"}</td>
+      <td class="price num">${eur(stueck)}</td><td class="gesamt num">${eur(stueck*q)}</td></tr>`;
+  }).join("");
+
+  document.getElementById("mwstNote").textContent =
+    `Bruttopreise inkl. ${state.mwst.toLocaleString("de-DE")} % MwSt · abgerundet auf ${eur(state.rundung)}, glatte € → −0,10 €` +
+    (r.auftragKosten ? ` · ${eur(r.auftragKosten)} Auftragskosten (${(r.d*100).toLocaleString("de-DE")} % pro Stück${r.dOverride?", Material-Override":""}, Rest auf Menge verteilt)` : "") +
+    (r.sperrgut ? ` · inkl. ${eur(r.sperrgut)} Sperrgutaufschlag (netto, unrabattiert)` : "");
+
+  const netto1 = r.nettoBei(1);
+  const brutto1 = (netto1 + r.sperrgut) * (1 + state.mwst/100);
+  const fLabel = r.hFaktor !== 1
+    ? ` (${(r.hFaktor*100).toLocaleString("de-DE")} % – Fläche ${r.hFaktor<1?"unter":"über"} Grenze)` : "";
+  document.getElementById("breakdown").innerHTML = `
+    <tr class="dim"><td>Fläche</td><td class="num">${r.flaeche.toLocaleString("de-DE",{maximumFractionDigits:4})} m²</td></tr>
+    <tr><td>€/m² (Druck/Material ${eur(mat.druckMaterial)} + Verpackung ${eur(mat.verpackung)})</td><td class="num">${eur(r.qmPreis)}</td></tr>
+    <tr><td>Fläche × €/m²</td><td class="num">${eur(r.flaeche*r.qmPreis)}</td></tr>
+    <tr><td>Handling ${eur(mat.handling)}${fLabel}</td><td class="num">${eur(r.handlingEff)}</td></tr>
+    <tr><td>Admin/Flip ${eur(mat.adminFlip)}${mat.zusatz?` + Zusatzkosten ${eur(mat.zusatz)}`:""} (pro Auftrag)</td><td class="num">${eur(r.auftragKosten)}</td></tr>
+    <tr class="sum"><td>Zwischensumme (1 Stück)</td><td class="num">${eur(r.stueckKosten + r.auftragKosten)}</td></tr>
+    <tr><td>÷ (1 − PP-Marge ${mat.marge.toLocaleString("de-DE")} %)</td><td class="num">${eur(netto1)} netto</td></tr>
+    ${r.sperrgut ? `<tr><td>+ Sperrgutaufschlag (starr, Seite &gt; ${state.sperrgutLang.toLocaleString("de-DE")}/${state.sperrgutKurz.toLocaleString("de-DE")} mm)</td><td class="num">${eur(r.sperrgut)}</td></tr>`:""}
+    <tr><td>× MwSt (${state.mwst.toLocaleString("de-DE")} %)</td><td class="num">${eur(brutto1)}</td></tr>
+    <tr class="vk"><td>Endpreis (1 Stück)</td><td class="num">${eur(pretty(floorTo(brutto1, state.rundung)))}</td></tr>`;
+
+  document.getElementById("formulaText").innerHTML =
+    `<strong>Formel (Menge n):</strong> Preis = ((Fläche × (Druck/Material + Verpackung €/m²) + Handling × Faktor + Auftragskosten-Anteil) ÷ (1 − PP-Marge) + Sperrgut) × ${(1+state.mwst/100).toLocaleString("de-DE")}<br>
+     Auftragskosten-Anteil pro Stück = (Admin/Flip + Zusatz) × (${(r.d*100).toLocaleString("de-DE")} % + ${(100-r.d*100).toLocaleString("de-DE")} % ÷ n)${r.dOverride?" – Material-Override aktiv":""} – bei 1 Stück immer voll<br>
+     PP-Marge = echte Marge vom Verkaufspreis (${mat.marge.toLocaleString("de-DE")} % eingetragen → ${mat.marge.toLocaleString("de-DE")} % Marge)<br>
+     Handling: × ${state.hKleinFaktor.toLocaleString("de-DE")} % unter ${state.hKleinGrenze.toLocaleString("de-DE")} m² · × ${state.hGrossFaktor.toLocaleString("de-DE")} % über ${state.hGrossGrenze.toLocaleString("de-DE")} m²<br>
+     Sperrgut (nur starre Materialien): lange Seite &gt; ${state.sperrgutLang.toLocaleString("de-DE")} mm oder kurze Seite &gt; ${state.sperrgutKurz.toLocaleString("de-DE")} mm → +${eur(state.sperrgutAufschlag)} netto<br>
+     abgerundet auf ${eur(state.rundung)} · glatte Euro-Beträge → −0,10 €`;
+}
+
+function validColOrder(order){
+  const known = new Set(DEFAULT_COL_ORDER);
+  const seen = (order || []).filter(f => known.has(f));
+  DEFAULT_COL_ORDER.forEach(f => { if(!seen.includes(f)) seen.push(f); });
+  return seen;
+}
+
+function renderMatTable(){
+  state.colOrder = validColOrder(state.colOrder);
+  const cols = state.colOrder.map(f => COLS.find(c => c.f === f));
+
+  document.getElementById("matHead").innerHTML = `<tr><th style="width:22px"></th>` +
+    cols.map(c => `<th class="colhead" draggable="true" data-col="${c.f}">${c.label}${c.tip?` <span class="info" data-tip="${c.tip.replace(/"/g,"&quot;")}" draggable="false">?</span>`:""}</th>`).join("") +
+    `<th style="width:24px" title="Materialinfo"></th><th style="width:26px"></th></tr>`;
+
+  const tb = document.getElementById("matBody");
+  tb.innerHTML = state.materials.map((m,i)=>{
+    const cells = cols.map(c=>{
+      if(c.type === "text")
+        return `<td><input type="text" data-f="name" value="${m.name.replace(/"/g,"&quot;")}" style="width:100%;min-width:120px"></td>`;
+      if(c.type === "check")
+        return `<td style="text-align:center;width:30px"><input type="checkbox" data-f="${c.f}" ${m[c.f]?"checked":""} style="width:15px;height:15px;cursor:pointer"></td>`;
+      return `<td><input class="n" type="number" step="${c.step}" data-f="${c.f}" value="${m[c.f] ?? ""}"${c.ph?` placeholder="${c.ph}"`:""}></td>`;
+    }).join("");
+    const infoRow = openInfos.has(m)
+      ? `<tr class="inforow" data-i="${i}"><td></td><td colspan="${cols.length}"><textarea class="mat-info-ta" data-f="info" rows="3" placeholder="Notizen zum Material – z. B. Lieferant, Eigenschaften, Einsatzbereich, Besonderheiten …">${esc(m.info)}</textarea></td><td colspan="2"></td></tr>`
+      : "";
+    return `<tr data-i="${i}"${m.hl?' class="hl"':""}><td class="rowsel" title="Klick: Zeile hervorheben · Ziehen: verschieben"><span class="row-handle" draggable="true">⠿</span></td>${cells}<td style="text-align:center"><button class="infobtn${m.info?" has":""}" data-infobtn="${i}" title="${m.info?"Materialinfo bearbeiten (Text vorhanden)":"Materialinfo hinzufügen"}">i</button></td><td class="del"><button class="ghost" title="Material löschen" data-del="${i}">✕</button></td></tr>` + infoRow;
+  }).join("");
+}
+
+// --- Spalten: Drag am Kopf = Reihenfolge ändern ---
+let dragCol = null, dragRowIdx = null;
+
+document.getElementById("matHead").addEventListener("dragstart", e=>{
+  const th = e.target.closest("th.colhead"); if(!th) return;
+  dragCol = th.dataset.col;
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", "col:" + dragCol);
+});
+document.getElementById("matHead").addEventListener("dragover", e=>{
+  if(!dragCol) return;
+  const th = e.target.closest("th.colhead"); if(!th) return;
+  e.preventDefault();
+  document.querySelectorAll("#matHead th").forEach(x=>x.classList.remove("drop-col"));
+  if(th.dataset.col !== dragCol) th.classList.add("drop-col");
+});
+document.getElementById("matHead").addEventListener("drop", e=>{
+  const th = e.target.closest("th.colhead");
+  if(!dragCol || !th || th.dataset.col === dragCol){ dragCol = null; return; }
+  e.preventDefault();
+  const target = th.dataset.col;
+  const fi = state.colOrder.indexOf(dragCol), oi = state.colOrder.indexOf(target);
+  const arr = state.colOrder.filter(f => f !== dragCol);
+  arr.splice(fi < oi ? arr.indexOf(target) + 1 : arr.indexOf(target), 0, dragCol);
+  state.colOrder = arr;
+  dragCol = null;
+  renderMatTable();
+});
+document.getElementById("matHead").addEventListener("dragend", ()=>{
+  dragCol = null;
+  document.querySelectorAll("#matHead th").forEach(x=>x.classList.remove("drop-col"));
+});
+
+// --- Zeilen: Drag am Griff = Material verschieben ---
+document.getElementById("matBody").addEventListener("dragstart", e=>{
+  const handle = e.target.closest(".row-handle"); if(!handle) return;
+  const tr = handle.closest("tr");
+  dragRowIdx = +tr.dataset.i;
+  tr.classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", "row:" + dragRowIdx);
+});
+document.getElementById("matBody").addEventListener("dragover", e=>{
+  if(dragRowIdx === null) return;
+  const tr = e.target.closest("tr"); if(!tr) return;
+  e.preventDefault();
+  document.querySelectorAll("#matBody tr").forEach(x=>x.classList.remove("drop-row"));
+  if(+tr.dataset.i !== dragRowIdx) tr.classList.add("drop-row");
+});
+document.getElementById("matBody").addEventListener("drop", e=>{
+  const tr = e.target.closest("tr");
+  if(dragRowIdx === null || !tr){ dragRowIdx = null; return; }
+  e.preventDefault();
+  const to = +tr.dataset.i;
+  if(to !== dragRowIdx){
+    const selObj = state.materials[state.selected];
+    const [moved] = state.materials.splice(dragRowIdx, 1);
+    state.materials.splice(to, 0, moved);
+    state.selected = Math.max(state.materials.indexOf(selObj), 0);
+    document.getElementById("material").innerHTML = "";
+    renderMatTable(); render();
+  }
+  dragRowIdx = null;
+});
+document.getElementById("matBody").addEventListener("dragend", ()=>{
+  dragRowIdx = null;
+  document.querySelectorAll("#matBody tr").forEach(x=>x.classList.remove("dragging","drop-row"));
+});
+
+function showImportStatus(){
+  const el = document.getElementById("importStatus");
+  if(importInfo){
+    el.style.display = "block";
+    el.textContent = `Importiert: ${importInfo.file} am ${importInfo.at}` +
+      (importInfo.createdAt ? ` (Export erstellt am ${importInfo.createdAt})` : "");
+  } else {
+    el.style.display = "none";
+  }
+}
+
+function renderRabatte(){
+  document.getElementById("rabattGrid").innerHTML = QTYS.map(q=>`
+    <div><label>${q} Stk</label>
+    <input type="number" min="0" max="90" step="1" data-q="${q}" value="${state.rabatte[q]||0}"></div>`).join("");
+}
+
+function renderFormate(){
+  if(!Array.isArray(state.shareFormate)) state.shareFormate = [];
+  state.shareFormate.forEach(f => { if(f.label === undefined) f.label = ""; });
+  document.getElementById("formatList").innerHTML = state.shareFormate.map((f,i)=>`
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" data-fmt="${i}" data-dim="label" value="${String(f.label).replace(/"/g,"&quot;")}" placeholder="Bezeichnung (optional)" style="width:130px;font-size:12.5px">
+      <input type="number" min="1" step="1" data-fmt="${i}" data-dim="b" value="${f.b}" style="width:78px;text-align:right">
+      <span style="color:var(--muted)">×</span>
+      <input type="number" min="1" step="1" data-fmt="${i}" data-dim="h" value="${f.h}" style="width:78px;text-align:right">
+      <span style="color:var(--muted);font-size:12px">mm</span>
+      <button class="ghost" data-delfmt="${i}" title="Format entfernen">✕</button>
+    </div>`).join("");
+}
+
+document.getElementById("formatList").addEventListener("input", e=>{
+  const i = e.target.dataset.fmt, dim = e.target.dataset.dim;
+  if(i === undefined || !dim) return;
+  state.shareFormate[+i][dim] = dim === "label" ? e.target.value : (+e.target.value || 0);
+});
+document.getElementById("formatList").addEventListener("click", e=>{
+  const btn = e.target.closest("button[data-delfmt]"); if(!btn) return;
+  state.shareFormate.splice(+btn.dataset.delfmt, 1);
+  renderFormate();
+});
+document.getElementById("addFormat").addEventListener("click", ()=>{
+  const last = state.shareFormate[state.shareFormate.length-1];
+  state.shareFormate.push(last ? {b:last.b, h:last.h} : {b:100, h:150});
+  renderFormate();
+});
+
+// Events
+document.getElementById("material").addEventListener("change", e=>{ state.selected = +e.target.value; render(); });
+["breite","hoehe"].forEach(id=>document.getElementById(id).addEventListener("input", render));
+document.getElementById("mwst").addEventListener("input", e=>{ state.mwst = +e.target.value||0; render(); });
+document.getElementById("rundung").addEventListener("change", e=>{ state.rundung = +e.target.value; render(); });
+["sperrgutLang","sperrgutKurz","sperrgutAufschlag","hKleinGrenze","hKleinFaktor","hGrossGrenze","hGrossFaktor","degressionAnteil","bohrlochPreis","lackierungQm","weissgrundQm"]
+  .forEach(id=>{
+    document.getElementById(id).addEventListener("input", e=>{ state[id] = +e.target.value||0; render(); });
+  });
+
+document.getElementById("matBody").addEventListener("input", e=>{
+  const tr = e.target.closest("tr"); if(!tr) return;
+  const i = +tr.dataset.i, f = e.target.dataset.f;
+  if(e.target.type === "checkbox"){
+    state.materials[i][f] = e.target.checked;
+  } else if(f === "info"){
+    state.materials[i].info = e.target.value;
+    render();
+    return; // Tabelle nicht neu rendern, sonst verliert das Textfeld den Fokus
+  } else if(f === "degression"){
+    state.materials[i].degression = e.target.value === "" ? null : (+e.target.value || 0);
+  } else {
+    state.materials[i][f] = f==="name" ? e.target.value : (+e.target.value||0);
+  }
+  render();
+});
+document.getElementById("matBody").addEventListener("click", e=>{
+  const btn = e.target.closest("button[data-del]");
+  if(btn){
+    const m = state.materials[+btn.dataset.del];
+    openInfos.delete(m);
+    state.materials.splice(+btn.dataset.del, 1);
+    renderMatTable(); render();
+    return;
+  }
+  const ib = e.target.closest("button[data-infobtn]");
+  if(ib){
+    const m = state.materials[+ib.dataset.infobtn];
+    if(openInfos.has(m)) openInfos.delete(m); else openInfos.add(m);
+    renderMatTable();
+    if(openInfos.has(m)){
+      const ta = document.querySelector(`tr.inforow[data-i="${ib.dataset.infobtn}"] textarea`);
+      if(ta) ta.focus();
+    }
+    return;
+  }
+  const sel = e.target.closest("td.rowsel");
+  if(sel && dragRowIdx === null){
+    const tr = sel.closest("tr");
+    const m = state.materials[+tr.dataset.i];
+    m.hl = !m.hl;
+    tr.classList.toggle("hl", m.hl);
+  }
+});
+document.getElementById("addMat").addEventListener("click", ()=>{
+  state.materials.push({name:"Neues Material", druckMaterial:100, verpackung:30, handling:2, adminFlip:3, zusatz:2, marge:50, starr:true, info:"", degression:null, optBohrloch:true, optLack:true, optWeiss:true});
+  renderMatTable(); render();
+});
+document.getElementById("rabattGrid").addEventListener("input", e=>{
+  const q = e.target.dataset.q; if(!q) return;
+  state.rabatte[q] = +e.target.value||0; render();
+});
+
+document.getElementById("exportBtn").addEventListener("click", ()=>{
+  try {
+    const now = new Date();
+    const stamp = now.toISOString().slice(0,16).replace("T","-").replace(":","");
+    const payload = {
+      ...state,
+      exportedAt: now.toISOString(),
+      breite: +document.getElementById("breite").value || 100,
+      hoehe: +document.getElementById("hoehe").value || 150
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `preiskonfigurator-config-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+    const btn = document.getElementById("exportBtn");
+    const old = btn.textContent;
+    btn.textContent = "Exportiert ✓";
+    setTimeout(()=>btn.textContent = old, 1500);
+  } catch(err) {
+    alert("Export fehlgeschlagen: " + err.message + "\nFalls das Tool in einer eingebetteten Vorschau läuft, bitte die HTML-Datei herunterladen und direkt im Browser öffnen.");
+  }
+});
+document.getElementById("importBtn").addEventListener("click", ()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change", e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try {
+      const s = JSON.parse(fr.result);
+      if(!Array.isArray(s.materials) || !s.materials.length || s.materials.some(m => m.druckMaterial === undefined))
+        throw new Error("Die Datei enthält keine gültige Materialliste dieser Tool-Version.");
+      // Migration älterer Exporte (ohne Versionskennung):
+      if(!s.version){
+        s.materials.forEach(m => {
+          m.marge = 100 - (m.marge || 0);      // alte Divisor-Marge → echte Marge
+          if(m.zusatz === undefined) m.zusatz = 0;
+          if(m.starr === undefined) m.starr = true;
+          if(m.info === undefined) m.info = "";
+          if(m.degression === undefined) m.degression = null;
+          if(m.optBohrloch === undefined) m.optBohrloch = !!m.starr;
+          if(m.optLack === undefined) m.optLack = !!m.starr;
+          if(m.optWeiss === undefined) m.optWeiss = !!m.starr;
+        });
+        if(s.sperrgutSchwelle !== undefined){
+          s.sperrgutLang = s.sperrgutLang ?? s.sperrgutSchwelle;
+          s.sperrgutKurz = s.sperrgutKurz ?? s.sperrgutSchwelle;
+          delete s.sperrgutSchwelle;
+        }
+      } else {
+        s.materials.forEach(m => {
+          if(m.zusatz === undefined) m.zusatz = 0;
+          if(m.starr === undefined) m.starr = true;
+          if(m.info === undefined) m.info = "";
+          if(m.degression === undefined) m.degression = null;
+          if(m.optBohrloch === undefined) m.optBohrloch = !!m.starr;
+          if(m.optLack === undefined) m.optLack = !!m.starr;
+          if(m.optWeiss === undefined) m.optWeiss = !!m.starr;
+        });
+      }
+      const createdAt = s.exportedAt ? new Date(s.exportedAt) : null;
+      const impBreite = s.breite, impHoehe = s.hoehe;
+      delete s.exportedAt; delete s.breite; delete s.hoehe;
+      state = Object.assign(state, s, {version: 6});
+      if(impBreite) document.getElementById("breite").value = impBreite;
+      if(impHoehe) document.getElementById("hoehe").value = impHoehe;
+      importInfo = {
+        file: file.name,
+        at: new Date().toLocaleString("de-DE", {dateStyle:"medium", timeStyle:"short"}),
+        createdAt: createdAt ? createdAt.toLocaleString("de-DE", {dateStyle:"medium", timeStyle:"short"}) : null
+      };
+      ["mwst","sperrgutLang","sperrgutKurz","sperrgutAufschlag","hKleinGrenze","hKleinFaktor","hGrossGrenze","hGrossFaktor","degressionAnteil","bohrlochPreis","lackierungQm","weissgrundQm"]
+        .forEach(k => document.getElementById(k).value = state[k]);
+      document.getElementById("rundung").value = (+state.rundung).toFixed(2);
+      document.getElementById("material").innerHTML = "";
+      showImportStatus();
+      renderMatTable(); renderRabatte(); renderFormate(); render();
+    } catch(err) {
+      alert("Import fehlgeschlagen: " + (err.message || "Datei konnte nicht gelesen werden."));
+    }
+  };
+  fr.onerror = () => alert("Die Datei konnte nicht geöffnet werden.");
+  fr.readAsText(file);
+  e.target.value = "";
+});
+
+// --- Preisliste teilen (Format-Matrix) ---
+function shareFormateMitAktuell(){
+  const b = +document.getElementById("breite").value || 0;
+  const h = +document.getElementById("hoehe").value || 0;
+  const list = state.shareFormate.filter(f => f.b > 0 && f.h > 0);
+  const enthalten = list.some(f => (f.b === b && f.h === h) || (f.b === h && f.h === b));
+  return (b > 0 && h > 0 && !enthalten) ? [{b, h, aktuell:true}, ...list] : list;
+}
+
+function buildPriceMatrixFor(mat, includeAktuell){
+  const formate = includeAktuell ? shareFormateMitAktuell() : state.shareFormate.filter(f => f.b > 0 && f.h > 0);
+  return formate.map(f => {
+    const r = calc(mat, f.b, f.h);
+    return {
+      label: `${f.label ? f.label + " – " : ""}${f.b} × ${f.h} mm${f.aktuell ? " (aktuell)" : ""}`,
+      name: f.label || "",
+      b: f.b, h: f.h,
+      sperrgut: r.sperrgut > 0,
+      preise: QTYS.map(q => stueckpreis(r, q))
+    };
+  });
+}
+
+function buildPriceMatrix(){
+  return buildPriceMatrixFor(state.materials[state.selected], true);
+}
+
+const preisDE = p => p.toLocaleString("de-DE", {minimumFractionDigits:2, maximumFractionDigits:2});
+
+function buildPriceCsv(){
+  const mat = state.materials[state.selected];
+  const rows = buildPriceMatrix();
+  const cell = v => `"${String(v).replace(/"/g, '""')}"`;
+  const lines = [
+    cell("Preisliste") + ";" + cell(mat.name),
+    cell("Stand") + ";" + cell(new Date().toLocaleString("de-DE",{dateStyle:"medium",timeStyle:"short"})),
+    cell(`Alle Preise brutto inkl. ${state.mwst.toLocaleString("de-DE")} % MwSt, pro Stück`),
+    "",
+    [cell("Bezeichnung"), cell("Breite (mm)"), cell("Höhe (mm)"), cell("Sperrgut"), ...QTYS.map(q => cell(`${q} Stück`))].join(";"),
+    ...rows.map(r => [cell(r.name), cell(r.b), cell(r.h), cell(r.sperrgut ? "ja" : "–"),
+      ...r.preise.map(p => cell(preisDE(p)))].join(";"))
+  ];
+  return "\ufeff" + lines.join("\r\n");
+}
+
+function buildPriceCsvAll(){
+  const cell = v => `"${String(v).replace(/"/g, '""')}"`;
+  const lines = [
+    cell("Preisliste") + ";" + cell("Alle Materialien"),
+    cell("Stand") + ";" + cell(new Date().toLocaleString("de-DE",{dateStyle:"medium",timeStyle:"short"})),
+    cell(`Alle Preise brutto inkl. ${state.mwst.toLocaleString("de-DE")} % MwSt, pro Stück · Sperrgut = ja: inkl. ${preisDE(state.sperrgutAufschlag)} EUR Aufschlag (netto)`),
+    "",
+    [cell("Material"), cell("Bezeichnung"), cell("Breite (mm)"), cell("Höhe (mm)"), cell("Sperrgut"), ...QTYS.map(q => cell(`${q} Stück`))].join(";")
+  ];
+  state.materials.forEach(mat => {
+    buildPriceMatrixFor(mat, false).forEach(r => {
+      lines.push([cell(mat.name), cell(r.name), cell(r.b), cell(r.h), cell(r.sperrgut ? "ja" : "–"),
+        ...r.preise.map(p => cell(preisDE(p)))].join(";"));
+    });
+  });
+  return "\ufeff" + lines.join("\r\n");
+}
+
+function downloadCsv(content, filename){
+  const blob = new Blob([content], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+
+document.getElementById("shareCsvAll").addEventListener("click", ()=>{
+  try {
+    const stamp = new Date().toISOString().slice(0,10);
+    downloadCsv(buildPriceCsvAll(), `preisliste_alle-materialien_${stamp}.csv`);
+  } catch(err) {
+    alert("CSV-Export fehlgeschlagen: " + err.message);
+  }
+});
+
+document.getElementById("shareCsv").addEventListener("click", ()=>{
+  try {
+    const mat = state.materials[state.selected];
+    const stamp = new Date().toISOString().slice(0,10);
+    const blob = new Blob([buildPriceCsv()], {type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `preisliste_${mat.name.toLowerCase().replace(/[^a-z0-9äöüß]+/g,"-")}_${stamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  } catch(err) {
+    alert("CSV-Export fehlgeschlagen: " + err.message);
+  }
+});
+
+// --- Formel-CSV für Entwickler ---
+function buildDevCsv(){
+  const mat = state.materials[state.selected];
+  const cols = [
+    ["Material", "material", mat.name],
+    ["Druck/Material pro m² (€)", "printMaterialPerSqrm", mat.druckMaterial],
+    ["Verpackung pro m² (€)", "packagingPerSqrm", mat.verpackung],
+    ["Handling pro Stück (€)", "handlingPerPiece", mat.handling],
+    ["Admin/Flip pro Auftrag (€)", "adminFlipPerOrder", mat.adminFlip],
+    ["Zusatzkosten pro Auftrag (€)", "additionalCostsPerOrder", mat.zusatz],
+    ["PP-Marge (Anteil vom VK)", "margin", mat.marge / 100],
+    ["Starr (Sperrgut möglich)", "rigid", mat.starr],
+    ["MwSt (Anteil)", "vat", state.mwst / 100],
+    ["Abrunden auf (€)", "roundingStep", state.rundung],
+    ["Sperrgut: lange Seite > (mm)", "bulkyLongSideMm", state.sperrgutLang],
+    ["Sperrgut: kurze Seite > (mm)", "bulkyShortSideMm", state.sperrgutKurz],
+    ["Sperrgutaufschlag (€, netto)", "bulkyGoodsSurcharge", state.sperrgutAufschlag],
+    ["Handling-Grenze klein (m²)", "handlingSmallAreaSqrm", state.hKleinGrenze],
+    ["Handling-Faktor klein (Anteil)", "handlingSmallFactor", state.hKleinFaktor / 100],
+    ["Handling-Grenze groß (m²)", "handlingLargeAreaSqrm", state.hGrossGrenze],
+    ["Handling-Faktor groß (Anteil)", "handlingLargeFactor", state.hGrossFaktor / 100],
+    ["Auftragskosten: Anteil pro Stück (Anteil, effektiv für dieses Material)", "orderCostPerPieceShare", ((mat.degression ?? state.degressionAnteil) / 100)],
+    ["Bohrlöcher Aufpreis (€, fest)", "drillHolePrice", state.bohrlochPreis],
+    ["Bohrlöcher möglich", "drillHoleAvailable", !!mat.optBohrloch],
+    ["Lackierung Aufpreis (€/m²)", "coatingPricePerSqrm", state.lackierungQm],
+    ["Lackierung möglich", "coatingAvailable", !!mat.optLack],
+    ["Weißgrundierung Aufpreis (€/m²)", "whitePrimerPricePerSqrm", state.weissgrundQm],
+    ["Weißgrundierung möglich", "whitePrimerAvailable", !!mat.optWeiss],
+    ...QTYS.map(q => [`Rabatt ab ${q} Stück (Anteil)`, `discountQty${q}`, (state.rabatte[q] || 0) / 100])
+  ];
+  const cell = v => `"${String(v).replace(/"/g, '""')}"`;
+  const formel = "Preis = ((Breite_m * Hoehe_m * (printMaterialPerSqrm + packagingPerSqrm) + handlingPerPiece * handlingFactor + (adminFlipPerOrder + additionalCostsPerOrder) * (orderCostPerPieceShare + (1 - orderCostPerPieceShare) / Menge)) / (1 - margin) + Sperrgut) * (1 + vat) | handlingFactor: handlingSmallFactor wenn Flaeche < handlingSmallAreaSqrm, handlingLargeFactor wenn Flaeche > handlingLargeAreaSqrm, sonst 1 | Sperrgut: bulkyGoodsSurcharge nur wenn rigid=true UND (lange Seite > bulkyLongSideMm ODER kurze Seite > bulkyShortSideMm), unrabattiert | Rabatt wirkt auf den Nettopreis vor Sperrgut | Ergebnis abrunden auf roundingStep; glatte Euro-Betraege zusaetzlich -0,10 EUR";
+  const lines = [
+    cell("Formel") + ";" + cell(formel),
+    "",
+    cols.map(c => cell(c[0])).join(";"),
+    cols.map(c => cell(c[1])).join(";"),
+    cols.map(c => cell(c[2])).join(";")
+  ];
+  return "\ufeff" + lines.join("\r\n");
+}
+
+document.getElementById("csvBtn").addEventListener("click", ()=>{
+  try {
+    const mat = state.materials[state.selected];
+    const stamp = new Date().toISOString().slice(0,10);
+    const blob = new Blob([buildDevCsv()], {type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `preisformel_${mat.name.toLowerCase().replace(/[^a-z0-9äöüß]+/g,"-")}_${stamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  } catch(err) {
+    alert("CSV-Export fehlgeschlagen: " + err.message);
+  }
+});
+
+document.getElementById("saveHtml").addEventListener("click", ()=>{
+  try {
+    const now = new Date();
+    const stamp = now.getFullYear() + "-" +
+      String(now.getMonth()+1).padStart(2,"0") + "-" +
+      String(now.getDate()).padStart(2,"0") + "_" +
+      String(now.getHours()).padStart(2,"0") + "-" +
+      String(now.getMinutes()).padStart(2,"0");
+    const payload = {
+      ...state,
+      savedAt: now.toISOString(),
+      breite: +document.getElementById("breite").value || 100,
+      hoehe: +document.getElementById("hoehe").value || 150
+    };
+    // Stand in den eingebetteten Block schreiben ("</" escapen, damit das HTML gültig bleibt)
+    document.getElementById("savedState").textContent =
+      JSON.stringify(payload).replace(/<\//g, "<\\/");
+    const src = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob = new Blob([src], {type:"text/html"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `preiskonfigurator_${stamp}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+    const btn = document.getElementById("saveHtml");
+    const old = btn.textContent;
+    btn.textContent = "Gespeichert ✓ – alte Datei ersetzen";
+    setTimeout(()=>btn.textContent = old, 2500);
+  } catch(err) {
+    alert("Speichern fehlgeschlagen: " + err.message + "\nFalls das Tool in einer eingebetteten Vorschau läuft, bitte die HTML-Datei herunterladen und direkt im Browser öffnen.");
+  }
+});
+
+syncSettingsInputs(); renderMatTable(); renderRabatte(); renderFormate(); render();
+</script>
+
+
+</body></html>

@@ -76,17 +76,17 @@
         {
           "quantity_start": 1,
           "quantity_end": 4,
-          "price": 28.9
+          "price": 34.90
         },
         {
           "quantity_start": 5,
           "quantity_end": 9,
-          "price": 27.6
+          "price": 34.50
         },
         {
           "quantity_start": 10,
           "quantity_end": "*",
-          "price": 26.4
+          "price": 33.90
         }
       ],
       "adjustments": [
@@ -110,17 +110,17 @@
         {
           "quantity_start": 1,
           "quantity_end": 4,
-          "price": 38.9
+          "price": 44.9
         },
         {
           "quantity_start": 5,
           "quantity_end": 9,
-          "price": 37.1
+          "price": 44.5
         },
         {
           "quantity_start": 10,
           "quantity_end": "*",
-          "price": 35.4
+          "price": 43.9
         }
       ],
       "adjustments": [
@@ -144,17 +144,17 @@
         {
           "quantity_start": 1,
           "quantity_end": 4,
-          "price": 63.9
+          "price": 69.9
         },
         {
           "quantity_start": 5,
           "quantity_end": 9,
-          "price": 60.9
+          "price": 69.5
         },
         {
           "quantity_start": 10,
           "quantity_end": "*",
-          "price": 57.9
+          "price": 68.9
         }
       ],
       "adjustments": [

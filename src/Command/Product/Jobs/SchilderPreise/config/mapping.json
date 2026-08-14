@@ -1,0 +1,46 @@
+{
+  "materials": {
+    "alu-dibond-white-3mm": {
+      "key": "Aluverbund weiß 3 mm"
+    },
+    "alu-dibond-silver-3mm": {
+      "key": "Aluverbund silber 3 mm"
+    },
+    "alu-dibond-gold-3mm": {
+      "key": "Aluverbund gold 3 mm"
+    },
+    "anti-grafitti-alu-dibond-white-3mm": {
+      "key": "Anti-Graffiti Aluverbund weiß 3 mm Laminat"
+    },
+    "pvc-5mm": {
+      "key": "Hartschaum 5 mm"
+    },
+    "pvc-10mm": {
+      "key": "Hartschaum 10 mm"
+    },
+    "acryl-5mm": {
+      "key": "Acrylglas 5 mm"
+    },
+    "acryl-8mm": {
+      "key": "Acrylglas 8 mm"
+    },
+    "metal-sign": {
+      "key": "Stealbond silber 3 mm"
+    },
+    "magnetic-foil": {
+      "key": "Magnetfolie 850 my"
+    },
+    "sticker": {
+      "key": "Aufkleber (Basic) monomer"
+    },
+    "car-sticker": {
+      "key": "Auto-Aufkleber (Glossy)"
+    },
+    "wood-indoor-10mm": {
+      "key": "Sperrholz Multiplex Birke 9 mm"
+    },
+    "wood-indoor-15mm": {
+      "key": "Sperrholz Multiplex Birke 14 mm"
+    }
+  }
+}
