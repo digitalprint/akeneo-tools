@@ -36,25 +36,25 @@ class SchilderPreiseJob extends AbstractJob
 
     protected array $materials = [
         "freestyle-schilder" => [],
-        "firmenschilder" => [],
-        "praxisschilder" => [],
-        "funschilder" => [],
-        "funschilder-konturgeschnitten" => [],
-        "warnschilder" => [],
-        "parkschilder" => [],
-        "parkschilder-schmal" => [],
-        "pfeilwegweiser" => [],
-        "richtungsschilder" => [],
-        "richtungsschilder-schmal" => [],
-        "ortsschilder" => [],
-        "ortsschilder-schmal" => [],
-        "strassenschilder" => [],
-        "hundeschilder" => [],
-        "geburtstagsschilder" => [],
-        "geburtstagsschilder-konturgeschnitten" => [],
-        "hausnummernschilder" => [],
-        "blechschilder" => [],
-        "blechposter" => [],
+//        "firmenschilder" => [],
+//        "praxisschilder" => [],
+//        "funschilder" => [],
+//        "funschilder-konturgeschnitten" => [],
+//        "warnschilder" => [],
+//        "parkschilder" => [],
+//        "parkschilder-schmal" => [],
+//        "pfeilwegweiser" => [],
+//        "richtungsschilder" => [],
+//        "richtungsschilder-schmal" => [],
+//        "ortsschilder" => [],
+//        "ortsschilder-schmal" => [],
+//        "strassenschilder" => [],
+//        "hundeschilder" => [],
+//        "geburtstagsschilder" => [],
+//        "geburtstagsschilder-konturgeschnitten" => [],
+//        "hausnummernschilder" => [],
+//        "blechschilder" => [],
+//        "blechposter" => [],
 
 ////        "holzschilder" => [],
     ];
@@ -164,16 +164,19 @@ class SchilderPreiseJob extends AbstractJob
                                 }
                             }
 
+
+
                         } else {
 
                             $data = [
                                 "type" => "price",
                                 "steps" => [],
-                                "adjustments" => $this->getAdjustments($type, $width, $height),
+                                "adjustments" => $this->getAdjustments($type, $width, $height, $material['price']),
                             ];
 
                             $mat = $this->config['materials'][$type];
-                            $result = $this->calc($mat, $width, $height, $this->config);
+
+                            $result = $this->calc($mat, $width, $height, $this->getState($this->config));
 
                             $rabatte = $this->config['rabatte'];
                             $counts = array_keys($rabatte);
@@ -210,8 +213,19 @@ class SchilderPreiseJob extends AbstractJob
 
                     $data = $this->materialTypes[$type];
 
-                    $products[$material['types']]["items"][] = $this->setAttributeValueInProduct($product, 'graduated_price', json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT), self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
+                    $data["adjustments"] = $this->getAdjustments($type, 1000, 1000, $material['price']); // Fläche für Quadratmeter
 
+                    $config = [
+                        "material" => $this->config['materials'][$type],
+                        "state" => $this->getState($this->config),
+                    ];
+
+                    $data['formula'] = [
+                        'attributes' => [],
+                        'template' => "{{ getPrice('sign-freestyle', getSupplierParam('width', productConfiguration), getSupplierParam('height', productConfiguration), " . str_replace('"', "'", json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ) . ") }}",
+                    ];
+
+                    $products[$material['types']]["items"][] = $this->setAttributeValueInProduct($product, 'graduated_price', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
                 }
 
             }
@@ -248,38 +262,7 @@ class SchilderPreiseJob extends AbstractJob
         $this->output->writeln(implode(" && ", $commands));
     }
 
-//    private function calcFormula(float $width, float $height, $attributes, float $discount = 0) : float
-//    {
-//        $attr = [
-//            "packagingPerSqrm" => $this->getValueById($attributes, 'packagingPerSqrm'),
-//            "printingPerSqrm" => $this->getValueById($attributes, 'printingPerSqrm'),
-//            "handlingPerPiece" => $this->getValueById($attributes, 'handlingPerPiece'),
-//            "margin" => $this->getValueById($attributes, 'margin'),
-//            "marketingDiscountThreshold" => $this->getValueById($attributes, 'marketingDiscountThreshold'),
-//            "bulkyGoodsSurcharge" => $this->getValueById($attributes, 'bulkyGoodsSurcharge'),
-//        ];
-//
-//        if (($width / 10) * ($height / 10) > 150) {
-//            $attr['marketingDiscountThreshold'] = 0;
-//        }
-//
-//        $price = (($width  / 1000) * ($height  / 1000) * ($attr['packagingPerSqrm'] + $attr['printingPerSqrm']) + $attr['handlingPerPiece'] + $attr['marketingDiscountThreshold']) / $attr['margin'] * self::SHOP_TAX;
-//
-//        // Staffelrabatt
-//        $price -= ($price * $discount);
-//
-//        // Abrunden auf eine Stelle hinterm Komma
-//        $price = floor($price * 10) / 10;
-//
-//        // Sperrgut-Zuschlag
-//        if ($width > self::BULKY_GOODS_SIZE_MM || $height > self::BULKY_GOODS_SIZE_MM) {
-//            $price += $attr['bulkyGoodsSurcharge'];
-//        }
-//
-//        return $price;
-//    }
-
-    private function getAdjustments(string $type, int $width, int $height): array
+    private function getAdjustments(string $type, int $width, int $height, string $priceType): array
     {
         $mat = $this->config['materials'][$type];
         $areaSqm = ($width / 1000) * ($height / 1000);
@@ -296,6 +279,7 @@ class SchilderPreiseJob extends AbstractJob
         if ($mat['optLack']) {
             $adjustments[] = [
                 "amount" => $areaSqm * $this->config["lackierungQm"],
+                "calc_method" => $priceType === 'formula' ? "per_square_meter" : "default",
                 "type" => "coating",
             ];
         }
@@ -303,6 +287,7 @@ class SchilderPreiseJob extends AbstractJob
         if ($mat['optWeiss']) {
             $adjustments[] = [
                 "amount" => $areaSqm * $this->config["weissgrundQm"],
+                "calc_method" => $priceType === 'formula' ? "per_square_meter" : "default",
                 "type" => "white_primer",
             ];
         }
@@ -342,8 +327,13 @@ class SchilderPreiseJob extends AbstractJob
             : $state['degressionAnteil'];
         $d = min(max($dQuelle / 100, 0), 1);
 
-        $akBei = fn(float $n) => $auftragKosten * ($d + (1 - $d) / $n);
-        $nettoBei = fn(float $n) => ($stueckKosten + $akBei($n)) / $margenDivisor;
+        $akBei = function(float $n) use ($auftragKosten, $d) {
+            return $auftragKosten * ($d + (1 - $d) / $n);
+        };
+
+        $nettoBei = function(float $n) use ($stueckKosten, $akBei, $margenDivisor) {
+            return ($stueckKosten + $akBei($n)) / $margenDivisor;
+        };
 
         return [
             'flaeche' => $flaeche,
@@ -384,13 +374,19 @@ class SchilderPreiseJob extends AbstractJob
         return round($this->pretty($this->floorTo($brutto, $state['rundung'])), 2);
     }
 
-//    private function getValueById(array $data, string $id) {
-//        foreach ($data as $item) {
-//            if (isset($item['id']) && $item['id'] === $id) {
-//                return $item['value'];
-//            }
-//        }
-//        return null;
-//    }
-
+    private function getState($config): array
+    {
+        return [
+            'mwst' => $config['mwst'],
+            'rundung' => $config['rundung'],
+            'hKleinGrenze' => $config['hKleinGrenze'],
+            'hKleinFaktor' => $config['hKleinFaktor'],
+            'hGrossGrenze' => $config['hGrossGrenze'],
+            'hGrossFaktor' => $config['hGrossFaktor'],
+            'sperrgutLang' => $config['sperrgutLang'],
+            'sperrgutKurz' => $config['sperrgutKurz'],
+            'sperrgutAufschlag' => $config['sperrgutAufschlag'],
+            'degressionAnteil' => $config['degressionAnteil'],
+        ];
+    }
 }
