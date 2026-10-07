@@ -12,6 +12,7 @@ use App\Command\Product\Jobs\FotoAufHolz\FotoAufHolzJob;
 use App\Command\Product\Jobs\FotoHinterAcrylglas\FotoHinterAcrylglasJob;
 use App\Command\Product\Jobs\FotoPoster\FotoPosterJob;
 use App\Command\Product\Jobs\JobInterface;
+use App\Command\Product\Jobs\Karten\KartenJob;
 use App\Command\Product\Jobs\MigrateRatingIds\MigrateRatingIdsJob;
 use App\Command\Product\Jobs\MrFotoPoster\MrFotoPosterJob;
 use App\Command\Product\Jobs\SchilderLackierungsAufpreis\SchilderLackierungsAufpreisJob;
@@ -39,6 +40,7 @@ class PimUpsertCommand extends Command
         MigrateRatingIdsJob::class,
         SchilderLackierungsAufpreisJob::class,
         SchilderPreiseJob::class,
+        KartenJob::class,
     ];
 
     protected AkeneoPimClientInterface $pimClient;

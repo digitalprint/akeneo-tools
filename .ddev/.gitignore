@@ -9,6 +9,8 @@
 /.dbimageBuild
 /.ddev-docker-*.yaml
 /.*downloads
+/.env.*.local
+/.env.local
 /.homeadditions
 /.importdb*
 /.webimageBuild
