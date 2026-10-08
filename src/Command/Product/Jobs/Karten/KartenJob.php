@@ -47,28 +47,14 @@ class KartenJob extends AbstractJob
 
         foreach ($this->config['materials'] as $Uuid) {
 
-            $found_existing = false;
-
             $product = $this->getProductsByUuid($Uuid, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
             $graduated_price = json_decode($product['values']['graduated_price'][0]['data'], true);
 
 
             if (isset($graduated_price['adjustments'])) {
-                foreach ($graduated_price['adjustments'] as $adjustment) {
-
-                    if ($adjustment['id'] === 'invercote_g_300g') {
-                        $found_existing = true;
-                    }
-
+                foreach ($graduated_price['adjustments'] as $key => $adjustment) {
                     if ($adjustment['id'] === 'invercote_g_240g') {
-                        $new = [
-                            "amount" => 0.0,
-                            "type" => "material",
-                            "mode" => "absolute",
-                            "id" => "invercote_g_300g"
-                        ];
-
-                        $graduated_price['adjustments'] = array_merge([$new], $graduated_price['adjustments']);
+                        unset($graduated_price['adjustments'][$key]);
                     }
                 }
             }
@@ -82,18 +68,15 @@ class KartenJob extends AbstractJob
                 $product = $this->setAttributeValueInProduct($product, 'short_description', $short_description, self::DEFAULT_SCOPE, self::DEFAULT_LOCALE);
             }
 
-
-            if ($found_existing) {
-                continue; // Abbruch, wenn Eintrag schon vorhanden
-            }
-
             $parents[] = $product['parent'];
             $products[] = $product;
 
             $resultInfo[$product['identifier']] = [
-                'name' => '...'
+                'name' => $product['values']['name'][0]['data'] ?? '...'
             ];
         }
+
+
 
 
         $this->runUpsert($products, $resultInfo, $force);
