@@ -22,15 +22,19 @@ Das Projekt ist eine spezialisierte **Symfony Console Application**, die als Mid
 
 Die gesamte Entwicklung und Ausführung erfolgt standardisiert über **DDEV** (PHP 8.2).
 
+> **Wichtiger Hinweis zur Befehlsausführung:**
+> Alle Console-Commands müssen **ausnahmslos über DDEV** ausgeführt werden (z. B. `ddev php bin/console ...` oder `ddev exec php bin/console ...`). Auf dem lokalen Host-System läuft häufig eine abweichende PHP-Version (z. B. PHP 8.5) oder eine andere Umgebung als im Projekt-Container. Die Ausführung direkt auf dem Host führt daher zu Inkompatibilitäten, Versionskonflikten oder unerwarteten Fehlern. Innerhalb von DDEV ist die exakt passende PHP-Version (8.2) inklusive aller erforderlichen Extensions und Abhängigkeiten garantiert.
+
 ### Wichtige Befehle:
 
-| Aktion | Befehl |
-|---|---|
-| DDEV starten | `ddev start` |
-| Composer Abhängigkeiten | `ddev composer install` |
-| CLI / Jobs anzeigen | `ddev exec php bin/console list` |
-| Interaktiver Job-Start (Dry-Run / Preview) | `ddev exec php bin/console product:pim:upsert` |
-| Job mit Ausführung auf PIM (Echtlauf) | `ddev exec php bin/console product:pim:upsert --force` |
+| Aktion                                     | Befehl                                            |
+|--------------------------------------------|---------------------------------------------------|
+| DDEV starten                               | `ddev start`                                      |
+| Composer Abhängigkeiten                    | `ddev composer install`                           |
+| CLI / Jobs anzeigen                        | `ddev php bin/console list`                       |
+| PIM Verbindung / Auth testen               | `ddev php bin/console pim:test:connection`        |
+| Interaktiver Job-Start (Dry-Run / Preview) | `ddev php bin/console pim:product:upsert`         |
+| Job mit Ausführung auf PIM (Echtlauf)      | `ddev php bin/console pim:product:upsert --force` |
 
 ### Umgebungsvariablen (`.env.local`):
 Zugangsdaten für die PIM-API werden ausschließlich über `.env.local` konfiguriert und dürfen niemals committed werden:
