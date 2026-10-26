@@ -4,8 +4,7 @@
 
 namespace App\Command\Product;
 
-use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
-use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use App\Command\AbstractPimCommand;
 use App\Command\Product\Jobs\FotoAufAluDibond\FotoAufAluDibondJob;
 use App\Command\Product\Jobs\FotoAufHartschaumplatte\FotoAufHartschaumplatteJob;
 use App\Command\Product\Jobs\FotoAufHolz\FotoAufHolzJob;
@@ -27,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 #[AsCommand(name: 'product:pim:upsert')]
-class PimUpsertCommand extends Command
+class PimUpsertCommand extends AbstractPimCommand
 {
     private array $availableJobs = [
         FotoHinterAcrylglasJob::class,
@@ -42,26 +41,6 @@ class PimUpsertCommand extends Command
         SchilderPreiseJob::class,
         KartenJob::class,
     ];
-
-    protected AkeneoPimClientInterface $pimClient;
-
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        parent::initialize($input, $output);
-
-        set_time_limit(60 * 60);
-        ini_set('memory_limit', '1024M');
-        ini_set('precision', -1);
-        ini_set('serialize_precision', -1);
-
-        $pimClient = new AkeneoPimClientBuilder($_ENV['PIM_API_URL']);
-        $this->pimClient = $pimClient->buildAuthenticatedByPassword(
-            $_ENV['PIM_CLIENT_ID'],
-            $_ENV['PIM_CLIENT_SECRET'],
-            $_ENV['PIM_CLIENT_USER'],
-            $_ENV['PIM_CLIENT_PASS'],
-        );
-    }
 
     /**
      * @see Command
